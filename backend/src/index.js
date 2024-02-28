@@ -1,9 +1,11 @@
 // archivo para arrancar toda la aplicación. Servidor, BBD...
 import app from './app.js'
+import dotenv from 'dotenv'
 
 import { PORT } from './config.js'
 import { habitsRouter } from './routes/habits.js'
 
+dotenv.config()
 // rutas
 app.use('/api/habits', habitsRouter)
 
