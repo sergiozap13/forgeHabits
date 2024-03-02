@@ -1,17 +1,44 @@
-### ver información sobre todos los hábitos
+### pantalla todos los hábitos
 GET http://localhost:3000/api/habits
+### Pantalla MIS hábitos
+GET http://localhost:3000/api/habits/user/:user_id
 
-### ver infomación sobre un hábito
-GET http://localhost:3000/api/habits/3
+### pantalla hábito
+GET http://localhost:3000/api/habits/habit/65db738f567eda516b8aa36c/user/x
 
-### post para crear 
-POST http://localhost:3000/api/habits
+### TODO: Quitar el usuario de la url y recoger el id de este mediante la autenticacion
+PATCH http://localhost:3000/api/habits/habit/:habit_id/user/:user_id/customize
 Content-Type: application/json
 
 {
-    "id": 1234,
-    "name": "Alimentación saludable",
-    "progress": 30.0
+    "settings": {
+        "daily_goal": 3,
+        "preferred_hour": "08:00",
+        "custom_color": "14ff01",
+        "commitment_level": "Bueno",
+        "intermediate_goal":3,
+        "first_time": "yes"
+    }
+}
+### post para crear 
+POST http://localhost:3000/api/habits/habit/65db738f567eda516b8aa36c/user/sergiozap
+Content-Type: application/json
+
+{
+    "habit_id": "65db738f567eda516b8aa36c",
+    "user_id": "x",
+    "habit_user_type": "Mantenimiento",
+    "status": "En proceso de ser forjado",
+    "current_streak": 10,
+    "best_streak": 18,
+    "times_forged": 0,
+    "times_forged_goal": 3,
+    "settings": {
+        "preferred_hour": "12:00",
+        "custom_color": "ff01e4",
+        "commitment_level": "Superior",
+        "intermediate_goal": 7
+    }
 }
 
 ### delete para borrar
