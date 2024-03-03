@@ -90,8 +90,8 @@ habitsRouter.post('/habit/:habit_id/user/:user_id', (req, res) => {
   res.json(req.body)
 })
 
-habitsRouter.delete('/:id', (req, res) => {
-  res.send(`<h1>Borrar el hábito ${req.params.id}</h1>`)
+habitsRouter.delete('/habit/:id/user/:user_id', (req, res) => {
+  res.send(`habito: ${req.params.id}, usuario: ${req.params.user_id}`)
 })
 
 habitsRouter.patch('/:id', (req, res) => {
