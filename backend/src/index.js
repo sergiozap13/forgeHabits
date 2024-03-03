@@ -4,11 +4,16 @@ import dotenv from 'dotenv'
 
 import { PORT } from './config.js'
 import { habitsRouter } from './routes/habits.js'
+import { calendarRouter } from './routes/calendar.js'
+import { diaryRouter } from './routes/diary.js'
+import { instructionsRouter } from './routes/instructions.js'
 
 dotenv.config()
 // rutas
 app.use('/api/habits', habitsRouter)
-
+app.use('/api/calendar', calendarRouter)
+app.use('/api/diary', diaryRouter)
+app.use('/api/instructions', instructionsRouter)
 // para aquellas páginas que no existan.
 app.use((req, res) => {
   res.status(404).send('<h1>404 error</h1>')

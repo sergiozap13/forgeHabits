@@ -2,7 +2,10 @@ import { Router } from 'express'
 
 export const habitsRouter = Router()
 
+// TODO: quitar el id del usuario de la url
+// cuando el usuario quiera ver todos los habitos disponibles que no tenga configurados
 habitsRouter.get('/', (req, res) => {
+  // habria que buscar los habitos que no tenga configurados el usuario
   const sampleHabits = [
     {
       _id: '65db738f567eda516b8aa36c',
@@ -26,7 +29,7 @@ habitsRouter.get('/', (req, res) => {
 })
 
 // GET http://localhost:3000/api/habits/user/:user_id
-
+// cuando el usuario quiera ver los hábitos que tiene configurados
 habitsRouter.get('/user/:user_id', (req, res) => {
   // TODO: Para este endpoint habrá que hacer varias consultas para obtener el nombre del hábito
   // y la racha actual de este. Esta info que se muestra no es la real
@@ -52,6 +55,7 @@ habitsRouter.get('/user/:user_id', (req, res) => {
   res.json(sampleHabits)
 })
 
+// cuando el usuario quiera ver la info de un habito en concreto
 habitsRouter.get('/habit/:habit_id/user/:user_id', (req, res) => {
   // habría que buscar los hábitos asociados al usuario y para cada hábito
   // obtener su información. Luego, mandar la información conjunta todo en un mismo json
@@ -81,12 +85,13 @@ habitsRouter.get('/habit/:habit_id/user/:user_id', (req, res) => {
   })
 })
 
-// PATCH http://localhost:3000/habits/habit/:habit_id/user/:user_id/customize
-habitsRouter.patch('/habit/:habit_id/user/:user_id/customize', (req, res) => {
-  res.json(req.body)
-})
 // para cuando se cree el hábito por primera vez.
 habitsRouter.post('/habit/:habit_id/user/:user_id', (req, res) => {
+  res.json(req.body)
+})
+
+// cuando el usuario edite su configuración del hábito
+habitsRouter.patch('/habit/:habit_id/user/:user_id/customize', (req, res) => {
   res.json(req.body)
 })
 
@@ -94,6 +99,6 @@ habitsRouter.delete('/habit/:id/user/:user_id', (req, res) => {
   res.send(`habito: ${req.params.id}, usuario: ${req.params.user_id}`)
 })
 
-habitsRouter.patch('/:id', (req, res) => {
-  res.send(`<h1>Actualizar el hábito ${req.params.id} </h1>`)
+habitsRouter.get('/habit/:habit_id/tips', (req, res) => {
+
 })
