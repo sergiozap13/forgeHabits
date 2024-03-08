@@ -1,3 +1,5 @@
+#-----------------------------------HÁBITOS------------------------------------------------------
+
 ### pantalla todos los hábitos
 GET http://localhost:3000/api/habits
 ### Pantalla MIS hábitos
@@ -40,9 +42,93 @@ Content-Type: application/json
         "intermediate_goal": 7
     }
 }
-
 ### delete para borrar
-DELETE http://localhost:3000/api/habits/3
+DELETE http://localhost:3000/api/habits/habit/65db738f567eda516b8aa36c/user/sergiozap
 
-### patch para actualizar parcialmente un hábito
-PATCH http://localhost:3000/api/habits/3
+#-----------------------------------CALENDARIO------------------------------------------------------
+
+###
+GET http://localhost:3000/api/calendar/all?start_date=2024-02-05&end_date=2024-02-11
+
+###
+GET http://localhost:3000/api/calendar/2024-02-11
+###
+POST http://localhost:3000/api/calendar/2024-02-11
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "65db8a3c1f81498a805704e4"
+  },
+  "habit_id": "65db856f1f81498a805704d6",
+  "user_id": "x",
+  "date": {
+    "$date": "2024-02-25T00:00:00.000Z"
+  },
+  "done": true,
+  "type": "habit",
+  "schedule": {
+    "start": "13:00",
+    "end": "14:00"
+  }
+}
+###
+PATCH http://localhost:3000/api/calendar/2024-02-11
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "65db8a3c1f81498a805704e4"
+  },
+  "habit_id": "65db856f1f81498a805704d6",
+  "user_id": "x",
+  "date": {
+    "$date": "2024-02-25T00:00:00.000Z"
+  },
+  "done": true,
+  "type": "habit",
+  "schedule": {
+    "start": "13:00",
+    "end": "14:00"
+  }
+}
+###
+DELETE http://localhost:3000/api/calendar/2024-02-11/id/65db8ad21f81498a805704e6
+
+#-----------------------------------DIARIO------------------------------------------------------
+###
+GET http://localhost:3000/api/diary/2024-02-11
+###
+POST http://localhost:3000/api/diary/2024-02-11
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "65db8bb21f81498a805704f5"
+  },
+  "user_id": "x",
+  "date": {
+    "$date": "2024-02-25T00:00:00.000Z"
+  },
+  "text": "Hola, soy Sergio Zapata y soy ingeniero.",
+  "mood": "Normal"
+}
+###
+PATCH http://localhost:3000/api/diary/2024-02-11
+Content-Type: application/json
+
+{
+  "_id": {
+    "$oid": "65db8bb21f81498a805704f5"
+  },
+  "user_id": "x",
+  "date": {
+    "$date": "2024-02-25T00:00:00.000Z"
+  },
+  "text": "Hola, soy Sergio Zapata y soy ingeniero.",
+  "mood": "Normal"
+}
+
+#-----------------------------------INSTRUCCIONES------------------------------------------------------
+###
+GET http://localhost:3000/api/instructions/inicio
