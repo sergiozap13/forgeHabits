@@ -7,7 +7,6 @@ export const habitsRouter = Router()
 // cuando el usuario quiera ver todos los habitos disponibles que no tenga configurados
 habitsRouter.get('/', habitsController.getAvailableHabits)
 
-// GET http://localhost:3000/api/habits/user/:user_id
 // cuando el usuario quiera ver los hábitos que tiene configurados
 habitsRouter.get('/user/:user_id', habitsController.getHabitsUser)
 
