@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { habitUserSchema, settingsSchema } from '../validations/habitsValidations.js'
+import { habitUserSchema, updateSettingsSchema } from '../validations/habitsValidations.js'
 import { validateHabitExistence, validateUserExistence } from '../validations/validationUtils.js'
 const prisma = new PrismaClient()
 
@@ -145,19 +145,18 @@ async function createHabitUser (req, res) {
     res.json(parsedData) // TODO: añadirlo a BD
   } catch (error) {
     if (error.name === 'ZodError') {
-      // Error de validación Zod
       console.log('Zod Error. Validación de datos')
       return res.status(400).json({ errors: error.errors })
     }
 
-    // Otros errores (como errores de base de datos, etc.)
     res.status(500).json({ error: error.message })
   }
 }
 
 async function updateHabitUserSettings (req, res) {
   // validamos con zod
-  const parsedData = settingsSchema.parse(req.body)
+  // se usa un esquema diferente, ya que con en el patch se puede actualizar cualquier campo
+  const parsedData = updateSettingsSchema.parse(req.body)
   // comprobamos que el usuario y el habito existan
   if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
