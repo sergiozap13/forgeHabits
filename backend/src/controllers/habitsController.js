@@ -8,9 +8,9 @@ async function getAvailableHabits (req, res) {
   // Aquí se podrían enseñar todos los hábitos, ahora mismo esta hecho para que se muestren solo
   // los que el usuario tiene configurados
   try {
-    const userHabits = await prisma.userHabits.findMany({
+    const userHabits = await prisma.userHabit.findMany({
       where: {
-        user_id: '65ea12ea835c9e09be0a4c16' // TODO: recoger el id del usuario de la session
+        user_id: '044a8e06-3aa6-4536-9d05-09143c58d7ca' // TODO: recoger el id del usuario de la session
       },
       select: {
         habit_id: true
@@ -19,7 +19,7 @@ async function getAvailableHabits (req, res) {
     console.log(userHabits)
     const userHabitIds = userHabits.map(habit => habit.habit_id)
     console.log(userHabitIds)
-    const availableHabits = await prisma.habits.findMany({
+    const availableHabits = await prisma.habit.findMany({
       where: {
         id: {
           notIn: userHabitIds
@@ -35,7 +35,9 @@ async function getAvailableHabits (req, res) {
 
 async function getHabitsUser (req, res) {
   try {
-    const userHabits = await prisma.userHabits.findMany({
+    if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+
+    const userHabits = await prisma.userHabit.findMany({
       where: {
         user_id: req.params.user_id // TODO: recoger el id del usuario de la session
       },
@@ -44,30 +46,31 @@ async function getHabitsUser (req, res) {
         current_streak: true
       }
     })
+    if (userHabits.length !== 0) {
+      const streakMap = userHabits.reduce((map, habit) => {
+        map[habit.habit_id] = habit.current_streak
+        return map
+      }, {})
 
-    const streakMap = userHabits.reduce((map, habit) => {
-      map[habit.habit_id] = habit.current_streak
-      return map
-    }, {})
+      const userHabitIds = userHabits.map(habit => habit.habit_id)
 
-    const userHabitIds = userHabits.map(habit => habit.habit_id)
-
-    const availableHabits = await prisma.habits.findMany({
-      where: {
-        id: {
-          in: userHabitIds
+      const availableHabits = await prisma.habit.findMany({
+        where: {
+          id: {
+            in: userHabitIds
+          }
         }
-      }
-    })
+      })
 
-    const habitsWithStreaks = availableHabits.map(habit => {
-      return {
-        ...habit,
-        current_streak: streakMap[habit.id] || 0
-      }
-    })
+      const habitsWithStreaks = availableHabits.map(habit => {
+        return {
+          ...habit,
+          current_streak: streakMap[habit.id] || 0
+        }
+      })
 
-    res.json(habitsWithStreaks)
+      res.json(habitsWithStreaks)
+    } else { res.status(404).json({ error: 'The user has not habits' }) }
   } catch (error) {
     res.status(500).json({ error: 'Algo ocurrió al recuperar todos los hábitos' })
   }
@@ -75,14 +78,14 @@ async function getHabitsUser (req, res) {
 
 async function getHabitUserInfo (req, res) {
   try {
-    const habitUser = await prisma.userHabits.findMany({
+    const habitUser = await prisma.userHabit.findFirst({
       where: {
         habit_id: req.params.habit_id,
         user_id: req.params.user_id
       }
     })
-
-    res.json(habitUser)
+    if (habitUser !== null) res.json(habitUser)
+    else { res.status(404).json({ error: 'The habit is not being used by the user' }) }
   } catch (error) {
     res.status(500).json({
       error: 'Algo ocurrió recuperando el hábito del usuario'
@@ -92,12 +95,14 @@ async function getHabitUserInfo (req, res) {
 
 async function getHabitTips (req, res) {
   try {
-    const habitTips = await prisma.tips.findMany({
+    if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+
+    const habitTips = await prisma.tip.findFirst({
       where: {
         habit_id: req.params.habit_id
       }
     })
-    res.json(habitTips)
+    res.json(habitTips.tips)
   } catch (error) {
     res.status(500).json({
       error: 'Algo ocurrió recuperando los tips del habito'
@@ -107,7 +112,9 @@ async function getHabitTips (req, res) {
 
 async function getHabitUnit (req, res) {
   try {
-    const unit = await prisma.units.findMany({
+    if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+
+    const unit = await prisma.unit.findFirst({
       where: {
         habit_id: req.params.habit_id
       },
@@ -115,6 +122,8 @@ async function getHabitUnit (req, res) {
         unit: true
       }
     })
+
+    if (unit === null) { res.status(404).json({ message: 'unit not found' }) }
 
     res.json(unit)
   } catch (error) {
@@ -127,22 +136,35 @@ async function getHabitUnit (req, res) {
 // POSTS
 async function createHabitUser (req, res) {
   try {
+    const habitId = req.params.habit_id
+    const userId = req.params.user_id
     const parsedData = habitUserSchema.parse(req.body)
 
-    if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+    if (!await validateUserExistence(userId)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
-    if (!await validateHabitExistence(parsedData.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+    if (!await validateHabitExistence(habitId)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
 
-    const existingHabitUser = await prisma.userHabits.findFirst({
+    const existingHabitUser = await prisma.userHabit.findFirst({
       where: {
-        habit_id: parsedData.habit_id,
-        user_id: parsedData.user_id
+        habit_id: habitId,
+        user_id: userId
       }
     })
-
+    console.log(existingHabitUser)
     if (existingHabitUser) { return res.status(400).json({ message: 'BD error. The habit is already using by the user' }) }
 
-    res.json(parsedData) // TODO: añadirlo a BD
+    if (existingHabitUser === null) {
+      const newHabitUser = await prisma.userHabit.create({
+        data: {
+          // TODO: quitar el user_id de la url y cogerlo de session
+          ...parsedData,
+          habit_id: habitId,
+          user_id: userId
+        }
+      })
+
+      return res.status(201).json(newHabitUser)
+    }
   } catch (error) {
     if (error.name === 'ZodError') {
       console.log('Zod Error. Validación de datos')
@@ -163,36 +185,62 @@ async function updateHabitUserSettings (req, res) {
   if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
 
   // comprobamos el registro a editar
-  const habitUserToEdit = await prisma.userHabits.findFirst({
+  const habitUserToEdit = await prisma.userHabit.findFirst({
     where: {
       habit_id: req.params.habit_id,
       user_id: req.params.user_id
     }
   })
 
-  // TODO: escribir en BD
+  if (habitUserToEdit !== null) {
+    const updatedHabitUser = await prisma.userHabit.update({
+      // el update de prisma solo espera un parametro en el where
+      where: {
+        id: habitUserToEdit.id
+      },
+      data: {
+        settings: {
+          ...habitUserToEdit.settings,
+          ...parsedData
+        }
+      }
+    })
 
-  console.log(habitUserToEdit)
-
-  console.log(parsedData)
+    res.json(updatedHabitUser)
+  } else { res.status(404).json({ error: 'The habit is not being used by the user' }) }
 }
 
 async function deleteHabitUser (req, res) {
   // validaciones de existencia de usuario y habtto
-  if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+  if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ error: 'BD error. The user doesnt exists' }) }
 
-  if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+  if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ error: 'BD error. The habit doesnt exists' }) }
 
-  const habitUserToDelete = await prisma.userHabits.findFirst({
-    where: {
-      user_id: req.params.user_id,
-      habit_id: req.params.habit_id
+  try {
+    const habitUserToDelete = await prisma.userHabit.findFirst({
+      where: {
+        user_id: req.params.user_id,
+        habit_id: req.params.habit_id
+      }
+    })
+    console.log(habitUserToDelete)
+    if (habitUserToDelete === null) { res.status(400).json({ error: 'The habit is not being used by the user.' }) } else {
+      const habitUserDeleted = await prisma.userHabit.delete({
+        where: {
+          id: habitUserToDelete.id
+        }
+      })
+
+      res.status(200).json(habitUserDeleted)
     }
-  })
+  } catch (error) {
+    if (error.name === 'ZodError') {
+      console.log('Zod Error. Validación de datos')
+      return res.status(400).json({ errors: error.errors })
+    }
 
-  // TODO: eliminar registro de BD
-
-  console.log(habitUserToDelete)
+    res.status(500).json({ error: error.message })
+  }
 }
 
 export default {
