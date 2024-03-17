@@ -16,21 +16,21 @@ Content-Type: application/json
   "custom_color": "FF8300"
 }
 ### post para crear un hábito
-POST http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
+POST http://localhost:3000/api/habits/habit/f7f27180-f817-44f3-8da3-312ae9be801e/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 Content-Type: application/json
 
 {
-  "habit_user_type": "Mantenimiento",
-  "status": "Forjado",
-  "current_streak": 7,
-  "best_streak": 23,
-  "times_forged": 1,
+  "habit_user_type": "Desarrollo",
+  "status": "EnProceso",
+  "current_streak": 3,
+  "best_streak": 3,
+  "times_forged": 0,
   "times_forged_goal": 3,
   "settings": {
-    "preferred_hour": "13:00",
-    "custom_color": "ef01e4",
-    "commitment_level": "Interiorizado",
-    "intermediate_goal": 3  
+    "preferred_hour": "12:00",
+    "custom_color": "de78e9",
+    "commitment_level": "Superior",
+    "intermediate_goal": 7
   }
 }
 ### delete para borrar
@@ -45,33 +45,29 @@ GET http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/
 #-----------------------------------CALENDARIO------------------------------------------------------
 
 ###
-GET http://localhost:3000/api/calendar/all/user/65ea12ea835c9e09be0a4c16?start_date=2024-02-25&end_date=2024-02-25
+GET http://localhost:3000/api/calendar/all/user/044a8e06-3aa6-4536-9d05-09143c58d7ca?start_date=2024-02-25&end_date=2024-02-25
 ###
-POST http://localhost:3000/api/calendar/2024-02-11/user/65ea12ea835c9e09be0a4c16
+POST http://localhost:3000/api/calendar/2024-02-25/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 Content-Type: application/json
 
 {
-  "habit_id": "65db856f1f81498a805704d6",
-  "user_id": "65ea12ea835c9e09be0a4c16",
-  "done": true,
+  "habit_id": "f7f27180-f817-44f3-8da3-312ae9be801e",
+  "user_id": "044a8e06-3aa6-4536-9d05-09143c58d7ca",
   "type": "Habito",
-  "schedule": {
-    "start": "13:00",
-    "end": "14:00"
+  "schedule":{
+    "start": "20:00",
+    "end": "20:20"
   }
 }
 ###
-PATCH http://localhost:3000/api/calendar/2024-02-25/event/65db8a3c1f81498a805704e4
+PATCH http://localhost:3000/api/calendar/2024-02-25/event/6c3f9533-48f1-4cc1-b47c-8327f0223045
 Content-Type: application/json
 
 {
-  "schedule": {
-    "start": "13:00",
-    "end": "14:00"
-  }
+  "done": true
 }
 ###
-DELETE http://localhost:3000/api/calendar/2024-02-25/id/65db8ad21f81498a805704e6
+DELETE http://localhost:3000/api/calendar/2024-02-25/id/4f221b67-4e52-451b-8540-abeefb137bdb
 
 #-----------------------------------DIARIO------------------------------------------------------
 ###
