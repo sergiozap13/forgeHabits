@@ -99,4 +99,23 @@ DELETE http://localhost:3000/api/diary/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
 #-----------------------------------INSTRUCCIONES------------------------------------------------------
 ###
-GET http://localhost:3000/api/instructions/MisHabitos
+GET http://localhost:3000/api/instructions/Inicio
+
+### 
+POST http://localhost:3000/api/instructions/Inicio
+Content-Type: application/json
+
+{
+  "instruction": [
+    "Estamos en el inicio",
+    "Puedes ir a la sección de mis hábitos"
+  ]
+}
+
+###
+PATCH http://localhost:3000/api/instructions/Inicio
+Content-Type: application/json
+
+{
+  "instruction": "Esta es una inscción de ejemplo para el inicio"
+}
