@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const objectIdSchema = z.string().length(24)
+const objectIdSchema = z.string().length(36)
 
 export const diarySchema = z.object({
   user_id: objectIdSchema,

@@ -34,15 +34,26 @@ async function createDiaryDay (req, res) {
   const date = new Date(req.params.day)
   // validamos la fecha
   if (isNaN(date)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
+    return res.status(400).json({ error: 'invalid date in url.' })
   }
 
-  const data = {
-    ...parsedData,
-    date
+  try {
+    const diaryEntry = await prisma.diary.create({
+      data: {
+        ...parsedData,
+        date
+      }
+    })
+
+    res.status(201).json(diaryEntry)
+  } catch (error) {
+    // clave única
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'an entry for this user already exists for this date.' })
+    }
+
+    res.status(500).json({ error: error.message })
   }
-  // TODO: añadir a base de datos
-  console.log(data)
 }
 
 // patch
@@ -56,17 +67,32 @@ async function updateDiaryDay (req, res) {
   if (isNaN(urlDate)) {
     return res.status(400).json({ message: 'Invalid date in url.' })
   }
-  const diaryToUpdate = await prisma.diary.findFirst({
-    where: {
-      user_id: parsedData.user_id,
-      date: urlDate
+
+  try {
+    const existingEntry = await prisma.diary.findFirst({
+      where: {
+        user_id: parsedData.user_id,
+        date: urlDate
+      }
+    })
+
+    if (!existingEntry) {
+      return res.status(404).json({ message: 'Diary entry not found' })
     }
-  })
 
-  // TODO: actualizar el diario en bd
-  console.log(diaryToUpdate)
+    const updatedEntry = await prisma.diary.update({
+      where: {
+        id: existingEntry.id
+      },
+      data: {
+        ...parsedData
+      }
+    })
 
-  res.json(parsedData)
+    res.status(200).json(updatedEntry)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 }
 
 async function deleteDiaryDay (req, res) {
@@ -75,17 +101,24 @@ async function deleteDiaryDay (req, res) {
     return res.status(400).json({ message: 'Invalid date in url.' })
   }
 
-  const diaryToDelete = await prisma.diary.findFirst({
-    where: {
-      user_id: req.params.user_id,
-      date: urlDate
-    }
-  })
+  try {
+    const diaryToDelete = await prisma.diary.findFirst({
+      where: {
+        user_id: req.params.user_id,
+        date: urlDate
+      }
+    })
+    if (!diaryToDelete) { return res.status(404).json({ message: 'Diary entry not found' }) }
 
-  if (diaryToDelete === null) { res.status(404).json({ message: 'Diary not found' }) }
-
-  // TODO: borrar el hábito de la bd
-  console.log(diaryToDelete)
+    const deletedEntry = await prisma.diary.delete({
+      where: {
+        id: diaryToDelete.id
+      }
+    })
+    res.status(200).json(deletedEntry)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 }
 
 export default {
