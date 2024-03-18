@@ -30,3 +30,7 @@ export const habitUserSchema = z.object({
 }).refine(data => data.best_streak >= data.current_streak, {
   message: 'La mejor racha debe ser mayor o igual a la actual'
 })
+
+export const tipSchema = z.object({
+  tip: z.string().max(200)
+})

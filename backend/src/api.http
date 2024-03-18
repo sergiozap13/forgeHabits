@@ -6,17 +6,17 @@ GET http://localhost:3000/api/habits
 GET http://localhost:3000/api/habits/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
 ### pantalla hábito
-GET http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
+GET http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
 ### TODO: Quitar el usuario de la url y recoger el id de la session
-PATCH http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca/customize
+PATCH http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/user/044a8e06-3aa6-4536-9d05-09143c58d7ca/customize
 Content-Type: application/json
 
 {
   "custom_color": "FF8300"
 }
 ### post para crear un hábito
-POST http://localhost:3000/api/habits/habit/f7f27180-f817-44f3-8da3-312ae9be801e/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
+POST http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 Content-Type: application/json
 
 {
@@ -37,10 +37,18 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
 ###
-GET http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/unit
+GET http://localhost:3000/api/habits/habit/f7f27180-f817-44f3-8da3-312ae9be801e/unit
 
 ###
 GET http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/tips
+
+###
+PATCH http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/tips
+Content-Type: application/json
+
+{
+  "tip": "Echale más sal todaviaa"
+}
 
 #-----------------------------------CALENDARIO------------------------------------------------------
 

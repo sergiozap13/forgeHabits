@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { habitUserSchema, updateSettingsSchema } from '../validations/habitsValidations.js'
+import { habitUserSchema, tipSchema, updateSettingsSchema } from '../validations/habitsValidations.js'
 import { validateHabitExistence, validateUserExistence } from '../validations/validationUtils.js'
 const prisma = new PrismaClient()
 
@@ -26,6 +26,8 @@ async function getAvailableHabits (req, res) {
         }
       }
     })
+
+    if (availableHabits.length === 0) { res.status(404).json({ message: 'The user has configured all habits' }) }
 
     res.json(availableHabits)
   } catch (error) {
@@ -107,6 +109,45 @@ async function getHabitTips (req, res) {
     res.status(500).json({
       error: 'Algo ocurrió recuperando los tips del habito'
     })
+  }
+}
+
+async function updateHabitTips (req, res) {
+  const newTip = tipSchema.parse(req.body)
+
+  try {
+    const currentTipsRecord = await prisma.tip.findFirst({
+      where: {
+        habit_id: req.params.habit_id
+      },
+      select: {
+        id: true,
+        tips: true
+      }
+    })
+
+    if (!currentTipsRecord) {
+      return res.status(404).json({ error: 'Tips not found' })
+    }
+
+    if (currentTipsRecord.tips.includes(newTip.tip)) {
+      return res.status(400).json({ error: 'Tip already exists' })
+    }
+    // actualizar el array de tips
+    const updatedTips = [...currentTipsRecord.tips, newTip.tip]
+    // actualizar el registro con el nuevo array
+    const updatedTipEntry = await prisma.tip.update({
+      where: {
+        id: currentTipsRecord.id
+      },
+      data: {
+        tips: updatedTips
+      }
+    })
+
+    res.status(200).json(updatedTipEntry)
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while updating the tip' })
   }
 }
 
@@ -248,6 +289,7 @@ export default {
   getHabitsUser,
   getHabitUserInfo,
   getHabitTips,
+  updateHabitTips,
   getHabitUnit,
   createHabitUser,
   updateHabitUserSettings,

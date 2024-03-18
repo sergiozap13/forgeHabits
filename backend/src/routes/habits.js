@@ -16,6 +16,8 @@ habitsRouter.get('/habit/:habit_id/user/:user_id', habitsController.getHabitUser
 // para los tips de los habitos
 habitsRouter.get('/habit/:habit_id/tips', habitsController.getHabitTips)
 
+habitsRouter.patch('/habit/:habit_id/tips', habitsController.updateHabitTips)
+
 habitsRouter.get('/habit/:habit_id/unit', habitsController.getHabitUnit)
 // para cuando se cree el hábito por primera vez.
 habitsRouter.post('/habit/:habit_id/user/:user_id', habitsController.createHabitUser)
