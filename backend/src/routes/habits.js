@@ -25,4 +25,6 @@ habitsRouter.post('/habit/:habit_id/user/:user_id', habitsController.createHabit
 // cuando el usuario edite su configuración del hábito
 habitsRouter.patch('/habit/:habit_id/user/:user_id/customize', habitsController.updateHabitUserSettings)
 
+habitsRouter.patch('/habit/:habit_id/user/:user_id', habitsController.updateHabitUserInfo)
+
 habitsRouter.delete('/habit/:habit_id/user/:user_id', habitsController.deleteHabitUser)

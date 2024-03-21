@@ -3,19 +3,32 @@ import { instructionSchema, updateInstructionSchema } from '../validations/instr
 const prisma = new PrismaClient()
 
 async function getInstructionsById (req, res) {
-  const instructions = await prisma.instruction.findMany({
-    where: {
-      category: req.params.category
+  const category = categoryValidation(req.params.category, res)
+  if (!category) return res.status(400).json({ message: "The category doesn't exists" })
+  try {
+    const instructions = await prisma.instruction.findMany({
+      where: {
+        category: req.params.category
+      }
+    })
+
+    if (instructions.length === 0) { return res.status(404).json({ message: 'Instructions not found' }) }
+
+    res.json(instructions)
+  } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
     }
-  })
-
-  if (instructions.length === 0) { res.status(404).json({ message: 'Instructions not found' }) }
-
-  res.json(instructions)
+  }
 }
 
 async function createInstructions (req, res) {
   const parsedData = instructionSchema.parse(req.body)
+
+  const category = categoryValidation(req.params.category, res)
+  if (!category) return res.status(400).json({ message: "The category doesn't exists" })
 
   try {
     const existingInstructionsCategory = await prisma.instruction.findFirst({
@@ -35,12 +48,19 @@ async function createInstructions (req, res) {
 
     res.status(201).json(newInstruction)
   } catch (error) {
-    res.status(500).json({ error: 'Something happens while creating a new instruction' })
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
+    }
   }
 }
 
 async function updateInstruction (req, res) {
   const newInstruction = updateInstructionSchema.parse(req.body)
+
+  const category = categoryValidation(req.params.category, res)
+  if (!category) return res.status(400).json({ message: "The category doesn't exists" })
 
   try {
     const currentInstructionsRecord = await prisma.instruction.findFirst({
@@ -74,8 +94,22 @@ async function updateInstruction (req, res) {
 
     res.status(200).json(updatedTipEntry)
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while updating the instruction' })
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
+    }
   }
+}
+
+function categoryValidation (category) {
+  const validCategories = ['Inicio', 'MisHabitos', 'Diario', 'Calendario']
+
+  if (!validCategories.includes(category)) {
+    return false
+  }
+
+  return true
 }
 
 export default {

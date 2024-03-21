@@ -5,8 +5,8 @@ import { validateUserExistence } from '../validations/validationUtils.js'
 const prisma = new PrismaClient()
 
 async function getDiaryDay (req, res) {
-  const dateString = req.params.day
-  const dateDay = new Date(dateString)
+  const dateDay = validateDate(req.params.day, res)
+
   try {
     const diaryDay = await prisma.diary.findFirst({
       where: {
@@ -31,11 +31,7 @@ async function createDiaryDay (req, res) {
 
   if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
-  const date = new Date(req.params.day)
-  // validamos la fecha
-  if (isNaN(date)) {
-    return res.status(400).json({ error: 'invalid date in url.' })
-  }
+  const date = validateDate(req.params.day, res)
 
   try {
     const diaryEntry = await prisma.diary.create({
@@ -60,13 +56,9 @@ async function createDiaryDay (req, res) {
 async function updateDiaryDay (req, res) {
   const parsedData = updateDiarySchema.parse(req.body)
 
-  const urlDate = new Date(req.params.day)
-
   if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
-  if (isNaN(urlDate)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
-  }
+  const urlDate = validateDate(req.params.day, res)
 
   try {
     const existingEntry = await prisma.diary.findFirst({
@@ -96,10 +88,7 @@ async function updateDiaryDay (req, res) {
 }
 
 async function deleteDiaryDay (req, res) {
-  const urlDate = new Date(req.params.day)
-  if (isNaN(urlDate)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
-  }
+  const urlDate = validateDate(req.params.day, res)
 
   try {
     const diaryToDelete = await prisma.diary.findFirst({
@@ -119,6 +108,15 @@ async function deleteDiaryDay (req, res) {
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
+}
+
+function validateDate (dateString, res) {
+  const date = new Date(dateString)
+  if (isNaN(date)) {
+    res.status(400).json({ message: 'Invalid date in url.' })
+    return false
+  }
+  return date
 }
 
 export default {

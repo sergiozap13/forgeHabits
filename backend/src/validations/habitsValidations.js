@@ -17,6 +17,13 @@ export const updateSettingsSchema = z.object({
   intermediate_goal: z.number().int().gte(3).lte(14).optional()
 })
 
+export const updateUserHabitInfo = z.object({
+  status: z.enum(['SinIniciar', 'EnProceso', 'Forjado', 'Interiorizado']).optional(),
+  current_streak: z.number().int().nonnegative().optional(),
+  best_streak: z.number().int().nonnegative().optional(),
+  times_forged: z.number().int().nonnegative().optional()
+})
+
 export const habitUserSchema = z.object({
   habit_id: objectIdSchema.optional(),
   user_id: objectIdSchema.optional(),

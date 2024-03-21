@@ -15,10 +15,22 @@ Content-Type: application/json
 {
   "custom_color": "FF8300"
 }
+
+### 
+
+PATCH http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
+Content-Type: application/json
+
+{
+  "current_streak": 4,
+  "best_streak": 4,
+  "times_forged": 1
+}
+
 ### post para crear un hábito
 POST http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 Content-Type: application/json
-
+# TODO: Hacer que los campos numericos (que no son objetivos) cogan campos por defecto si no se mandan
 {
   "habit_user_type": "Desarrollo",
   "status": "EnProceso",
@@ -99,7 +111,7 @@ DELETE http://localhost:3000/api/diary/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
 #-----------------------------------INSTRUCCIONES------------------------------------------------------
 ###
-GET http://localhost:3000/api/instructions/Inicio
+GET http://localhost:3000/api/instructions/MisHabitos
 
 ### 
 POST http://localhost:3000/api/instructions/Inicio

@@ -6,160 +6,184 @@ const prisma = new PrismaClient()
 // TODO: comprobar buen funcionamiento de todo este controlador
 
 async function get2DatesEvents (req, res) {
-  const start = new Date(req.query.start_date)
-  const end = new Date(req.query.end_date)
+  try {
+    const start = new Date(req.query.start_date)
+    const end = new Date(req.query.end_date)
 
-  if (start > end) { return res.status(400).json({ error: 'start date must be previous to end date' }) }
+    if (start > end) { return res.status(400).json({ error: 'start date must be previous to end date' }) }
 
-  if (isNaN(start) || isNaN(end)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
-  }
-
-  const events = await prisma.calendarEvent.findMany({
-    where: {
-      user_id: req.params.user_id,
-      date: {
-        gte: start,
-        lte: end
-      }
+    if (isNaN(start) || isNaN(end)) {
+      return res.status(400).json({ message: 'Invalid date in url.' })
     }
-  })
 
-  if (events === null || events.length === 0) { res.status(404).json({ error: 'events not found between these dates' }) }
-
-  res.json(events)
-}
-
-async function addEventToDay (req, res) {
-  const parsedData = calendarSchema.parse(req.body)
-
-  // comprobaciones de usuario y habito
-  if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
-  if (!await validateHabitExistence(parsedData.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
-
-  // comprobacion fecha valida url
-  const date = new Date(req.params.day)
-  if (isNaN(date)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
-  }
-
-  // comprobacion para chequear si el usuario tiene el habito configurado
-  if (parsedData.habit_id && parsedData.type === 'Habito') {
-    const hasUserHabit = await prisma.userHabit.findFirst({
+    const events = await prisma.calendarEvent.findMany({
       where: {
-        habit_id: parsedData.habit_id,
-        user_id: parsedData.user_id
+        user_id: req.params.user_id,
+        date: {
+          gte: start,
+          lte: end
+        }
       }
     })
 
-    if (hasUserHabit === null) {
-      return res.status(400).json({ message: 'The user hasnt this habit' })
+    if (!events.length) { res.status(404).json({ error: 'events not found between these dates' }) }
+
+    res.json(events)
+  } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
     }
   }
+}
 
-  // comprobacion habito dia completo
-  const allDayHabit = await prisma.habit.findFirst({
-    where: {
-      id: parsedData.habit_id
-    },
-    select: {
-      allday: true
+async function addEventToDay (req, res) {
+  try {
+    const parsedData = calendarSchema.parse(req.body)
+
+    // comprobaciones de usuario y habito
+    if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+    if (!await validateHabitExistence(parsedData.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+
+    // comprobacion fecha valida url
+    const date = new Date(req.params.day)
+    if (isNaN(date)) {
+      return res.status(400).json({ message: 'Invalid date in url.' })
     }
-  })
-  // si es habito de dia completo, no puede tener horario, por lo cual, falla
-  if (allDayHabit.allday) {
-    if (parsedData.schedule) { return res.status(400).json({ error: 'This habit has not schedule' }) }
-  } else { // si no es de dia completo, se comprueban que las horas sean correctas
-    console.log('entra')
-    const startTime = new Date(`1970-01-01T${parsedData.schedule.start}`)
-    const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
-    // comprobación de las horas
-    if (startTime >= endTime) {
-      return res.status(400).json({ message: 'start time must be earlier than end time.' })
+
+    // comprobacion para chequear si el usuario tiene el habito configurado
+    if (parsedData.habit_id && parsedData.type === 'Habito') {
+      const hasUserHabit = await prisma.userHabit.findFirst({
+        where: {
+          habit_id: parsedData.habit_id,
+          user_id: parsedData.user_id // TODO: quitar el usuario del body
+        }
+      })
+
+      if (hasUserHabit === null) {
+        return res.status(400).json({ message: 'The user hasnt this habit' })
+      }
     }
-    // se chequean las colisiones
 
-    if (await checkEventCollisions(date, startTime, endTime)) {
-      return res.status(400).json({ message: 'event time conflicts with another event.' })
+    // comprobacion habito dia completo
+    const allDayHabit = await prisma.habit.findFirst({
+      where: {
+        id: parsedData.habit_id
+      },
+      select: {
+        allday: true
+      }
+    })
+
+    // si es habito de dia completo, no puede tener horario, por lo cual, falla
+    if (allDayHabit.allday) {
+      if (parsedData.schedule) { return res.status(400).json({ error: 'This habit has not schedule' }) }
+    } else { // si no es de dia completo, se comprueban que las horas sean correctas
+      const startTime = new Date(`1970-01-01T${parsedData.schedule.start}`)
+      const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
+      // comprobación de las horas
+      if (startTime >= endTime) {
+        return res.status(400).json({ message: 'start time must be earlier than end time.' })
+      }
+      // se chequean las colisiones
+      if (await checkEventCollisions(date, startTime, endTime)) {
+        return res.status(400).json({ message: 'event time conflicts with another event.' })
+      }
     }
-  }
 
-  // los habitos de dia completo solo pueden ser configurados una vez al día
-  if (await checkAllDayHabitAlreadySetForDay(date, parsedData.habit_id, parsedData.user_id)) {
-    return res.status(400).json({ message: 'this event can only be set once per day' })
-  }
-
-  const data = {
-    ...parsedData,
-    date
-  }
-
-  const habitCreated = await prisma.calendarEvent.create({
-    data: {
-      ...data
+    // los habitos de dia completo solo pueden ser configurados una vez al día
+    if (await checkAllDayHabitAlreadySetForDay(date, parsedData.habit_id, parsedData.user_id)) {
+      return res.status(400).json({ message: 'this event can only be set once per day' })
     }
-  })
 
-  if (habitCreated) { res.json(data) } else {
-    res.status(500).json({ error: 'an error ocurred while creating the event' })
+    const data = {
+      ...parsedData,
+      date
+    }
+
+    const habitCreated = await prisma.calendarEvent.create({
+      data: {
+        ...data
+      }
+    })
+
+    if (habitCreated) { res.json(data) } else {
+      res.status(500).json({ error: 'an error ocurred while creating the event' })
+    }
+  } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
+    }
   }
 }
 
 async function updateEvent (req, res) {
-  const parsedData = updateCalendarEvent.parse(req.body)
-  // Comprobación de fecha válida
-  const urlDate = new Date(req.params.day)
-  if (isNaN(urlDate)) {
-    return res.status(400).json({ message: 'Invalid date in url.' })
-  }
-  // comprobación de que existe el evento
-  const eventToUpdate = await prisma.calendarEvent.findFirst({
-    where: {
-      id: req.params.event_id
+  try {
+    const parsedData = updateCalendarEvent.parse(req.body)
+    // Comprobación de fecha válida
+    const urlDate = new Date(req.params.day)
+    if (isNaN(urlDate)) {
+      return res.status(400).json({ message: 'Invalid date in url.' })
     }
-  })
-  // comprobacion habito de dia completo
-  const allDayHabit = await prisma.habit.findFirst({
-    where: {
-      id: eventToUpdate.habit_id
-    },
-    select: {
-      allday: true
-    }
-  })
-  // si el evento no existe, se devuelve un 404
-  if (eventToUpdate === null) {
-    return res.status(404).json({ error: 'Event not found' })
-  }
+    // comprobación de que existe el evento
+    const eventToUpdate = await prisma.calendarEvent.findFirst({
+      where: {
+        id: req.params.event_id
+      }
+    })
 
-  if (parsedData.schedule) {
-    // si en el body viene un schedule y el habito es de dia completo, se devuelve un 400
-    if (allDayHabit.allday) {
-      return res.status(400).json({ error: 'This event cant have schedule' })
+    if (eventToUpdate === null) {
+      return res.status(404).json({ error: 'Event not found' })
     }
-    // se crean objetos Date con las hora para que no se pueda mandar una hora de comienzo posterior a la de finalización
-    const startTime = new Date(`1970-01-01T${parsedData.schedule.start}`)
-    const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
-    // comprobación de las horas
-    if (startTime >= endTime) {
-      return res.status(400).json({ message: 'start time must be earlier than end time.' })
+    // comprobacion habito de dia completo
+    const allDayHabit = await prisma.habit.findFirst({
+      where: {
+        id: eventToUpdate.habit_id
+      },
+      select: {
+        allday: true
+      }
+    })
+    // si el evento no existe, se devuelve un 404
+
+    if (parsedData.schedule) {
+      // si en el body viene un schedule y el habito es de dia completo, se devuelve un 400
+      if (allDayHabit.allday) {
+        return res.status(400).json({ error: 'This event cant have schedule' })
+      }
+      // se crean objetos Date con las hora para que no se pueda mandar una hora de comienzo posterior a la de finalización
+      const startTime = new Date(`1970-01-01T${parsedData.schedule.start}`)
+      const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
+      // comprobación de las horas
+      if (startTime >= endTime) {
+        return res.status(400).json({ message: 'start time must be earlier than end time.' })
+      }
+      // se chequean las colisiones
+      if (await checkEventCollisions(urlDate, startTime, endTime, eventToUpdate.id)) {
+        return res.status(400).json({ message: 'event time conflicts with another event.' })
+      }
     }
-    // se chequean las colisiones
-    if (await checkEventCollisions(urlDate, startTime, endTime, eventToUpdate.id)) {
-      return res.status(400).json({ message: 'event time conflicts with another event.' })
+
+    const eventUpdated = await prisma.calendarEvent.update({
+      where: {
+        id: eventToUpdate.id
+      },
+      data: {
+        ...parsedData
+      }
+    })
+    // si se ha actualizado bien, se devuelve
+    if (eventUpdated) { res.status(200).json(eventUpdated) } else { res.status(500).json({ error: 'Something ocurred while the event was being updated' }) }
+  } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ errors: error.errors })
+    } else {
+      return res.status(500).json({ error: error.message })
     }
   }
-
-  const eventUpdated = await prisma.calendarEvent.update({
-    where: {
-      id: eventToUpdate.id
-    },
-    data: {
-      ...parsedData
-    }
-  })
-  // si se ha actualizado bien, se devuelve
-  if (eventUpdated) { res.status(200).json(eventUpdated) } else { res.status(500).json({ error: 'Something ocurred while the event was being updated' }) }
 }
 
 // funciones para comprobaciones de colisiones
