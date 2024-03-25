@@ -22,8 +22,8 @@ PATCH http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882e
 Content-Type: application/json
 
 {
-  "current_streak": 4,
-  "best_streak": 4,
+  "current_streak": 5,
+  "best_streak": 5,
   "times_forged": 1
 }
 
@@ -131,3 +131,49 @@ Content-Type: application/json
 {
   "instruction": "Esta es una inscción de ejemplo para el inicio"
 }
+
+#-----------------------------------USUARIOS------------------------------------------------------
+
+### 
+GET http://localhost:3000/api/users
+
+### 
+GET http://localhost:3000/api/users/044a8e06-3aa6-4536-9d05-09143c58d7ca
+
+###
+GET http://localhost:3000/api/users/username/sergiozap13
+
+### 
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "email": "prueba2@gmail.com",
+  "name": "Prueba2",
+  "last_name": "Probando2",
+  "date_born": "2001-10-05T00:00:00Z",
+  "username": "pruebaa_zap13",
+  "password": "pruebapruebahash"
+}
+
+### 
+PATCH http://localhost:3000/api/users/c2be4add-590b-4ed8-ae8e-7ade19a3f3e7
+Content-Type: application/json
+
+{
+  "password": "papaya666"
+}
+
+###
+PATCH http://localhost:3000/api/users/username/sergiozap13
+Content-Type: application/json
+
+{
+  "password": "papaya666"
+}
+
+### 
+DELETE http://localhost:3000/api/users/c2be4add-590b-4ed8-ae8e-7ade19a3f3e7
+
+###
+DELETE http://localhost:3000/api/users/username/pruebaa_zap13
