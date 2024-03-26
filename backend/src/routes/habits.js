@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import habitsController from '../controllers/habitsController.js'
-import { checkAuthenticated } from '../middlewares/passport-config.js'
+import { checkAuthenticated } from '../controllers/authController.js'
 
 export const habitsRouter = Router()
 

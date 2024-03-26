@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import calendarController from '../controllers/calendarController.js'
-import { checkAuthenticated } from '../middlewares/passport-config.js'
+import { checkAuthenticated } from '../controllers/authController.js'
 
 export const calendarRouter = Router()
 // esto va a ser la general para mostrar todos los eventos de la semana elegida
