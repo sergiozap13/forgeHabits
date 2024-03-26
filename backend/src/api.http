@@ -107,7 +107,6 @@ POST http://localhost:3000/api/diary/2024-03-18
 Content-Type: application/json
 
 {
-  "user_id": "044a8e06-3aa6-4536-9d05-09143c58d7ca",
   "text": "Hola, soy Sergio Zapata y hoy es dia 18",
   "mood": "Bueno"
 }
@@ -120,7 +119,7 @@ Content-Type: application/json
   "mood": "Mal"
 }
 ### 
-DELETE http://localhost:3000/api/diary/user/044a8e06-3aa6-4536-9d05-09143c58d7ca/2024-03-19
+DELETE http://localhost:3000/api/diary/2024-03-19
 
 #-----------------------------------INSTRUCCIONES------------------------------------------------------
 ###

@@ -10,7 +10,8 @@ async function getDiaryDay (req, res) {
   try {
     const diaryDay = await prisma.diary.findFirst({
       where: {
-        date: dateDay
+        date: dateDay,
+        user_id: req.user.id
       }
     })
 
@@ -29,7 +30,7 @@ async function getDiaryDay (req, res) {
 async function createDiaryDay (req, res) {
   const parsedData = diarySchema.parse(req.body)
 
-  if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+  if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
   const date = validateDate(req.params.day, res)
 
@@ -37,6 +38,7 @@ async function createDiaryDay (req, res) {
     const diaryEntry = await prisma.diary.create({
       data: {
         ...parsedData,
+        user_id: req.user.id,
         date
       }
     })
@@ -56,14 +58,14 @@ async function createDiaryDay (req, res) {
 async function updateDiaryDay (req, res) {
   const parsedData = updateDiarySchema.parse(req.body)
 
-  if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+  if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
   const urlDate = validateDate(req.params.day, res)
 
   try {
     const existingEntry = await prisma.diary.findFirst({
       where: {
-        user_id: parsedData.user_id,
+        user_id: req.user.id,
         date: urlDate
       }
     })
@@ -93,7 +95,7 @@ async function deleteDiaryDay (req, res) {
   try {
     const diaryToDelete = await prisma.diary.findFirst({
       where: {
-        user_id: req.params.user_id,
+        user_id: req.user.id,
         date: urlDate
       }
     })

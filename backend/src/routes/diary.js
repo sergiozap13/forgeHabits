@@ -1,11 +1,13 @@
 import { Router } from 'express'
 import diaryController from '../controllers/diaryController.js'
+import { checkAuthenticated } from '../middlewares/passport-config.js'
+
 export const diaryRouter = Router()
 
-diaryRouter.get('/:day', diaryController.getDiaryDay)
+diaryRouter.get('/:day', checkAuthenticated, diaryController.getDiaryDay)
 
-diaryRouter.post('/:day', diaryController.createDiaryDay)
+diaryRouter.post('/:day', checkAuthenticated, diaryController.createDiaryDay)
 
-diaryRouter.patch('/:day', diaryController.updateDiaryDay)
+diaryRouter.patch('/:day', checkAuthenticated, diaryController.updateDiaryDay)
 
-diaryRouter.delete('/user/:user_id/:day', diaryController.deleteDiaryDay)
+diaryRouter.delete('/:day', checkAuthenticated, diaryController.deleteDiaryDay)

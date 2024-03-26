@@ -24,14 +24,19 @@ const app = express()
 app.use(json())
 app.use(corsMiddleware())
 app.disable('x-powered-by')
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 3600000 // esto es una hora
+    maxAge: 3600000, // esto es una hora
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // si el entorno es de producción, entonces manda la cookie por https
+    sameSite: 'strict'
   }
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
 
