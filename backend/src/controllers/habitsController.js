@@ -10,7 +10,7 @@ async function getAvailableHabits (req, res) {
   try {
     const userHabits = await prisma.userHabit.findMany({
       where: {
-        user_id: '044a8e06-3aa6-4536-9d05-09143c58d7ca' // TODO: recoger el id del usuario de la session
+        user_id: req.user.id
       },
       select: {
         habit_id: true
@@ -35,11 +35,11 @@ async function getAvailableHabits (req, res) {
 
 async function getHabitsUser (req, res) {
   try {
-    if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+    if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
     const userHabits = await prisma.userHabit.findMany({
       where: {
-        user_id: req.params.user_id // TODO: recoger el id del usuario de la session
+        user_id: req.user.id
       },
       select: {
         habit_id: true,
@@ -78,10 +78,11 @@ async function getHabitsUser (req, res) {
 
 async function getHabitUserInfo (req, res) {
   try {
+    if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
     const habitUser = await prisma.userHabit.findFirst({
       where: {
         habit_id: req.params.habit_id,
-        user_id: req.params.user_id
+        user_id: req.user.id
       }
     })
     if (habitUser !== null) res.json(habitUser)
@@ -176,7 +177,7 @@ async function getHabitUnit (req, res) {
 async function createHabitUser (req, res) {
   try {
     const habitId = req.params.habit_id
-    const userId = req.params.user_id
+    const userId = req.user.id
     const parsedData = habitUserSchema.parse(req.body)
 
     if (!await validateUserExistence(userId)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
@@ -194,7 +195,6 @@ async function createHabitUser (req, res) {
     if (existingHabitUser === null) {
       const newHabitUser = await prisma.userHabit.create({
         data: {
-          // TODO: quitar el user_id de la url y cogerlo de session
           ...parsedData,
           habit_id: habitId,
           user_id: userId
@@ -218,7 +218,7 @@ async function updateHabitUserSettings (req, res) {
   // se usa un esquema diferente, ya que con en el patch se puede actualizar cualquier campo
   const parsedData = updateSettingsSchema.parse(req.body)
   // comprobamos que el usuario y el habito existan
-  if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+  if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
   if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
 
@@ -226,7 +226,7 @@ async function updateHabitUserSettings (req, res) {
   const habitUserToEdit = await prisma.userHabit.findFirst({
     where: {
       habit_id: req.params.habit_id,
-      user_id: req.params.user_id
+      user_id: req.user.id
     }
   })
 
@@ -253,14 +253,14 @@ async function updateHabitUserInfo (req, res) {
     const parsedData = updateUserHabitInfo.parse(req.body)
     if (parsedData.best_streak < parsedData.current_streak) { return res.status(400).json({ message: 'Current streak must be lte best streak' }) }
 
-    if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+    if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
 
     if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
 
     const habitUserToEdit = await prisma.userHabit.findFirst({
       where: {
         habit_id: req.params.habit_id,
-        user_id: req.params.user_id
+        user_id: req.user.id
       }
     })
 
@@ -284,14 +284,14 @@ async function updateHabitUserInfo (req, res) {
 
 async function deleteHabitUser (req, res) {
   // validaciones de existencia de usuario y habtto
-  if (!await validateUserExistence(req.params.user_id)) { return res.status(400).json({ error: 'BD error. The user doesnt exists' }) }
+  if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ error: 'BD error. The user doesnt exists' }) }
 
   if (!await validateHabitExistence(req.params.habit_id)) { return res.status(400).json({ error: 'BD error. The habit doesnt exists' }) }
 
   try {
     const habitUserToDelete = await prisma.userHabit.findFirst({
       where: {
-        user_id: req.params.user_id,
+        user_id: req.user.id,
         habit_id: req.params.habit_id
       }
     })

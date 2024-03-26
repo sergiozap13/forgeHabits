@@ -178,6 +178,34 @@ async function deleteUserByUsername (req, res) {
   }
 }
 
+async function findUserByEmail (emailParam) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: emailParam
+      }
+    })
+    return user
+  } catch (error) {
+    console.error('Error buscando usuario por email:', error)
+    return null
+  }
+}
+
+async function findUserById (idParam) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: idParam
+      }
+    })
+    return user
+  } catch (error) {
+    console.error('Error buscando usuario por ID:', error)
+    return null
+  }
+}
+
 // funciones privadas
 async function hashPassword (plainTextPassword) {
   const saltRounds = 10
@@ -193,5 +221,7 @@ export default {
   updateUserById,
   updateUserByUsername,
   deleteUserById,
-  deleteUserByUsername
+  deleteUserByUsername,
+  findUserByEmail,
+  findUserById
 }
