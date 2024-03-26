@@ -31,12 +31,3 @@ export function initialize (passport, getUserByEmail, getUserById) {
     }
   })
 }
-
-// metodo para usar en las demas rutas
-export function checkAuthenticated (req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-
-  res.status(401).json({ message: 'Unauthorized' })
-}
