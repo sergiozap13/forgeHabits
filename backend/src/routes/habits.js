@@ -4,7 +4,6 @@ import { checkAuthenticated } from '../middlewares/passport-config.js'
 
 export const habitsRouter = Router()
 
-// TODO: quitar el id del usuario de las url -> cogerlo de sesion
 // cuando el usuario quiera ver todos los habitos disponibles que no tenga configurados
 habitsRouter.get('/', checkAuthenticated, habitsController.getAvailableHabits)
 
