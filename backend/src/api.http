@@ -79,14 +79,13 @@ Content-Type: application/json
 #-----------------------------------CALENDARIO------------------------------------------------------
 
 ###
-GET http://localhost:3000/api/calendar/all/user/044a8e06-3aa6-4536-9d05-09143c58d7ca?start_date=2024-02-25&end_date=2024-02-26
+GET http://localhost:3000/api/calendar/all?start_date=2024-02-25&end_date=2024-02-26
 ###
-POST http://localhost:3000/api/calendar/2024-02-25/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
+POST http://localhost:3000/api/calendar/2024-02-25
 Content-Type: application/json
 
 {
   "habit_id": "3a19f4f4-e784-496b-8d02-e5da37546820",
-  "user_id": "044a8e06-3aa6-4536-9d05-09143c58d7ca",
   "type": "Habito"
 }
 ###

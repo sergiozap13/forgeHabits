@@ -8,7 +8,6 @@ const scheduleSchema = z.object({
 
 export const calendarSchema = z.object({
   habit_id: objectIdSchema.optional(),
-  user_id: objectIdSchema,
   done: z.boolean().optional(),
   type: z.enum(['Habito', 'Evento']),
   schedule: scheduleSchema.optional()

@@ -18,7 +18,7 @@ async function get2DatesEvents (req, res) {
 
     const events = await prisma.calendarEvent.findMany({
       where: {
-        user_id: req.params.user_id,
+        user_id: req.user.id,
         date: {
           gte: start,
           lte: end
@@ -43,7 +43,7 @@ async function addEventToDay (req, res) {
     const parsedData = calendarSchema.parse(req.body)
 
     // comprobaciones de usuario y habito
-    if (!await validateUserExistence(parsedData.user_id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
+    if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
     if (!await validateHabitExistence(parsedData.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
 
     // comprobacion fecha valida url
@@ -57,7 +57,7 @@ async function addEventToDay (req, res) {
       const hasUserHabit = await prisma.userHabit.findFirst({
         where: {
           habit_id: parsedData.habit_id,
-          user_id: parsedData.user_id // TODO: quitar el usuario del body
+          user_id: req.user.id
         }
       })
 
@@ -93,12 +93,13 @@ async function addEventToDay (req, res) {
     }
 
     // los habitos de dia completo solo pueden ser configurados una vez al día
-    if (await checkAllDayHabitAlreadySetForDay(date, parsedData.habit_id, parsedData.user_id)) {
+    if (await checkAllDayHabitAlreadySetForDay(date, parsedData.habit_id, req.user.id)) {
       return res.status(400).json({ message: 'this event can only be set once per day' })
     }
 
     const data = {
       ...parsedData,
+      user_id: req.user.id,
       date
     }
 
@@ -131,7 +132,8 @@ async function updateEvent (req, res) {
     // comprobación de que existe el evento
     const eventToUpdate = await prisma.calendarEvent.findFirst({
       where: {
-        id: req.params.event_id
+        id: req.params.event_id,
+        date: urlDate
       }
     })
 
@@ -232,9 +234,15 @@ async function checkAllDayHabitAlreadySetForDay (eventDate, habitId, userId) {
 
 async function deleteEvent (req, res) {
   try {
+    const urlDate = new Date(req.params.day)
+    if (isNaN(urlDate)) {
+      return res.status(400).json({ message: 'Invalid date in url.' })
+    }
+
     const deletedEvent = await prisma.calendarEvent.delete({
       where: {
-        id: req.params.event_id
+        id: req.params.event_id,
+        date: urlDate
       }
     })
 
