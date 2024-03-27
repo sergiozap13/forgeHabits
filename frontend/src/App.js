@@ -1,12 +1,16 @@
 import './App.css';
 import React from 'react';
-import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import HeaderComponent from './components/HeaderComponent';
 
 function App() {
   return (
+    <>
+    <HeaderComponent/>
     <div className="App">
-      <LoginPage />
+      <HomePage/>
     </div>
+    </>
   );
 }
 
