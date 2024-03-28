@@ -2,7 +2,7 @@ import cors from 'cors'
 export const corsMiddleware = () => cors({
   origin: (origin, callback) => {
     const ACCEPTED_ORIGINS = [
-      // TODO: por hacer
+      'http://localhost:3001'
     ]
 
     if (ACCEPTED_ORIGINS.includes(origin)) {
