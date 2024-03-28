@@ -4,6 +4,7 @@ import HeaderComponent from './HeaderComponent';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
 import LandingPage from '../pages/LandingPage';
+import FooterComponent from './FooterComponent';
 
 
 function AppRouter() {
@@ -17,6 +18,7 @@ function AppRouter() {
           <Route exact path="/dashboard" element={<HomePage/>} />
           <Route path="/login" element={<LoginPage/>} />
         </Routes>
+        <FooterComponent/>
       </div>
     </Router>
   );

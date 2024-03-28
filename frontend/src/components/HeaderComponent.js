@@ -13,11 +13,12 @@ export default function HeaderComponent() {
     return (
       <header className="bg-gradient-to-r from-orange-500 to-orange-300 bg-opacity-95 text-white shadow-lg hidden md:block">
         <div className="container mx-auto flex items-center justify-between h-24">
-          <a href="/" className="flex items-center">
-            <div className="mt-3">
-              <img src={logoText} alt="ForgeHabits" width="200" height="200" />
+            <div className="mt-3 animate-fade animate-once animate-duration-800" >
+              <Link to='/'>
+                <img src={logoText} alt="ForgeHabits" width="200" height="100"  />
+              </Link>
+              
             </div>
-          </a>
           <nav className="font-semibold text-base lg:text-lg flex items-center">
           <ul className="flex items-center">
             {isLoggedIn && (
