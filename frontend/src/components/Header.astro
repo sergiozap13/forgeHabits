@@ -1,0 +1,57 @@
+---
+import logoText from "../assets/logo-text.svg";
+import { Image } from 'astro:assets';
+---
+
+<header class="bg-gradient-to-r from-orange-500 to-orange-300 bg-opacity-95 text-white shadow-lg hidden md:block">
+    <div class="container mx-auto flex items-center justify-between h-24">
+        <div class="mt-3 animate-fade animate-once animate-duration-800" >
+          <button>
+            <a href="/">
+              <Image src={logoText} alt="ForgeHabits" class="object-cover h-20 w-52" />
+            </a>
+          </button>
+          
+        </div>
+          <nav class="font-semibold text-base lg:text-lg flex items-center">
+       
+          <ul class="flex items-center">
+                <li class="p-5 xl:p-8 active">
+                  <a href="/" class="hover:text-gray-600 transition-colors duration-200">
+                    <span>Inicio</span>
+                  </a>
+                </li>
+                <li class="p-5 xl:p-8">
+                  <a href="/habits" class="hover:text-gray-600 transition-colors duration-200">
+                    <span>Hábitos</span>
+                  </a>
+                </li>
+                <li class="p-5 xl:p-8">
+                  <a href="/calendar" class="hover:text-gray-600 transition-colors duration-200">
+                    <span>Calendario</span>
+                  </a>
+                </li>
+                <li class="p-5 xl:p-8">
+                  <a href="/diary" class="hover:text-gray-600 transition-colors duration-200">
+                    <span>Diario</span>
+                  </a>
+                </li>
+          </ul>
+        </nav>
+
+        
+
+        <div class="flex px-2 mt-3">
+          <a href="/profile">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-11 h-11 hover:text-gray-600 transition-colors duration-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </a>
+          <button class="border border-white rounded-full font-bold px-8 py-1 ml-2 hover:text-gray-600 hover:bg-gradient-to-r from-orange-500 to-orange-400">Logout</button>
+        </div>
+          <div class="p-5 xl:p-8">
+        <a href="/login" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium bg-orange-500 text-gray-600 focus:outline-none rounded-full border hover:bg-orange-400">Iniciar Sesión</a>
+      </div>
+
+    </div>
+  </header>
