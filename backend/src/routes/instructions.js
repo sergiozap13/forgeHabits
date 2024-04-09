@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import instructionsController from '../controllers/instructionsController.js'
-import { checkAuthenticated, checkAdmin } from '../controllers/authController.js'
+import { checkAdmin } from '../controllers/authController.js'
 
 export const instructionsRouter = Router()
 
-instructionsRouter.get('/:category', checkAuthenticated, instructionsController.getInstructionsById)
+instructionsRouter.get('/:category', instructionsController.getInstructionsById)
 
-instructionsRouter.post('/:category', checkAuthenticated, checkAdmin, instructionsController.createInstructions)
+instructionsRouter.post('/:category', checkAdmin, instructionsController.createInstructions)
 
-instructionsRouter.patch('/:category', checkAuthenticated, checkAdmin, instructionsController.updateInstruction)
+instructionsRouter.patch('/:category', checkAdmin, instructionsController.updateInstruction)

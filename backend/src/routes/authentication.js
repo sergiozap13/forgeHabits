@@ -8,4 +8,6 @@ authRouter.post('/login', authController.login)
 
 // TODO: cambiar el método del logout a POST O GET
 // borra la session y la cookie (se desloga)
-authRouter.delete('/logout', authController.logout)
+// authRouter.delete('/logout', authController.logout)
+
+authRouter.get('/status', authController.status)
