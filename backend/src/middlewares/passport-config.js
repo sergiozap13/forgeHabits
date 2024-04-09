@@ -1,4 +1,5 @@
 import { Strategy as LocalStrategy } from 'passport-local'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import bcrypt from 'bcrypt'
 
 // metodo para inicializar el passportjs
@@ -21,13 +22,22 @@ export function initialize (passport, getUserByEmail, getUserById) {
   }
 
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
-  passport.serializeUser((user, done) => done(null, user.id))
-  passport.deserializeUser(async (id, done) => {
+
+  const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET // Asegúrate de definir esta variable en tu entorno
+  }
+
+  passport.use(new JwtStrategy(options, async (jwtPayload, done) => {
     try {
-      const user = await getUserById(id)
-      done(null, user)
+      const user = await getUserById(jwtPayload.id) // Aquí asumimos que el payload del JWT tiene un 'id'
+      if (user) {
+        return done(null, user)
+      } else {
+        return done(null, false)
+      }
     } catch (error) {
-      done(error, null)
+      return done(error, false)
     }
-  })
+  }))
 }
