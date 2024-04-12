@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { login } from "../stores/userStore";
 import LoadingSpinner from "./LoadingSpinner";
 
 function LoginForm(){
@@ -30,13 +29,14 @@ function LoginForm(){
             if(response.ok){
                 // si la respuesta es un 200, guardamos el JWT en sesión
                 sessionStorage.setItem('jwtToken', responseData.token)
-                login()
                 // Redirección
                 window.location.href = '/dashboard';
             } else if(response.status === 401 && responseData.message === 'Password incorrect'){
                 alert('La contraseña no es correcta')
             } else if (response.status === 401 && responseData.message === 'No user with that email'){
                 alert('El usuario no existe')
+            } else {
+                alert('Hola')
             }
         }catch(error){
             console.error('Hubo un error ', error)
