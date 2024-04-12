@@ -1,9 +1,36 @@
 ---
 // Este bloque es el de JS
+import HeaderNotLogged from '../components/HeaderNotLogged.astro';
 import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
 ---
 <!-- Este es el bloque de HTML -->
 <Layout title="ForgeHabits">
-    <main>
+    <HeaderNotLogged/>
+    <main class= "max-w-7xl px-4 m-auto min-h-screen" >
     </main>
+    <Footer/>
 </Layout>
+
+<script type="module">
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('jwtToken');
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/status', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+
+                if (response.ok && response.json().isLoggedIn === 'false') {
+                    console.log("No logado -> /login")
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Error al verificar el /status: ', error);
+            }
+        }
+    });
+</script>

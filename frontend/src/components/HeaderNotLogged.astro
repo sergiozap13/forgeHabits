@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import logoText from '../assets/logo-text.svg'
+---
+<header class="bg-gradient-to-r from-orange-600 to-orange-300 bg-opacity-95 text-white shadow-lg">
+    <div class="container mx-auto flex items-center justify-between h-24">
+        <a href="/dashboard">
+            <Image src={logoText} alt="ForgeHabits" class="object-cover h-20 w-52" />
+        </a>
+        <nav class="font-semibold text-base lg:text-lg flex items-end">
+            <ul class="flex items-center">
+                <li class="p-5 xl:p-8">
+                    <a href="/contact" class="hover:text-gray-700 transition-colors duration-200">
+                        <span>Contacto</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="ml-10 p-5 xl:p-8">
+            <a href="/login" class="py-2.5 px-5 me-2 mb-2 border border-white rounded-full font-bold ml-2 hover:text-gray-700 hover:bg-gradient-to-r from-orange-500 to-orange-400 hover:border-gray-700 transition-colors duration-200">Iniciar Sesión</a>
+        </div>
+        </div>
+    </div>
+</header>
