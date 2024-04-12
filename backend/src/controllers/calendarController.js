@@ -3,8 +3,6 @@ import { calendarSchema, updateCalendarEvent } from '../validations/calendarVali
 import { validateHabitExistence, validateUserExistence } from '../validations/validationUtils.js'
 const prisma = new PrismaClient()
 
-// TODO: comprobar buen funcionamiento de todo este controlador
-
 async function get2DatesEvents (req, res) {
   try {
     const start = new Date(req.query.start_date)

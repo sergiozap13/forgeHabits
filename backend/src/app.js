@@ -31,7 +31,7 @@ app.use('/api/habits', passport.authenticate('jwt', { session: false }), habitsR
 app.use('/api/calendar', passport.authenticate('jwt', { session: false }), calendarRouter)
 app.use('/api/diary', passport.authenticate('jwt', { session: false }), diaryRouter)
 app.use('/api/instructions', passport.authenticate('jwt', { session: false }), instructionsRouter)
-app.use('/api/users', passport.authenticate('jwt', { session: false }), usersRouter)
+app.use('/api/users', usersRouter)
 // rutas no protegidas
 app.use('/api/auth', authRouter)
 // para aquellas páginas que no existan.

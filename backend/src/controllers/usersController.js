@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { userSchema, updateUserSchema } from '../validations/usersValidations.js'
 const prisma = new PrismaClient()
 
@@ -51,16 +52,25 @@ async function createUser (req, res) {
   const parsedData = userSchema.parse(req.body)
 
   try {
-    const existingUser = await prisma.user.findFirst({
+    const existingEmail = await prisma.user.findUnique({
       where: {
-        OR: [
-          { email: parsedData.email },
-          { username: parsedData.username }
-        ]
+        email: parsedData.email
       }
     })
 
-    if (existingUser) { return res.status(400).json({ message: 'The user already exists' }) }
+    if (existingEmail) {
+      return res.status(400).json({ message: 'Email already exists' })
+    }
+
+    const existingUsername = await prisma.user.findUnique({
+      where: {
+        username: parsedData.username
+      }
+    })
+
+    if (existingUsername) {
+      return res.status(400).json({ message: 'Username already exists' })
+    }
 
     const hashedPassword = await hashPassword(parsedData.password)
 
@@ -71,11 +81,13 @@ async function createUser (req, res) {
       }
     })
 
-    console.log(createdUser)
+    const payload = { id: createdUser.id }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     const response = {
       id: createdUser.id,
-      username: createdUser.username
+      username: createdUser.username,
+      token
     }
 
     res.status(201).json(response)
