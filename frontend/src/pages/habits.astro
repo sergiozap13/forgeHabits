@@ -1,14 +1,49 @@
 ---
-// Este bloque es el de JS
 import HeaderLogged from '../components/HeaderLogged';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 
 ---
-<!-- Este es el bloque de HTML -->
 <Layout title="Hábitos | ForgeHabits">
     <HeaderLogged client:load/>
     <main class= "max-w-7xl px-4 m-auto min-h-screen" >
+        <h1>Habits</h1>
     </main>
     <Footer/>
-</Layout>../components/HeaderLogged.jsx
+</Layout>
+
+<script type="module">
+    async function checkAuth() {
+        const token = sessionStorage.getItem('jwtToken');
+        console.log('Token: ' + token);
+        
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || (response.status === 200 && !data.isLoggedIn)) {
+                console.error('Authentication check failed:', data);
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Authentication check failed:', error);
+            window.location.href = '/login';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+</script>

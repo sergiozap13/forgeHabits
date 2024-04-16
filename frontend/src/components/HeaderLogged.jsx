@@ -3,10 +3,8 @@ import logoText from '../assets/logo-text.svg';
 
 const HeaderLogged = () => {
     const handleLogout = () => {
-        if (window.confirm("¿Estás seguro de que quieres cerrar sesión?")) {
-            sessionStorage.removeItem('jwtToken');
-            window.location.href = '/login';
-        }
+        sessionStorage.removeItem('jwtToken');
+        window.location.href = '/login';
     };
 
     return (

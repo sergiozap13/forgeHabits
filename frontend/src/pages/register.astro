@@ -1,12 +1,10 @@
 ---
-// Este bloque es el de JS
 import HeaderNotLogged from '../components/HeaderNotLogged.astro';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import RegisterForm from '../components/RegisterForm';
 
 ---
-<!-- Este es el bloque de HTML -->
 <Layout title="Registro | ForgeHabits">
     <HeaderNotLogged/>
     <main class= "max-w-7xl px-4 m-auto min-h-screen" >
@@ -16,3 +14,37 @@ import RegisterForm from '../components/RegisterForm';
     </main>
     <Footer/>
 </Layout>
+
+<script type="module">
+    async function checkAuth() {
+        const token = sessionStorage.getItem('jwtToken');
+        console.log('Token: ' + token);
+        
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.isLoggedIn) {
+                    console.log('User is logged in.');
+                    window.location.href = '/dashboard';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+            }
+        } else {
+            console.log('No token found -> User persists as not logged in.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+</script>

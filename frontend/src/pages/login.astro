@@ -14,26 +14,36 @@ import Footer from '../components/Footer.astro';
     <Footer/>
 </Layout>
 
-<!-- Script para que el usuario no pueda acceder a la página del login si está logado -> se le redirije -->
 <script type="module">
-    document.addEventListener('DOMContentLoaded', async () => {
+    async function checkAuth() {
         const token = sessionStorage.getItem('jwtToken');
+        console.log('Token: ' + token);
+        
         if (token) {
             try {
                 const response = await fetch('http://localhost:3000/api/auth/status', {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
                     }
                 });
 
-                if (response.ok) {
-                    console.log("Status OK -> Logado")
-                    window.location.href = '/';
+                const data = await response.json();
+
+                if (response.ok && data.isLoggedIn) {
+                    console.log('User is logged in.');
+                    window.location.href = '/dashboard';
                 }
             } catch (error) {
-                console.error('Error al verificar el /status: ', error);
+                console.error('Authentication check failed:', error);
             }
+        } else {
+            console.log('No token found -> User persists as not logged in.');
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
     });
 </script>
