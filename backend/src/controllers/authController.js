@@ -20,13 +20,18 @@ async function status (req, res) {
   const token = req.headers.authorization?.split(' ')[1]
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          return res.status(403).json({ isLoggedIn: false })
+        }
+      })
+
       res.json({ isLoggedIn: true, user: decoded })
     } catch (err) {
-      res.json({ isLoggedIn: false })
+      res.status(500).json({ isLoggedIn: false })
     }
   } else {
-    res.json({ isLoggedIn: false })
+    res.status(401).json({ isLoggedIn: false })
   }
 }
 

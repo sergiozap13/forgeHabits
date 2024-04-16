@@ -1,5 +1,4 @@
 import { z } from 'zod'
-// const objectIdSchema = z.string().length(36)
 
 export const userSchema = z.object({
   email: z.string().email(),

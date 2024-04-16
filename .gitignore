@@ -4,3 +4,4 @@ db-data
 pgadmin-data
 prisma
 backup
+backend/src/api.http

@@ -72,7 +72,7 @@ async function getHabitsUser (req, res) {
       res.json(habitsWithStreaks)
     } else { res.status(404).json({ error: 'The user has not habits' }) }
   } catch (error) {
-    res.status(500).json({ error: 'Algo ocurrió al recuperar todos los hábitos' })
+    res.status(500).json({ error: 'Something happened retrieving all habits user' })
   }
 }
 

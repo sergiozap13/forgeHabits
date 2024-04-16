@@ -7,4 +7,4 @@ export const authRouter = express.Router()
 authRouter.post('/login', authController.login)
 
 // get para consultar si el usuario está o no logado
-authRouter.get('/status', authController.status)
+authRouter.post('/status', authController.status)

@@ -25,12 +25,12 @@ export function initialize (passport, getUserByEmail, getUserById) {
 
   const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET // Asegúrate de definir esta variable en tu entorno
+    secretOrKey: process.env.JWT_SECRET
   }
 
   passport.use(new JwtStrategy(options, async (jwtPayload, done) => {
     try {
-      const user = await getUserById(jwtPayload.id) // Aquí asumimos que el payload del JWT tiene un 'id'
+      const user = await getUserById(jwtPayload.id)
       if (user) {
         return done(null, user)
       } else {

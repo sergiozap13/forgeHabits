@@ -22,7 +22,6 @@ GET http://localhost:3000/api/habits
 ### pantalla hábito
 GET http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/user/044a8e06-3aa6-4536-9d05-09143c58d7ca
 
-### TODO: Quitar el usuario de la url y recoger el id de la session
 PATCH http://localhost:3000/api/habits/habit/cc2699f5-a5e4-4d0b-a873-74a1088882ee/customize
 Content-Type: application/json
 
@@ -44,7 +43,7 @@ Content-Type: application/json
 ### post para crear un hábito
 POST http://localhost:3000/api/habits/habit/3a19f4f4-e784-496b-8d02-e5da37546820
 Content-Type: application/json
-# TODO: Hacer que los campos numericos (que no son objetivos) cogan campos por defecto si no se mandan
+# TODO: Hacer que los campos numericos (que no son objetivos) cojan campos por defecto si no se mandan
 {
   "habit_user_type": "Desarrollo",
   "status": "EnProceso",
