@@ -1,16 +1,22 @@
 import { PrismaClient } from '@prisma/client'
 import { calendarSchema, updateCalendarEvent } from '../validations/calendarValidations.js'
 import { validateHabitExistence, validateUserExistence } from '../validations/validationUtils.js'
+import logger from '../logger.js'
 const prisma = new PrismaClient()
 
 async function get2DatesEvents (req, res) {
+  logger.debug('CC - get2DatesEvents')
   try {
     const start = new Date(req.query.start_date)
     const end = new Date(req.query.end_date)
 
-    if (start > end) { return res.status(400).json({ error: 'start date must be previous to end date' }) }
+    if (start > end) {
+      logger.warn('CC - start date must be previous to end date')
+      return res.status(400).json({ error: 'start date must be previous to end date' })
+    }
 
     if (isNaN(start) || isNaN(end)) {
+      logger.warn('CC - Invalid date in url.')
       return res.status(400).json({ message: 'Invalid date in url.' })
     }
 
@@ -24,29 +30,41 @@ async function get2DatesEvents (req, res) {
       }
     })
 
-    if (!events.length) { res.status(404).json({ error: 'events not found between these dates' }) }
+    if (!events.length) {
+      logger.warn('CC - events not found between these dates')
+      res.status(404).json({ error: 'events not found between these dates' })
+    }
 
     res.json(events)
   } catch (error) {
     if (error.name === 'ZodError') {
+      logger.warn('CC - ZodError')
       return res.status(400).json({ errors: error.errors })
     } else {
+      logger.error('CC - Error in get2DatesEvents ' + error.message)
       return res.status(500).json({ error: error.message })
     }
   }
 }
 
 async function addEventToDay (req, res) {
+  logger.debug('CC - addEventToDay')
   try {
     const parsedData = calendarSchema.parse(req.body)
 
-    // comprobaciones de usuario y habito
-    if (!await validateUserExistence(req.user.id)) { return res.status(400).json({ message: 'BD error. The user doesnt exists' }) }
-    if (!await validateHabitExistence(parsedData.habit_id)) { return res.status(400).json({ message: 'BD error. The habit doesnt exists' }) }
+    if (!await validateUserExistence(req.user.id)) {
+      logger.warn('CC - BD error. The user doesnt exists')
+      return res.status(400).json({ message: 'BD error. The user doesnt exists' })
+    }
+    if (!await validateHabitExistence(parsedData.habit_id)) {
+      logger.warn('CC - BD error. The habit doesnt exists')
+      return res.status(400).json({ message: 'BD error. The habit doesnt exists' })
+    }
 
     // comprobacion fecha valida url
     const date = new Date(req.params.day)
     if (isNaN(date)) {
+      logger.warn('CC - Invalid date in url.')
       return res.status(400).json({ message: 'Invalid date in url.' })
     }
 
@@ -60,6 +78,7 @@ async function addEventToDay (req, res) {
       })
 
       if (hasUserHabit === null) {
+        logger.warn('CC - The user hasnt this habit')
         return res.status(400).json({ message: 'The user hasnt this habit' })
       }
     }
@@ -76,22 +95,28 @@ async function addEventToDay (req, res) {
 
     // si es habito de dia completo, no puede tener horario, por lo cual, falla
     if (allDayHabit.allday) {
-      if (parsedData.schedule) { return res.status(400).json({ error: 'This habit has not schedule' }) }
+      if (parsedData.schedule) {
+        logger.warn('CC - This habit has not schedule')
+        return res.status(400).json({ error: 'This habit has not schedule' })
+      }
     } else { // si no es de dia completo, se comprueban que las horas sean correctas
       const startTime = new Date(`1970-01-01T${parsedData.schedule.start}`)
       const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
       // comprobación de las horas
       if (startTime >= endTime) {
+        logger.warn('CC - start time must be earlier than end time.')
         return res.status(400).json({ message: 'start time must be earlier than end time.' })
       }
       // se chequean las colisiones
       if (await checkEventCollisions(date, startTime, endTime)) {
+        logger.warn('CC - event time conflicts with another event.')
         return res.status(400).json({ message: 'event time conflicts with another event.' })
       }
     }
 
     // los habitos de dia completo solo pueden ser configurados una vez al día
     if (await checkAllDayHabitAlreadySetForDay(date, parsedData.habit_id, req.user.id)) {
+      logger.warn('CC - this event can only be set once per day')
       return res.status(400).json({ message: 'this event can only be set once per day' })
     }
 
@@ -108,23 +133,28 @@ async function addEventToDay (req, res) {
     })
 
     if (habitCreated) { res.json(data) } else {
+      logger.warn('CC - an error ocurred while creating the event')
       res.status(500).json({ error: 'an error ocurred while creating the event' })
     }
   } catch (error) {
     if (error.name === 'ZodError') {
+      logger.warn('CC - ZodError')
       return res.status(400).json({ errors: error.errors })
     } else {
+      logger.error('CC - Error in addEventToDay ' + error.message)
       return res.status(500).json({ error: error.message })
     }
   }
 }
 
 async function updateEvent (req, res) {
+  logger.debug('CC - updateEvent')
   try {
     const parsedData = updateCalendarEvent.parse(req.body)
     // Comprobación de fecha válida
     const urlDate = new Date(req.params.day)
     if (isNaN(urlDate)) {
+      logger.warn('CC - Invalid date in url.')
       return res.status(400).json({ message: 'Invalid date in url.' })
     }
     // comprobación de que existe el evento
@@ -136,6 +166,7 @@ async function updateEvent (req, res) {
     })
 
     if (eventToUpdate === null) {
+      logger.warn('CC - Event not found: ')
       return res.status(404).json({ error: 'Event not found' })
     }
     // comprobacion habito de dia completo
@@ -152,6 +183,7 @@ async function updateEvent (req, res) {
     if (parsedData.schedule) {
       // si en el body viene un schedule y el habito es de dia completo, se devuelve un 400
       if (allDayHabit.allday) {
+        logger.warn('CC - This event cant have schedule')
         return res.status(400).json({ error: 'This event cant have schedule' })
       }
       // se crean objetos Date con las hora para que no se pueda mandar una hora de comienzo posterior a la de finalización
@@ -159,10 +191,12 @@ async function updateEvent (req, res) {
       const endTime = new Date(`1970-01-01T${parsedData.schedule.end}`)
       // comprobación de las horas
       if (startTime >= endTime) {
+        logger.warn('CC - start time must be earlier than end time.')
         return res.status(400).json({ message: 'start time must be earlier than end time.' })
       }
       // se chequean las colisiones
       if (await checkEventCollisions(urlDate, startTime, endTime, eventToUpdate.id)) {
+        logger.warn('CC - event time conflicts with another event.')
         return res.status(400).json({ message: 'event time conflicts with another event.' })
       }
     }
@@ -176,11 +210,16 @@ async function updateEvent (req, res) {
       }
     })
     // si se ha actualizado bien, se devuelve
-    if (eventUpdated) { res.status(200).json(eventUpdated) } else { res.status(500).json({ error: 'Something ocurred while the event was being updated' }) }
+    if (eventUpdated) { res.status(200).json(eventUpdated) } else {
+      logger.error('CC - Something ocurred while the event was being updated')
+      res.status(500).json({ error: 'Something ocurred while the event was being updated' })
+    }
   } catch (error) {
     if (error.name === 'ZodError') {
+      logger.warn('CC - ZodError')
       return res.status(400).json({ errors: error.errors })
     } else {
+      logger.error('CC - Error in updateEvent ' + error.message)
       return res.status(500).json({ error: error.message })
     }
   }
@@ -188,6 +227,7 @@ async function updateEvent (req, res) {
 
 // funciones para comprobaciones de colisiones
 async function checkEventCollisions (eventDate, newStartTime, newEndTime, excludeEventId = '') {
+  logger.debug('CC - checkEventCollisions')
   const eventsOfTheDay = await prisma.calendarEvent.findMany({
     where: {
       date: eventDate,
@@ -231,9 +271,11 @@ async function checkAllDayHabitAlreadySetForDay (eventDate, habitId, userId) {
 }
 
 async function deleteEvent (req, res) {
+  logger.debug('CC - deleteEvent')
   try {
     const urlDate = new Date(req.params.day)
     if (isNaN(urlDate)) {
+      logger.warn('CC - Invalid date in url.')
       return res.status(400).json({ message: 'Invalid date in url.' })
     }
 
@@ -248,6 +290,7 @@ async function deleteEvent (req, res) {
   } catch (error) {
     // si el evento no existe, prisma nos devolverá un error específico
     if (error.code === 'P2025') {
+      logger.warn('CC - event not found.')
       return res.status(404).json({ error: 'event not found.' })
     }
 

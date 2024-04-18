@@ -2,19 +2,23 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { userSchema, updateUserSchema } from '../validations/usersValidations.js'
+import logger from '../logger.js'
 const prisma = new PrismaClient()
 
 async function getAllUsers (req, res) {
+  logger.debug('UC - getAllUsers')
   try {
     const allUsers = await prisma.user.findMany()
 
     res.status(200).json(allUsers)
   } catch (error) {
+    logger.error('UC - Error getting the users', error)
     res.status(500).json({ error: 'Algo ocurrió recuperando los usuarios' })
   }
 }
 
 async function getUserById (req, res) {
+  logger.debug('UC - getUserById')
   const idParam = req.params.id
   try {
     const user = await prisma.user.findFirst({
@@ -23,15 +27,20 @@ async function getUserById (req, res) {
       }
     })
 
-    if (user === null) { return res.status(404).json({ messsage: 'user not found' }) }
+    if (user === null) {
+      logger.warn('UC - User not found')
+      return res.status(404).json({ messsage: 'user not found' })
+    }
 
     res.status(200).json(user)
   } catch (error) {
+    logger.error('UC - Error getting the user', error)
     res.status(500).json({ errors: error })
   }
 }
 
 async function getUserByUsername (req, res) {
+  logger.debug('UC - getUserByUsername')
   const usernameParam = req.params.username
   try {
     const user = await prisma.user.findFirst({
@@ -40,15 +49,20 @@ async function getUserByUsername (req, res) {
       }
     })
 
-    if (user === null) { return res.status(404).json({ messsage: 'user not found' }) }
+    if (user === null) {
+      logger.warn('UC - User not found')
+      return res.status(404).json({ messsage: 'user not found' })
+    }
 
     res.status(200).json(user)
   } catch (error) {
+    logger.error('UC - Error getting the user', error)
     res.status(500).json({ errors: error })
   }
 }
 
 async function createUser (req, res) {
+  logger.debug('UC - createUser')
   const parsedData = userSchema.parse(req.body)
 
   try {
@@ -59,6 +73,7 @@ async function createUser (req, res) {
     })
 
     if (existingEmail) {
+      logger.warn('UC - Email already exists')
       return res.status(400).json({ message: 'Email already exists' })
     }
 
@@ -69,6 +84,7 @@ async function createUser (req, res) {
     })
 
     if (existingUsername) {
+      logger.warn('UC - Username already exists')
       return res.status(400).json({ message: 'Username already exists' })
     }
 
@@ -92,15 +108,20 @@ async function createUser (req, res) {
 
     res.status(201).json(response)
   } catch (error) {
+    logger.error('UC - Error creating the user', error)
     res.status(500).json({ errors: error })
   }
 }
 
 async function updateUserById (req, res) {
+  logger.debug('UC - updateUserById')
   const userId = req.params.id
   const updateData = updateUserSchema.parse(req.body)
 
-  if (Object.keys(updateData).length === 0) { return res.status(400).json({ message: 'No update data provided' }) }
+  if (Object.keys(updateData).length === 0) {
+    logger.warn('UC - No update data provided')
+    return res.status(400).json({ message: 'No update data provided' })
+  }
 
   try {
     const existingUser = await prisma.user.findUnique({
@@ -108,6 +129,7 @@ async function updateUserById (req, res) {
     })
 
     if (!existingUser) {
+      logger.warn('UC - User not found')
       return res.status(404).json({ message: 'User not found' })
     }
 
@@ -122,15 +144,20 @@ async function updateUserById (req, res) {
 
     res.status(200).json({ message: 'User updated successfully', updatedUser })
   } catch (error) {
+    logger.error('UC - Error updating the user', error)
     res.status(500).json({ error: error.message })
   }
 }
 
 async function updateUserByUsername (req, res) {
+  logger.debug('UC - updateUserByUsername')
   const username = req.params.username
   const updateData = updateUserSchema.parse(req.body)
 
-  if (Object.keys(updateData).length === 0) { return res.status(400).json({ message: 'No update data provided' }) }
+  if (Object.keys(updateData).length === 0) {
+    logger.warn('UC - No update data provided')
+    return res.status(400).json({ message: 'No update data provided' })
+  }
 
   try {
     const existingUser = await prisma.user.findUnique({
@@ -138,6 +165,7 @@ async function updateUserByUsername (req, res) {
     })
 
     if (!existingUser) {
+      logger.warn('UC - User not found')
       return res.status(404).json({ message: 'User not found' })
     }
 
@@ -152,45 +180,53 @@ async function updateUserByUsername (req, res) {
 
     res.status(200).json({ message: 'User updated successfully', updatedUser })
   } catch (error) {
+    logger.error('UC - Error updating the user', error)
     res.status(500).json({ error: error.message })
   }
 }
 
 async function deleteUserById (req, res) {
+  logger.debug('UC - deleteUserById')
   const userId = req.params.id
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!existingUser) {
+      logger.warn('UC - User not found')
       return res.status(404).json({ message: 'User not found' })
     }
 
     await prisma.user.delete({ where: { id: userId } })
     res.status(200).json({ message: 'User successfully deleted' })
   } catch (error) {
+    logger.error('UC - Error deleting the user', error)
     res.status(500).json({ error: 'An error occurred while deleting the user' })
   }
 }
 
 async function deleteUserByUsername (req, res) {
+  logger.debug('UC - deleteUserByUsername')
   const username = req.params.username
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { username } })
 
     if (!existingUser) {
+      logger.warn('UC - User not found')
       return res.status(404).json({ message: 'User not found' })
     }
 
     await prisma.user.delete({ where: { username } })
     res.status(200).json({ message: 'User successfully deleted' })
   } catch (error) {
+    logger.error('UC - Error deleting the user', error)
     res.status(500).json({ error: 'An error occurred while deleting the user' })
   }
 }
 
 async function findUserByEmail (emailParam) {
+  logger.debug('UC - findUserByEmail')
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -199,12 +235,13 @@ async function findUserByEmail (emailParam) {
     })
     return user
   } catch (error) {
-    console.error('Error buscando usuario por email:', error)
+    logger.error('UC - Error finding user by email:', error)
     return null
   }
 }
 
 async function findUserById (idParam) {
+  logger.debug('UC - findUserById')
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -213,7 +250,7 @@ async function findUserById (idParam) {
     })
     return user
   } catch (error) {
-    console.error('Error buscando usuario por ID:', error)
+    logger.error('UC - Error finding user by ID:', error)
     return null
   }
 }
