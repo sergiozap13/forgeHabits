@@ -2,10 +2,14 @@
 import HeaderNotLogged from '../components/HeaderNotLogged.astro';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero';
+import FeaturesComponent from '../components/FeaturesComponent';
 ---
 <Layout title="ForgeHabits">
     <HeaderNotLogged/>
-    <main class= "max-w-7xl px-4 m-auto min-h-screen" >
+    <main class= "max-w-8xl px-4 m-auto min-h-screen" >
+        <Hero></Hero>
+        <FeaturesComponent></FeaturesComponent>
     </main>
     <Footer/>
 </Layout>

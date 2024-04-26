@@ -50,8 +50,8 @@ function LoginForm(){
     }
 
     return (
-        <div className="bg-white shadow-xl rounded-xl px-8 py-6 mb-4 max-w-lg animate-jump-in animate-duration-400">
-            <h1 className="font-bold text-xl mb-4 text-center text-black">Login</h1>
+        <div className="bg-white shadow-xl rounded-xl px-8 py-6 mb-4 max-w-lg animate-jump-in animate-duration-400 ">
+            <h1 className="font-bold lg:text-xl mb-4 text-center text-black md:text-xs sm:text-sm">Login</h1>
             <form onSubmit={loginForm} className="bg-gray-200 rounded-xl shadow-xl px-8 pt-6 pb-8 mb-3">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -66,12 +66,12 @@ function LoginForm(){
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-300 bg-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2" id="password" type="password" placeholder="******************" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="flex flex-col items-center justify-between space-y-4">
-                    <button type="submit" className="bg-orange-500 hover:bg-orange-400 text-white font-bold py-2 px-4 ml-5 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
+                    <button type="submit" className="bg-orange-500 hover:bg-orange-400 text-white lg:text-xl md:text-md sm:text-sm font-bold py-2 px-4 ml-5 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
                         Iniciar Sesión
                     </button>
 
                     <button className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 px-8 rounded-xl shadow focus:outline-none focus:shadow-outline w-full max-w-md">
-                        <img src="https://www.material-tailwind.com/logos/logo-google.png" alt="Google logo" className="w-5 h-5" />
+                        <img src="https://www.material-tailwind.com/logos/logo-google.png" alt="Google logo" className="w-5 h-5 md:text-xs sm:text-xs" />
                         Inicia sesión con Google
                     </button>
                 </div>
