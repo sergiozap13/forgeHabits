@@ -2,12 +2,21 @@
 import HeaderLogged from '../components/HeaderLogged';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
+import HabitComponent from '../components/habits/HabitComponent';
 
 ---
 <Layout title="Hábitos | ForgeHabits">
     <HeaderLogged client:load/>
     <main class= "max-w-7xl px-4 m-auto min-h-screen" >
-        <h1>Habits</h1>
+        <div class="flex space-x-96 mt-3">
+            <button class=" font-bold bg-blue-400 p-2 rounded-xl hover:from-blue-500 hover:to-blue-50 border-2">Añadir hábitos</button>
+            <h1 class= "text-center text-xl" >Mis hábitos</h1>
+        </div>
+        <div class="min-h-screen mt-3 border-2">
+            <div class="flex space-x-96 mt-3 w-full h-auto ml-2">
+                <HabitComponent title={"Comer Saludable"} streak={"3"} bgcolor={"gray"}/>
+            </div>
+        </div>
     </main>
     <Footer/>
 </Layout>

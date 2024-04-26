@@ -5,3 +5,5 @@ pgadmin-data
 prisma
 backup
 backend/src/api.http
+backend/combined.log
+backend/error.log
