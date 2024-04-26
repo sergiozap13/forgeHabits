@@ -33,7 +33,7 @@ const HeaderLogged = () => {
                                 </a>
                             </li>
                             <li className="p-5 xl:p-8">
-                                <a href="/habits" className="hover:text-gray-700 transition-colors duration-200">
+                                <a href="/myhabits" className="hover:text-gray-700 transition-colors duration-200">
                                     Hábitos
                                 </a>
                             </li>
