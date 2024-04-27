@@ -1,23 +1,31 @@
 ---
-import HeaderLogged from '../components/HeaderLogged';
-import Layout from '../layouts/Layout.astro';
-import Footer from '../components/Footer.astro';
-import HabitsDisplayComponent from '../components/habits/HabitsDisplayComponent';
+import { useEffect, useState } from "react";
+import HeaderLogged from '../../components/HeaderLogged';
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import HabitDetails from '../../components/habits/HabitDetails';
+
+export async function getStaticPaths() {
+    return [
+    {params: {habitId: '3a19f4f4-e784-496b-8d02-e5da37546820'}},
+    {params: {habitId: '45dc942b-b192-4f93-87df-2623c0093ddb'}},
+    {params: {habitId: '67a404ef-6558-4169-bfee-495afd122853'}},
+    {params: {habitId: 'b597fc70-499f-4d3a-af94-6d1b8f23a93e'}},
+    {params: {habitId: 'c011dfee-8ad9-4a43-b31d-225c3ff1012b'}},
+    {params: {habitId: 'cc2699f5-a5e4-4d0b-a873-74a1088882ee'}},
+    {params: {habitId: 'cdf64df9-a1bc-495b-9ed9-e608e7d36ebb'}},
+    {params: {habitId: 'f7f27180-f817-44f3-8da3-312ae9be801e'}},
+  ];
+}
+
+const habitId = Astro.params.habitId;
 
 ---
-<Layout title="Mis hábitos | ForgeHabits">
+<Layout title="Hábitos | ForgeHabits">
     <HeaderLogged client:load/>
     <main class="max-w-7xl px-4 m-auto min-h-screen mb-3">
-        <div class="flex justify-center space-x-7 items-center mt-3">
-            <a href="/habits" class="font-bold bg-blue-400 p-2 rounded-xl hover:bg-blue-500 border-2">Añadir hábitos</a>
-            <h1 class="text-4xl font-bold">Mis hábitos</h1>
-            <div></div>
-        </div>
-        <div class="min-h-screen mt-3 border-2 rounded-lg">
-            <HabitsDisplayComponent page="myhabits" client:only/>
-        </div>
+        <HabitDetails habitId={habitId} client:only/>
     </main>
-    
     <Footer/>
 </Layout>
 
