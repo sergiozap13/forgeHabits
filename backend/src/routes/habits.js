@@ -12,6 +12,9 @@ habitsRouter.get('/user', habitsController.getHabitsUser)
 // cuando el usuario quiera ver la info de un habito en concreto
 habitsRouter.get('/habit/:habit_id', habitsController.getHabitUserInfo)
 
+// para obtener información del hábito
+habitsRouter.get('/habit/:habit_id/info', habitsController.getHabitInfo)
+
 // para los tips de los habitos
 habitsRouter.get('/habit/:habit_id/tips', habitsController.getHabitTips)
 

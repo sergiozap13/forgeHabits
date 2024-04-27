@@ -116,6 +116,31 @@ async function getHabitUserInfo (req, res) {
   }
 }
 
+async function getHabitInfo (req, res) {
+  logger.debug('HC - getHabitInfo')
+  try {
+    if (!await validateHabitExistence(req.params.habit_id)) {
+      logger.warn('HC - BD error. The habit doesnt exists')
+      return res.status(400).json({ message: 'BD error. The habit doesnt exists' })
+    }
+    const habitInfo = await prisma.habit.findFirst({
+      where: {
+        id: req.params.habit_id
+      }
+    })
+    if (habitInfo !== null) res.json(habitInfo)
+    else {
+      logger.warn('HC - The habit is null')
+      res.status(404).json({ error: 'The habit is null' })
+    }
+  } catch (error) {
+    logger.error('HC - Error al recuperar el hábito', error)
+    res.status(500).json({
+      error: 'Algo ocurrió recuperando el hábito'
+    })
+  }
+}
+
 async function getHabitTips (req, res) {
   logger.debug('HC - getHabitTips')
   try {
@@ -406,6 +431,7 @@ export default {
   getAvailableHabits,
   getHabitsUser,
   getHabitUserInfo,
+  getHabitInfo,
   getHabitTips,
   updateHabitTips,
   getHabitUnit,
