@@ -11,7 +11,7 @@ const HabitComponent = ({ title, streak, bgcolor, page, habitId }) => {
                     </p>
                 )}
                 <a 
-                    href={page === 'myhabits' ? `/habits/${habitId}` : '#'} 
+                    href={page === 'myhabits' ? `/habits/${habitId}` : `/customize/${habitId}`} 
                     style={{
                         background: 'linear-gradient(to right top, rgb(251, 146, 60), rgb(251, 113, 133))'
                     }}

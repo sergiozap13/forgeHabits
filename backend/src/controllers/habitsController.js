@@ -219,13 +219,14 @@ async function getHabitUnit (req, res) {
         habit_id: req.params.habit_id
       },
       select: {
-        unit: true
+        unit: true,
+        goals: true
       }
     })
 
     if (unit === null) {
       logger.warn('HC - unit not found')
-      res.status(404).json({ message: 'unit not found' })
+      return res.status(404).json({ message: 'unit not found' })
     }
 
     res.json(unit)
@@ -239,6 +240,14 @@ async function getHabitUnit (req, res) {
 
 // POSTS
 async function createHabitUser (req, res) {
+  const defaultValues = {
+    status: 'SinIniciar',
+    current_streak: 0,
+    best_streak: 0,
+    times_forged: 0,
+    times_forged_goal: 1
+  }
+
   logger.debug('HC - createHabitUser')
   try {
     const habitId = req.params.habit_id
@@ -261,6 +270,7 @@ async function createHabitUser (req, res) {
         user_id: userId
       }
     })
+
     if (existingHabitUser) {
       logger.warn('HC - The habit is already using by the user')
       return res.status(400).json({ message: 'BD error. The habit is already using by the user' })
@@ -269,17 +279,20 @@ async function createHabitUser (req, res) {
     if (existingHabitUser === null) {
       const newHabitUser = await prisma.userHabit.create({
         data: {
-          ...parsedData,
+          // juntamos los valores por defecto con los del settings
           habit_id: habitId,
-          user_id: userId
+          user_id: userId,
+          ...defaultValues,
+          settings: parsedData
         }
       })
-
+      logger.info('HC - Habit user created successfully')
       return res.status(201).json(newHabitUser)
     }
   } catch (error) {
     if (error.name === 'ZodError') {
       logger.warn('HC - Zod Error. Validación de datos')
+      logger.warn(error.errors)
       return res.status(400).json({ errors: error.errors })
     }
     logger.error('HC - Error creating the habit user', error)

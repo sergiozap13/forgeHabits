@@ -1,0 +1,65 @@
+---
+import HeaderLogged from '../../components/HeaderLogged';
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import CustomizeHabitComponent from "../../components/habits/CustomizeHabitComponent";
+
+export async function getStaticPaths() {
+    return [
+    {params: {customizeHabitId: '3a19f4f4-e784-496b-8d02-e5da37546820'}},
+    {params: {customizeHabitId: '45dc942b-b192-4f93-87df-2623c0093ddb'}},
+    {params: {customizeHabitId: '67a404ef-6558-4169-bfee-495afd122853'}},
+    {params: {customizeHabitId: 'b597fc70-499f-4d3a-af94-6d1b8f23a93e'}},
+    {params: {customizeHabitId: 'c011dfee-8ad9-4a43-b31d-225c3ff1012b'}},
+    {params: {customizeHabitId: 'cc2699f5-a5e4-4d0b-a873-74a1088882ee'}},
+    {params: {customizeHabitId: 'cdf64df9-a1bc-495b-9ed9-e608e7d36ebb'}},
+    {params: {customizeHabitId: 'f7f27180-f817-44f3-8da3-312ae9be801e'}},
+  ];
+}
+
+const habitId = Astro.params.customizeHabitId;
+
+---
+<Layout title="Hábitos | ForgeHabits">
+    <HeaderLogged client:load/>
+    <main class="max-w-7xl px-4 m-auto min-h-screen mb-3">
+        <CustomizeHabitComponent habitId={habitId} client:only/>
+    </main>
+    <Footer/>
+</Layout>
+
+<script type="module">
+    async function checkAuth() {
+        const token = sessionStorage.getItem('jwtToken');
+        console.log('Token: ' + token);
+        
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || (response.status === 200 && !data.isLoggedIn)) {
+                console.error('Authentication check failed:', data);
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Authentication check failed:', error);
+            window.location.href = '/login';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+    });
+</script>
