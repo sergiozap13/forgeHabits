@@ -132,54 +132,49 @@ const HabitDetails = ({ habitId }) => {
 
 
     return (
-        <div className="text-white p-8 ">
-            <div className={`flex flex-col items-center border-2 bg-${habitInfo && habitInfo.default_color}-500 rounded-xl shadow-xl p-6 min-h-screen`}>
+        <div className="text-white p-8 bg-gray-800">
+            <div className={`flex flex-col items-center border-2 border-${habitInfo?.default_color}-700 bg-${habitInfo?.default_color}-500 rounded-xl shadow-2xl p-6`}>
                 <div className="flex items-center space-x-4 mb-4">
-                    <div className={`rounded-full border-${habitInfo?.text_color} bg-${habitInfo && habitInfo.default_color}-500 p-2 border-2`}>
+                    <div className={`rounded-full bg-${habitInfo?.default_color}-500 p-3 border-4 border-${habitInfo?.text_color}`}>
                         <svg className={`w-6 h-6 text-${habitInfo?.text_color}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
-                    <div className={`text-3xl text-${habitInfo?.text_color} font-bold uppercase`}>{habitInfo && habitInfo.name}</div>
+                    <h1 className={`text-3xl text-${habitInfo?.text_color} font-bold uppercase`}>
+                        {habitInfo?.name}
+                    </h1>
                 </div>
 
-                <div className={`text-center w-full p-15 pb-1 mb-6 bg-white bg-opacity-90 rounded-lg shadow-xl transition-all duration-300 ease-in-out hover:bg-opacity-100 space-y-10`}>
-                <div className="text-xl text-gray-900 font-bold shadow">Categoría: 
-                    <span className={`font-semibold text-${category_color}-700`}> {category}</span>
+                <div className="text-center p-6 pb-1 mb-6 bg-white bg-opacity-95 rounded-lg shadow-2xl transition-all duration-300 ease-in-out hover:bg-opacity-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="col-span-1 md:col-span-2 text-xl font-bold text-gray-900">
+                        Estado: <span className={`text-md font-semibold text-${status_color}-700`}>{status}</span>
+                    </div>
+                    <div className="col-span-1 text-xl text-gray-900">
+                        <span className='font-bold'>Racha actual</span>: <span className='text-blue-700 font-semibold'> {habit?.current_streak}</span> días (<span className="text-red-600">{21 - habit?.current_streak}</span> días para forjarlo)
+                    </div>
+                    <div className="col-span-1 text-xl text-gray-900">
+                        <span className='font-bold'>Mejor racha</span>: <span className='text-green-700 font-semibold'>{habit?.best_streak}</span> días
+                    </div>
+                    <div className="col-span-1 md:col-span-2 text-xl  text-gray-900">
+                    <span className='font-bold'>Veces forjado</span>: {habit?.times_forged} (Objetivo: <span className='text-red-500'>{habit?.times_forged_goal}</span>)
+                    </div>
                 </div>
-                <div className="text-xl text-gray-900 font-bold shadow">
-                    Estado: <span className={`text-md font-semibold text-${status_color}-700`}>{status}</span></div>
-                <div className="my-4 text-gray-900">
-                    <span className="font-bold text-xl text-gray-900 shadow">Racha actual:</span> 
-                    
-                    <span className='font-bold text-xl'> {habit?.current_streak}</span> (
-                        <span className="text-red-600">{21 - habit?.current_streak}</span> días para forjarlo)
-                </div>
-                <div className="my-4 text-gray-900">
-                    <span className="font-bold text-xl text-gray-900 shadow">Mejor racha:</span> <span className='font-bold text-xl'>{habit?.best_streak}</span> días
-                </div>
-                <div className="my-4 text-gray-900">
-                    <span className="font-bold text-xl text-gray-900 shadow">Veces forjado:</span> {habit?.times_forged} (Objetivo: <span className='font-bold text-red-800'>{habit?.times_forged_goal}</span>)
-                </div>
-            </div>
 
-
-
-                <div className="bg-green-300 p-4 rounded-lg w-full mb-6 overflow-hidden">
-                    <div className="font-bold text-xl mb-3 text-center">Nuestros consejos:</div>
+                <div className="bg-red-200 p-4 rounded-lg w-full mb-6 overflow-hidden shadow">
+                    <div className={`font-bold text-xl mb-3 text-center text-${habitInfo?.text_color}`}>Nuestros consejos:</div>
                     <div className="flex justify-center">
-                        <div className={`border-2 border-green-700 p-2 rounded-lg transition-opacity duration-1000 ease-in-out ${tipOpacity ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className={`border-2 border-${habitInfo?.text_color} text-${habitInfo?.text_color} p-2 rounded-lg transition-opacity duration-300 ease-in-out ${tipOpacity ? 'opacity-100' : 'opacity-0'}`}>
                             {tips.length > 0 ? tips[currentTipIndex] : "No hay tips disponibles."}
                         </div>
                     </div>
                 </div>
 
-
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" onClick={handleDelete}>
+                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-200" onClick={handleDelete}>
                     Eliminar
                 </button>
             </div>
         </div>
+
     );
 }
 

@@ -30,22 +30,22 @@ const HabitsDisplayComponent = ({page}) => {
     }, []); 
 
     return (
-        <div className="min-h-screen mt-3 animate-fade-right">
-    <div className="flex flex-wrap justify-center gap-4 p-4">
-        {habits.map((habit) => (
-            <div key={habit.id} className='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'> 
-                <HabitComponent
-                    title={habit.name}
-                    streak={habit.current_streak}
-                    bgcolor={habit.default_color}
-                    textcolor={habit.text_color}
-                    page={page}
-                    habitId={habit.id}
-                />
+        <div className="min-h-screen animate-fade-right bg-gray-800">
+            <div className="flex flex-wrap justify-center gap-4 p-4">
+                {habits.map((habit) => (
+                    <div key={habit.id} className='w-full sm:w-1/2 md:w-1/3 lg:w-1/4'> 
+                        <HabitComponent
+                            title={habit.name}
+                            streak={habit.current_streak}
+                            bgcolor={habit.default_color}
+                            textcolor={habit.text_color}
+                            page={page}
+                            habitId={habit.id}
+                        />
+                    </div>
+                ))}
             </div>
-        ))}
-    </div>
-</div>
+        </div>
     );
 };
 

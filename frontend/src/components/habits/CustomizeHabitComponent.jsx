@@ -108,7 +108,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
     };
 
     return (
-        <div className="flex flex-col items-center border-2 bg-gray-700 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
+        <div className="flex flex-col items-center border-2 bg-gray-800 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
             <div className="flex items-center space-x-4 mb-4">
                 <div className={`rounded-full bg-${habitInfo && habitInfo.default_color}-500 p-2 border-2`}>
                     <svg className="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,7 +118,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
                 <div className="text-3xl font-bold uppercase">{habitInfo && habitInfo.name}</div>
             </div>
     
-            <div className="bg-white text-black max-w-4xl rounded-lg p-20">
+            <div className="bg-gray-300 text-black max-w-4xl rounded-lg p-20">
             <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
               {habitUnit && habitUnit.goals ? (
                   <div className="flex md:flex-row items-center mb-4">

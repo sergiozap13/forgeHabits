@@ -10,9 +10,7 @@ const HeaderLogged = () => {
     };
 
     return (
-        <header style={{
-            background: 'conic-gradient(at left center, rgb(249, 115, 22), rgb(253, 224, 71))'
-        }} className="bg-gradient-to-r from-orange-600 to-orange-300 bg-opacity-95 text-white shadow-lg relative">
+        <header className="bg-gradient-to-r from-orange-300 to-orange-200 bg-opacity-95 text-white shadow-lg relative">
             <div className="container mx-auto flex items-center justify-between h-24">
                 <button>
                     <a href="/dashboard">
@@ -28,7 +26,7 @@ const HeaderLogged = () => {
                         </button>
                     </div>
                     <nav className={`${isMenuOpen ? 'flex' : 'hidden'} lg:flex absolute lg:relative right-1/2 lg:right-auto transform lg:transform-none translate-x-1/2 lg:translate-x-0 mt-100 lg:mt-0 bg-orange-600 lg:bg-transparent shadow-md lg:shadow-none w-48 lg:w-auto rounded-lg lg:rounded-none font-semibold text-base lg:text-lg`}>
-                        <ul className="flex flex-col lg:flex-row lg:items-center text-black lg:text-white">
+                        <ul className="flex flex-col lg:flex-row lg:items-center text-black">
                             <li className="p-5 xl:p-8">
                                 <a href="/dashboard" className="hover:text-gray-700 transition-colors duration-200">
                                     Inicio
@@ -56,7 +54,7 @@ const HeaderLogged = () => {
                             </li>
                         </ul>
                     </nav>
-                    <button onClick={handleLogout} id="logoutButton" className="border border-white rounded-full font-bold px-8 py-1 ml-12 mb-2 hover:text-gray-700 hover:bg-gradient-to-r from-orange-500 to-orange-400 hover:border-gray-700 transition-colors duration-200" >
+                    <button onClick={handleLogout} id="logoutButton" className="border border-black text-black rounded-full font-bold px-8 py-1 ml-12 hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105" >
                         Logout
                     </button>
                 </div>
