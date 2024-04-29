@@ -38,6 +38,7 @@ const HabitsDisplayComponent = ({page}) => {
                     title={habit.name}
                     streak={habit.current_streak}
                     bgcolor={habit.default_color}
+                    textcolor={habit.text_color}
                     page={page}
                     habitId={habit.id}
                 />
