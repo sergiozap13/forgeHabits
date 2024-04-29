@@ -10,6 +10,25 @@ module.exports = withMT({
     ]
   },
   theme: {
+      screens: {
+        // xd personalizado
+        'xs': '480px',
+
+        'sm': '640px',
+        // => @media (min-width: 640px) { ... }
+
+        'md': '768px',
+        // => @media (min-width: 768px) { ... }
+
+        'lg': '1024px',
+        // => @media (min-width: 1024px) { ... }
+
+        'xl': '1280px',
+        // => @media (min-width: 1280px) { ... }
+
+        '2xl': '1536px',
+        // => @media (min-width: 1536px) { ... }
+      },
       extend: {
         margin: {
           '100': '26rem',  // 400px
