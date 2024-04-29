@@ -1,16 +1,8 @@
 import { useEffect, useState } from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
 const CustomizeHabitComponent = ({ habitId }) => {
     const [habitInfo, setHabitInfo] = useState(null);
     const [habitUnit, setHabitUnit] = useState(null);
-    const [loading, setLoading] = useState(false);
-
-    // para el snackbar de material
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState('info');
 
     const token = sessionStorage.getItem('jwtToken');
 
@@ -23,7 +15,6 @@ const CustomizeHabitComponent = ({ habitId }) => {
 
   const handleSubmit = async (event) => {
       event.preventDefault(); 
-      setLoading(true); // activamos la animación
       const apiUrl = `http://localhost:3000/api/habits/habit/${habitId}`; 
 
       const settingsData = {
@@ -52,7 +43,6 @@ const CustomizeHabitComponent = ({ habitId }) => {
           console.log('Success:', responseData);
 
       } catch (error) {
-          setLoading(false)
           console.error('Error:', error);
       }
   };
@@ -117,9 +107,6 @@ const CustomizeHabitComponent = ({ habitId }) => {
         return optionsArray;
     };
 
-    if(loading){
-      return <LoadingSpinner/>
-    }
     return (
         <div className="flex flex-col items-center border-2 bg-gray-700 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
             <div className="flex items-center space-x-4 mb-4">
