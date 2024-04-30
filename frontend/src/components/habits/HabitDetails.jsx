@@ -132,7 +132,7 @@ const HabitDetails = ({ habitId }) => {
 
 
     return (
-        <div className="text-white p-8 bg-gray-800">
+        <div className="text-white p-8 bg-gray-800 animate-fade-right">
             <div className={`flex flex-col items-center border-2 border-${habitInfo?.default_color}-700 bg-${habitInfo?.default_color}-500 rounded-xl shadow-2xl p-6`}>
                 <div className="flex items-center space-x-4 mb-4">
                     <div className={`rounded-full bg-${habitInfo?.default_color}-500 p-3 border-4 border-${habitInfo?.text_color}`}>

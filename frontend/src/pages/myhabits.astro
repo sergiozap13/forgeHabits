@@ -7,18 +7,17 @@ import HabitsDisplayComponent from '../components/habits/HabitsDisplayComponent'
 ---
 <Layout title="Mis hábitos | ForgeHabits">
     <HeaderLogged client:load/>
-    <main class="max-w-7xl px-4 m-auto min-h-screen mb-3">
+    <main class="max-w-7xl flex flex-col justify-center px-4 m-auto min-h-screen mb-3">
         <div class="flex justify-center space-x-7 items-center mt-3 ">
-            <a 
-            style={{
-                background: 'linear-gradient(to right top, rgb(251, 146, 60), rgb(251, 113, 133))'
-            }}
-
-            href="/habits" class="font-bold bg-blue-400 p-2 mb-3 border-gray-800 text-center rounded-xl hover:scale-105 hover:shadow-xl transition ease-in-out duration-300 border-2">Añadir hábitos</a>
-            <h1 class="text-4xl font-bold mb-5 uppercase">Mis hábitos</h1>
+            <a href="/habits" class="font-bold p-2 mb-3 border-orange-300 bg-orange-200 text-gray-800 text-center rounded-xl hover:scale-105 hover:shadow-xl transition ease-in-out duration-300 border-2">Añadir hábitos</a>
+            <h1 class="text-4xl font-bold mb-5 uppercase animate-fade-down">Mis hábitos</h1>
             <div></div>
         </div>
-        <div class="min-h-screen mt-3 border-2 rounded-lg">
+        <div class="inline-block m-auto border-orange-200 border-2 rounded-xl mx-auto animate-flip-down">
+            <h2 class="font-semibold text-center mx-4 text-orange-100">"Dicen que para que un <span class="font-bold text-orange-300">hábito</span> quede <span class="font-bold text-orange-300">forjado</span> hay que realizarlo durante al menos <span class="font-bold text-orange-300">21</span> días seguidos."</h2>
+        </div>
+        
+        <div class="min-h-screen mt-3 rounded-lg">
             <HabitsDisplayComponent page="myhabits" client:only/>
         </div>
     </main>
