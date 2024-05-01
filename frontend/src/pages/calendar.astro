@@ -2,12 +2,17 @@
 import HeaderLogged from '../components/HeaderLogged.jsx';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
+import WeeklyCalendarComponent from '../components/calendar/WeeklyCalendarComponent';
 
 ---
 <Layout title="Calendario | ForgeHabits">
     <HeaderLogged client:load/>
     <main class= "max-w-7xl px-4 m-auto min-h-screen" >
-        <h1>Calendar</h1>
+        <div class="flex justify-center space-x-7 items-center mt-3">
+            <h1 class="text-4xl font-bold mb-5 uppercase animate-fade-down">Calendario</h1>
+            <div></div>
+        </div>
+        <WeeklyCalendarComponent client:only/>
     </main>
     <Footer/>
 </Layout>
