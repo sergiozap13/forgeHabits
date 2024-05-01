@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
 import logoText from '../assets/logo-text.svg';
 
 const HeaderLogged = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
     const handleLogout = () => {
         sessionStorage.removeItem('jwtToken');
         window.location.href = '/login';
@@ -12,53 +9,59 @@ const HeaderLogged = () => {
     return (
         <header className="bg-gradient-to-r from-orange-300 to-orange-200 bg-opacity-95 text-white shadow-lg relative">
             <div className="container mx-auto flex items-center justify-between h-24">
-                <button>
-                    <a href="/dashboard">
-                        <img src={logoText.src} alt="ForgeHabits" className="object-cover h-20 w-52" />
-                    </a>
-                </button>
+                <a href="/dashboard">
+                    <img src={logoText.src} alt="ForgeHabits" className="object-cover h-20 w-52 mt-3" />
+                </a>
+
                 <div className="flex items-center justify-center flex-1">
-                    <div className="lg:hidden">
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                            </svg>
-                        </button>
-                    </div>
-                    <nav className={`${isMenuOpen ? 'flex' : 'hidden'} lg:flex absolute lg:relative right-1/2 lg:right-auto transform lg:transform-none translate-x-1/2 lg:translate-x-0 mt-100 lg:mt-0 bg-orange-600 lg:bg-transparent shadow-md lg:shadow-none w-48 lg:w-auto rounded-lg lg:rounded-none font-semibold text-base lg:text-lg`}>
-                        <ul className="flex flex-col lg:flex-row lg:items-center text-black">
+                    <nav className="hidden md:flex absolute md:relative right-1/2 md:right-auto transform md:transform-none translate-x-1/2 md:translate-x-0 mt-100 md:mt-0 bg-orange-600 md:bg-transparent shadow-md md:shadow-none w-48 md:w-auto rounded-lg md:rounded-none font-semibold text-base md:text-lg">
+                        <ul className="flex flex-col text-md md:flex-row md:items-center text-black">
                             <li className="p-5 xl:p-8">
-                                <a href="/dashboard" className="hover:text-gray-700 transition-colors duration-200">
-                                    Inicio
-                                </a>
+                                <a href="/dashboard" className="text-xl hover:text-gray-800 transition-colors duration-200">Inicio</a>
                             </li>
                             <li className="p-5 xl:p-8">
-                                <a href="/myhabits" className="hover:text-gray-700 transition-colors duration-200">
-                                    Hábitos
-                                </a>
+                                <a href="/myhabits" className="hover:text-gray-700 transition-colors duration-200">Hábitos</a>
                             </li>
                             <li className="p-5 xl:p-8">
-                                <a href="/calendar" className="hover:text-gray-700 transition-colors duration-200">
-                                    Calendario
-                                </a>
+                                <a href="/calendar" className="hover:text-gray-700 transition-colors duration-200">Calendario</a>
                             </li>
                             <li className="p-5 xl:p-8">
-                                <a href="/diary" className="hover:text-gray-700 transition-colors duration-200">
-                                    Diario
-                                </a>
+                                <a href="/diary" className="hover:text-gray-700 transition-colors duration-200">Diario</a>
                             </li>
-                            <li className="p-5 lg:hidden">
-                                <a href="/profile" className="hover:text-gray-700 transition-colors duration-200">
-                                    Perfil
-                                </a>
-                            </li>
+                            <button onClick={handleLogout} className="px-2 py-1 border border-black rounded-full ml-5 text-black font-bold hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105">
+                                <span className="material-symbols-outlined mt-1">logout</span>
+                            </button>
                         </ul>
                     </nav>
-                    <button onClick={handleLogout} id="logoutButton" className="border border-black text-black rounded-full font-bold px-8 py-1 ml-12 hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105" >
-                        Logout
+                </div>
+            </div>
+
+            <div className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-gradient-to-r from-orange-300 to-orange-200 text-gray-800 shadow-lg py-1">
+                <div className="flex justify-around text-center items-center">
+                    <a href="/dashboard" className="flex flex-col items-center justify-center p-2 rounded-xl shadow transition duration-300 ease-in-out hover:bg-orange-500 hover:shadow-md">
+                        <span className="material-symbols-outlined text-xl">home</span>
+                        Inicio
+                    </a>
+                    <a href="/myhabits" className="flex flex-col items-center justify-center p-2 rounded-xl shadow transition duration-300 ease-in-out hover:bg-orange-400 hover:shadow-md">
+                        <span className="material-symbols-outlined text-xl">auto_stories</span>
+                        Hábitos
+                    </a>
+                    <a href="/calendar" className="flex flex-col items-center justify-center p-2 rounded-xl shadow transition duration-300 ease-in-out hover:bg-orange-400 hover:shadow-md">
+                        <span className="material-symbols-outlined text-xl">event</span>
+                        Calendario
+                    </a>
+                    <a href="/diary" className="flex flex-col items-center justify-center p-2 rounded-xl shadow transition duration-300 ease-in-out hover:bg-orange-400 hover:shadow-md">
+                        <span className="material-symbols-outlined text-xl">book</span>
+                        Diario
+                    </a>
+                    <button onClick={handleLogout} className="flex flex-col items-center justify-center p-2 rounded-xl shadow transition duration-300 ease-in-out hover:bg-orange-400 hover:shadow-md">
+                        <span className="material-symbols-outlined text-xl">logout</span>
+                        Salir
                     </button>
                 </div>
             </div>
+
+
         </header>
     );
 }
