@@ -7,13 +7,6 @@ export const updateSettingsSchema = z.object({
   commitment_level: z.enum(['Bueno', 'Superior', 'Interiorizado']).optional() // nivel de compromiso
 })
 
-export const updateUserHabitInfo = z.object({
-  status: z.enum(['SinIniciar', 'EnProceso', 'Forjado', 'Interiorizado']).optional(),
-  current_streak: z.number().int().nonnegative().optional(),
-  best_streak: z.number().int().nonnegative().optional(),
-  times_forged: z.number().int().nonnegative().optional()
-})
-
 export const habitUserSchema = z.object({
   daily_goal: z.number().nonnegative().optional(),
   preferred_hour: z.string().includes(':').length(5), // siempre va a contener : y como maximo 5 caracteres

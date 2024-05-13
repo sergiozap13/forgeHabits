@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { habitUserSchema, tipSchema, updateSettingsSchema, updateUserHabitInfo } from '../validations/habitsValidations.js'
+import { habitUserSchema, tipSchema, updateSettingsSchema } from '../validations/habitsValidations.js'
 import { validateHabitExistence, validateUserExistence } from '../validations/validationUtils.js'
 import logger from '../logger.js'
 const prisma = new PrismaClient()
@@ -240,19 +240,28 @@ async function getHabitUnit (req, res) {
 
 // POSTS
 async function createHabitUser (req, res) {
-  const defaultValues = {
-    status: 'SinIniciar',
-    current_streak: 0,
-    best_streak: 0,
-    times_forged: 0,
-    times_forged_goal: 1
-  }
-
   logger.debug('HC - createHabitUser')
   try {
     const habitId = req.params.habit_id
     const userId = req.user.id
     const parsedData = habitUserSchema.parse(req.body)
+    let timesForgedGoal = 1
+
+    if (parsedData.commitment_level === 'Bueno') {
+      timesForgedGoal = 1
+    } else if (parsedData.commitment_level === 'Superior') {
+      timesForgedGoal = 2
+    } else if (parsedData.commitment_level === 'Interiorizado') {
+      timesForgedGoal = 3
+    }
+
+    const defaultValues = {
+      status: 'SinIniciar',
+      current_streak: 0,
+      best_streak: 0,
+      times_forged: 0,
+      times_forged_goal: timesForgedGoal
+    }
 
     if (!await validateUserExistence(userId)) {
       logger.warn('HC - BD error. The user doesnt exists')
@@ -348,20 +357,14 @@ async function updateHabitUserSettings (req, res) {
 async function updateHabitUserInfo (req, res) {
   logger.debug('HC - updateHabitUserInfo')
   try {
-    const parsedData = updateUserHabitInfo.parse(req.body)
-    if (parsedData.best_streak < parsedData.current_streak) {
-      logger.warn('HC - Current streak must be lte best streak')
-      return res.status(400).json({ message: 'Current streak must be lte best streak' })
-    }
-
     if (!await validateUserExistence(req.user.id)) {
-      logger.warn('HC - BD error. The user doesnt exists')
-      return res.status(400).json({ message: 'BD error. The user doesnt exists' })
+      logger.warn('HC - BD error. The user doesn\'t exist')
+      return res.status(400).json({ message: 'BD error. The user doesn\'t exist' })
     }
 
     if (!await validateHabitExistence(req.params.habit_id)) {
-      logger.warn('HC - BD error. The habit doesnt exists')
-      return res.status(400).json({ message: 'BD error. The habit doesnt exists' })
+      logger.warn('HC - BD error. The habit doesn\'t exist')
+      return res.status(400).json({ message: 'BD error. The habit doesn\'t exist' })
     }
 
     const habitUserToEdit = await prisma.userHabit.findFirst({
@@ -371,25 +374,38 @@ async function updateHabitUserInfo (req, res) {
       }
     })
 
-    if (habitUserToEdit !== null) {
-      const updatedHabitUser = await prisma.userHabit.update({
-        // el update de prisma solo espera un parametro en el where
-        where: {
-          id: habitUserToEdit.id
-        },
-        data: {
-          ...parsedData
-        }
-      })
-
-      res.json(updatedHabitUser)
-    } else {
+    if (habitUserToEdit === null) {
       logger.warn('HC - The habit is not being used by the user')
-      res.status(404).json({ error: 'The habit is not being used by the user' })
+      return res.status(404).json({ error: 'The habit is not being used by the user' })
     }
+
+    const updatedData = {
+      current_streak: habitUserToEdit.current_streak + 1
+    }
+
+    if (habitUserToEdit.status === 'SinIniciar' && updatedData.current_streak === 1) {
+      updatedData.status = 'EnProceso'
+    }
+
+    if (updatedData.current_streak === 21) {
+      updatedData.times_forged = habitUserToEdit.times_forged + 1
+    }
+
+    if (updatedData.current_streak > habitUserToEdit.best_streak) {
+      updatedData.best_streak = updatedData.current_streak
+    }
+
+    const updatedHabitUser = await prisma.userHabit.update({
+      where: {
+        id: habitUserToEdit.id
+      },
+      data: updatedData
+    })
+
+    res.json(updatedHabitUser)
   } catch (error) {
     if (error.name === 'ZodError') {
-      logger.warn('HC - Zod Error. Validación de datos')
+      logger.warn('HC - Zod Error. Data validation')
       return res.status(400).json({ errors: error.errors })
     }
     logger.error('HC - Error updating the habit user', error)
@@ -421,11 +437,21 @@ async function deleteHabitUser (req, res) {
       logger.warn('HC - The habit is not being used by the user.')
       res.status(400).json({ error: 'The habit is not being used by the user.' })
     } else {
+      // borrar completions
+      await prisma.completes.deleteMany({
+        where: {
+          user_id: req.user.id,
+          habit_id: req.params.habit_id
+        }
+      })
+      // borrar el registro de userHabit
       const habitUserDeleted = await prisma.userHabit.delete({
         where: {
           id: habitUserToDelete.id
         }
       })
+
+      logger.info('HC - Habit user and all completions deleted successfully')
 
       res.status(200).json(habitUserDeleted)
     }

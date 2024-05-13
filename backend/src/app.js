@@ -4,7 +4,7 @@ import passport from 'passport'
 import { initialize as initializePassport } from './middlewares/passport-config.js'
 import { corsMiddleware } from './middlewares/cors.js'
 import { habitsRouter } from './routes/habits.js'
-import { calendarRouter } from './routes/calendar.js'
+import { completesHabitsRouter } from './routes/completesHabits.js'
 import { diaryRouter } from './routes/diary.js'
 import { instructionsRouter } from './routes/instructions.js'
 import { usersRouter } from './routes/users.js'
@@ -28,7 +28,7 @@ app.use(passport.initialize())
 
 // rutas protegidas
 app.use('/api/habits', passport.authenticate('jwt', { session: false }), habitsRouter)
-app.use('/api/calendar', passport.authenticate('jwt', { session: false }), calendarRouter)
+app.use('/api/completions', passport.authenticate('jwt', { session: false }), completesHabitsRouter)
 app.use('/api/diary', passport.authenticate('jwt', { session: false }), diaryRouter)
 app.use('/api/instructions', passport.authenticate('jwt', { session: false }), instructionsRouter)
 app.use('/api/users', usersRouter)
