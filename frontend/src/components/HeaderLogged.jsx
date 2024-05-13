@@ -17,7 +17,7 @@ const HeaderLogged = () => {
                     <nav className="hidden md:flex absolute md:relative right-1/2 md:right-auto transform md:transform-none translate-x-1/2 md:translate-x-0 mt-100 md:mt-0 bg-orange-600 md:bg-transparent shadow-md md:shadow-none w-48 md:w-auto rounded-lg md:rounded-none font-semibold text-base md:text-lg">
                         <ul className="flex flex-col text-md md:flex-row md:items-center text-black">
                             <li className="p-5 xl:p-8">
-                                <a href="/dashboard" className="text-xl hover:text-gray-800 transition-colors duration-200">Inicio</a>
+                                <a href="/dashboard" className="text-xl hover:text-gray-700 transition-colors duration-200">Inicio</a>
                             </li>
                             <li className="p-5 xl:p-8">
                                 <a href="/myhabits" className="hover:text-gray-700 transition-colors duration-200">Hábitos</a>
