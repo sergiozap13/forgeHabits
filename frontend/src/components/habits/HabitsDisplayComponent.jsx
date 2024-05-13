@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import HabitComponent from './HabitComponent';
 
 const HabitsDisplayComponent = ({page}) => {
@@ -41,6 +41,7 @@ const HabitsDisplayComponent = ({page}) => {
                             textcolor={habit.text_color}
                             page={page}
                             habitId={habit.id}
+                            compact={false}
                         />
                     </div>
                 ))}

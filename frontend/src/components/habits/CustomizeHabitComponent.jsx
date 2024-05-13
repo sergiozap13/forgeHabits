@@ -15,6 +15,13 @@ const CustomizeHabitComponent = ({ habitId }) => {
 
   const handleSubmit = async (event) => {
       event.preventDefault(); 
+    
+      // TODO: modificar la valicación 
+      if (habitUnit && habitUnit.goals && habitData.dailyGoal === 0) {
+        alert("Por favor, selecciona un objetivo diario.");
+        return;
+    }
+
       const apiUrl = `http://localhost:3000/api/habits/habit/${habitId}`; 
 
       const settingsData = {
@@ -126,6 +133,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
                           Objetivo diario:
                       </label>
                       <select id="daily-goal" name="dailyGoal" className="flex-1 bg-gray-800 text-white rounded py-2 px-4" onChange={handleChange}>
+                        <option value="">Selecciona una opción</option>
                           {options.map((option) => (
                               <option key={option} value={option}>
                                   {option} {habitUnit.unit}
