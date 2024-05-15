@@ -1,11 +1,11 @@
-const HabitComponent = ({ title, streak, bgcolor, textcolor, page, habitId, compact }) => {
+const HabitComponent = ({ title, streak, bgcolor, textcolor, page, habitId, icon, compact }) => {
     const containerStyles = compact ? 
         `flex flex-col border rounded-lg shadow bg-${bgcolor}-500 p-2 transform transition-transform duration-300 ease-in-out hover:scale-105` :
         `flex flex-col border-2 rounded-xl shadow-xl bg-${bgcolor}-500 p-3 transition-transform duration-500 ease-in-out hover:scale-105 hover:shadow-2xl transform`;
 
     const titleStyles = compact ? 
         'text-center font-bold text-md text-gray-900 p-3' : 
-        'text-center font-bold text-xl text-gray-900 p-6 shadow-text';
+        'text-center font-bold text-xl text-gray-900 p-3 shadow-text';
 
     const streakStyles = compact ? 
         `font-semibold text-${textcolor} text-sm` : 
@@ -17,9 +17,13 @@ const HabitComponent = ({ title, streak, bgcolor, textcolor, page, habitId, comp
 
     return (
         <div className={containerStyles}>
-            <h1 className={titleStyles}>
-                {title}
-            </h1>
+            <div className="flex items-center justify-center">
+                <span className='material-symbols-outlined text-3xl text-black hover:scale-110 transition 500'>{icon}</span> 
+                <h1 className={titleStyles}>
+                    {title}
+                </h1>
+            </div>
+            
             <div className="flex flex-col items-center py-2">
                 {page !== 'habits' && (
                     <p className={streakStyles}>Racha actual: 
