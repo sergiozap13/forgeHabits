@@ -17,13 +17,13 @@ async function getAllUsers (req, res) {
   }
 }
 
-async function getUserById (req, res) {
-  logger.debug('UC - getUserById')
-  const idParam = req.params.id
+async function getUserInfo (req, res) {
+  logger.debug('UC - getUserInfo')
+  const userId = req.user.id
   try {
     const user = await prisma.user.findFirst({
       where: {
-        id: idParam
+        id: userId
       }
     })
 
@@ -185,6 +185,7 @@ async function updateUserByUsername (req, res) {
   }
 }
 
+// TODO: revisar las claves foraneas antes de eliminar
 async function deleteUserById (req, res) {
   logger.debug('UC - deleteUserById')
   const userId = req.params.id
@@ -264,7 +265,7 @@ async function hashPassword (plainTextPassword) {
 
 export default {
   getAllUsers,
-  getUserById,
+  getUserInfo,
   getUserByUsername,
   createUser,
   updateUserById,

@@ -8,11 +8,11 @@ export const usersRouter = Router()
 
 usersRouter.get('/', checkAdmin, usersController.getAllUsers)
 
-usersRouter.get('/:id', checkAdmin, usersController.getUserById)
+usersRouter.get('/info', usersController.getUserInfo)
 
 usersRouter.get('/username/:username', checkAdmin, usersController.getUserByUsername)
 // para crear no puede estar autenticado porque sino no podrían registrarse los usuarios
-usersRouter.post('/', usersController.createUser)
+usersRouter.post('/create', usersController.createUser)
 
 usersRouter.patch('/:id', usersController.updateUserById)
 

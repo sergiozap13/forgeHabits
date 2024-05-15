@@ -17,6 +17,14 @@ initializePassport(
   id => usersController.findUserById(id)
 )
 
+function registerAuthenticate (req, res, next) {
+  // si es el registro no se necesita autenticación
+  if (req.path === '/create' && req.method === 'POST') {
+    return next()
+  }
+  return passport.authenticate('jwt', { session: false })(req, res, next)
+}
+
 // variables globales
 const app = express()
 // middlewares
@@ -31,7 +39,7 @@ app.use('/api/habits', passport.authenticate('jwt', { session: false }), habitsR
 app.use('/api/completions', passport.authenticate('jwt', { session: false }), completesHabitsRouter)
 app.use('/api/diary', passport.authenticate('jwt', { session: false }), diaryRouter)
 app.use('/api/instructions', passport.authenticate('jwt', { session: false }), instructionsRouter)
-app.use('/api/users', usersRouter)
+app.use('/api/users', registerAuthenticate, usersRouter)
 // rutas no protegidas
 app.use('/api/auth', authRouter)
 // para aquellas páginas que no existan.
