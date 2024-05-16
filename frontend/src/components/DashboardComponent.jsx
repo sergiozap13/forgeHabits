@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import HabitComponent from './habits/HabitComponent';
 import HabitCalendarComponent from './calendar/HabitCalendarComponent';
 import { isBefore, startOfToday, format } from 'date-fns';
+import MoodSelectorComponent from './mood/MoodSelectorComponent';
 
 const DashboardComponent = () => {
     const [habits, setHabits] = useState([]);
     const [completedHabits, setCompletedHabits] = useState([]);
     const [userInfo, setUserInfo] = useState(null);
+    const [selectedMood, setSelectedMood] = useState('');
   
     const token = sessionStorage.getItem('jwtToken');
     const today = new Date();
@@ -150,6 +152,8 @@ const DashboardComponent = () => {
 
 
         </div>
+        <h2 class="font-semibold text-center mx-4 text-orange-100 animate-fade-left">Aquí puedes seleccionar tu <span className='text-orange-300'>estado de ánimo</span> actual.</h2>
+        <MoodSelectorComponent selectedMood={selectedMood} setSelectedMood={setSelectedMood} page={'dashboard'}/>
       </main>
     );
 };
