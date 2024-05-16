@@ -112,15 +112,11 @@ async function deleteCompletion (req, res) {
 function validateDate (dateString, res) {
   logger.debug('DC - validateDate')
   const date = new Date(dateString)
-  if (isNaN(date.getTime())) {
+  if (isNaN(date)) {
     logger.warn('DC - Invalid date in url.')
     res.status(400).json({ message: 'Invalid date in url.' })
     return false
   }
-
-  const now = new Date()
-  date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds())
-
   return date
 }
 
