@@ -68,7 +68,27 @@ module.exports = withMT({
             500: '#b39ddb',  // Púrpura pastel
             600: '#9575cd'   // Púrpura pastel un poco más oscuro
           }
-        }
+        },
+        backgroundImage: {
+          'grid-lines': 'linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px)',
+        },
+        backgroundSize: {
+          'grid-lines': '24px 24px',
+        },
+        keyframes: {
+          'fade-right': {
+            '0%': { opacity: 0, transform: 'translateX(-20px)' },
+            '100%': { opacity: 1, transform: 'translateX(0)' },
+          },
+          'fade-left': {
+            '0%': { opacity: 0, transform: 'translateX(20px)' },
+            '100%': { opacity: 1, transform: 'translateX(0)' },
+          },
+        },
+        animation: {
+          'fade-right': 'fade-right 1s ease-in-out',  // Ajuste de duración a 1 segundo
+          'fade-left': 'fade-left 1s ease-in-out',    // Ajuste de duración a 1 segundo
+        },
         
     }
   },
