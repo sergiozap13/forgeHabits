@@ -71,21 +71,26 @@ const CalendarComponent = () => {
     }, [currentDay]);
 
     return (
-        <section className='bg-gray-700 shadow-lg p-2 rounded-lg mt-3 max-w-lg mx-auto'>
-        <div className="flex justify-between items-center p-2">
-            <button onClick={() => setCurrentDay(addDays(currentDay, -1))} className="material-symbols-outlined text-2xl text-white">arrow_back</button>
-            <h2 className="text-xl font-bold text-white">
-                {format(currentDay, "EEEE, d 'de' MMMM 'del' yyyy", { locale: es })}
-            </h2>
-            <button 
-                onClick={() => !isToday(currentDay) && setCurrentDay(addDays(currentDay, 1))} 
-                className="material-symbols-outlined text-2xl text-white" 
-                disabled={isToday(currentDay)} 
-                style={{ color: isToday(currentDay) ? 'gray' : 'white' }}>
+        <section className='bg-gray-700 shadow-lg p-2 rounded-lg mt-3 max-w-2xl mx-auto'>
+        <div className="flex justify-between items-center p-4 bg-gradient-to-r from-orange-300 to-orange-200 shadow-lg rounded-lg">
+                <button 
+                    onClick={() => setCurrentDay(addDays(currentDay, -1))} 
+                    className="material-symbols-outlined text-2xl text-white hover:text-gray-300 transition-colors duration-300"
+                >
+                    arrow_back
+                </button>
+                <h2 className="text-2xl font-bold text-white drop-shadow-md">
+                    {format(currentDay, "EEEE, d 'de' MMMM 'del' yyyy", { locale: es })}
+                </h2>
+                <button 
+                    onClick={() => !isToday(currentDay) && setCurrentDay(addDays(currentDay, 1))} 
+                    className={`material-symbols-outlined text-2xl transition-colors duration-300 ${isToday(currentDay) ? 'text-gray-400' : 'text-white hover:text-gray-300'}`} 
+                    disabled={isToday(currentDay)}
+                >
                     arrow_forward
-            </button>        
-        </div>
-        <div>
+                </button>        
+            </div>
+        <div className='p-2'>
             {sortedHabits.map(habit => (
                 <HabitCalendarComponent
                     key={habit.id}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed, currentDay, isPastDay, compact }) => {
     const [habitDetails, setHabitDetails] = useState(null);
+    const [habitInfo, setHabitInfo] = useState(null);
 
     useEffect(() => {
         const fetchHabitDetails = async () => {
@@ -28,6 +29,17 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
                     ...unitData,
                     ...detailsData
                 });
+
+                const habitInfo = await fetch(`http://localhost:3000/api/habits/habit/${habit.id}/info`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const habitInfoData = await habitInfo.json();
+
+                setHabitInfo(habitInfoData);
             } catch (error) {
                 console.error('Failed to fetch habit details:', error);
             }
@@ -81,7 +93,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
         return (
             <div className={`flex items-center ${habitClass} p-2 my-1 rounded-lg transition duration-500 ease-in-out shadow-md transform`}>
                 <div className='icon mx-4'>
-                    <span className='material-symbols-outlined text-3xl text-gray-800'>self_improvement</span> 
+                    <span className='material-symbols-outlined text-3xl text-gray-800'>{habitInfo?.material_icon}</span> 
                 </div>
                 <div className="flex-1">
                     <h3 className="text-lg font-semibold text-center text-gray-900">{habit.name}</h3>
