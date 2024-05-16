@@ -135,11 +135,7 @@ const HabitDetails = ({ habitId }) => {
         <div className="text-white p-8 bg-gray-800 animate-fade-right">
             <div className={`flex flex-col items-center border-2 border-${habitInfo?.default_color}-700 bg-${habitInfo?.default_color}-500 rounded-xl shadow-2xl p-6`}>
                 <div className="flex items-center space-x-4 mb-4">
-                    <div className={`rounded-full bg-${habitInfo?.default_color}-500 p-3 border-4 border-${habitInfo?.text_color}`}>
-                        <svg className={`w-6 h-6 text-${habitInfo?.text_color}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
+                    <span className='material-symbols-outlined text-4xl text-black'>{habitInfo?.material_icon}</span> 
                     <h1 className={`text-3xl text-${habitInfo?.text_color} font-bold uppercase`}>
                         {habitInfo?.name}
                     </h1>

@@ -41,6 +41,7 @@ const HabitsDisplayComponent = ({page}) => {
                             textcolor={habit.text_color}
                             page={page}
                             habitId={habit.id}
+                            icon={habit.material_icon}
                             compact={false}
                         />
                     </div>
