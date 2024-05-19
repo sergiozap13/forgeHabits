@@ -5,9 +5,12 @@ const uploadProfileImage = (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.')
   }
+
+  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/profileImages/${req.user.id}.png`
+
   res.status(200).send({
     message: 'File uploaded successfully',
-    fileUrl: `/uploads/profileImages/${req.file.filename}`
+    fileUrl
   })
 }
 
