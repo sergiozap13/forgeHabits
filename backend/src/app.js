@@ -10,6 +10,7 @@ import { instructionsRouter } from './routes/instructions.js'
 import { usersRouter } from './routes/users.js'
 import usersController from './controllers/usersController.js'
 import { authRouter } from './routes/authentication.js'
+import { uploadRouter } from './routes/upload.js'
 
 initializePassport(
   passport,
@@ -31,7 +32,7 @@ const app = express()
 app.use(json())
 app.use(corsMiddleware())
 app.disable('x-powered-by')
-
+app.use('/uploads', express.static('uploads'))
 app.use(passport.initialize())
 
 // rutas protegidas
@@ -39,6 +40,7 @@ app.use('/api/habits', passport.authenticate('jwt', { session: false }), habitsR
 app.use('/api/completions', passport.authenticate('jwt', { session: false }), completesHabitsRouter)
 app.use('/api/diary', passport.authenticate('jwt', { session: false }), diaryRouter)
 app.use('/api/instructions', passport.authenticate('jwt', { session: false }), instructionsRouter)
+app.use('/api/upload', passport.authenticate('jwt', { session: false }), uploadRouter)
 app.use('/api/users', registerAuthenticate, usersRouter)
 // rutas no protegidas
 app.use('/api/auth', authRouter)
