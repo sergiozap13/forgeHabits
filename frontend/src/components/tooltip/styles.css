@@ -1,0 +1,9 @@
+
+.tippy-box[data-theme~='orange-theme'] {
+    background-color: #FEC33D;
+    color: black;
+}
+
+.tippy-box[data-theme~='orange-theme'] .tippy-arrow {
+    color: #FEC33D;
+}
