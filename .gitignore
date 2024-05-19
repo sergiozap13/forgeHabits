@@ -7,3 +7,4 @@ backup
 backend/src/api.http
 backend/combined.log
 backend/error.log
+backend/uploads
