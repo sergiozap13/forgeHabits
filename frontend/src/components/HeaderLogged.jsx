@@ -28,11 +28,20 @@ const HeaderLogged = () => {
                             <li className="p-5 xl:p-8">
                                 <a href="/diary" className="hover:text-gray-700 transition-colors duration-200">Diario</a>
                             </li>
-                            <button onClick={handleLogout} className="px-2 py-1 border border-black rounded-full ml-5 text-black font-bold hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105">
-                                <span className="material-symbols-outlined mt-1">logout</span>
-                            </button>
+                            
                         </ul>
                     </nav>
+                    <div className='hidden md:flex mx-20'>
+                        <a href="/profile" className="">
+                            <span class="material-symbols-outlined px-2 py-1 ml-5 text-black text-4xl hover:text-gray-700 hover:scale-110 transition-all duration-200 ">
+                                account_circle
+                            </span>
+                        </a>
+
+                        <button onClick={handleLogout} className="px-2 py-1 border border-black rounded-xl ml-5 text-red-700 font-bold hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105">
+                            <span className="material-symbols-outlined mt-1">logout</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
