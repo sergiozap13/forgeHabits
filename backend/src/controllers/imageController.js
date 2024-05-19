@@ -9,7 +9,6 @@ const __dirname = path.dirname(__filename)
 const getProfileImage = (req, res) => {
   const userId = req.params.userId
   const imagePath = path.resolve(__dirname, '../../uploads/profileImages', `${userId}.png`)
-  console.log(imagePath)
   if (fs.existsSync(imagePath)) {
     res.sendFile(imagePath)
   } else {
