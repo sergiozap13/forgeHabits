@@ -35,7 +35,6 @@ const ProfileUserInfoComponent = () => {
         if (!email) return '';
         const [localPart, domainPart] = email.split('@');
         const maskedLocalPart = localPart.charAt(0) + '***';
-        const domainName = domainPart.split('.')[0];
         const domainExtension = domainPart.split('.').slice(1).join('.');
         const maskedDomain = '****';
         return `${maskedLocalPart}@${maskedDomain}.${domainExtension}`;
@@ -193,7 +192,7 @@ const ProfileUserInfoComponent = () => {
                 </div>
                 
                 <div className="w-full md:w-2/3">
-                    <div className="info border-2 border-gray-300 p-3 rounded-xl bg-gray-800">
+                    <div className="info border-2 border-gray-300 p-3 rounded-xl bg-gray-800 m-5">
                         <h3 className="text-3xl font-bold mb-2 text-center text-white">Información Personal</h3>
                         <div className="flex flex-col justify-center items-center space-y-4">
                             <div className="flex flex-col items-center">
@@ -236,11 +235,7 @@ const ProfileUserInfoComponent = () => {
                     </div>
                 </div>
             </div>
-            <p className='text-center m-2 font-semibold'>
-                <span className='text-orange-400 font-bold text-xl'>Frase motivacional: </span>
-                <span className='text-white'>Me encanta esta app</span>
-            </p>
-            <ProfileStatsComponent />
+            <ProfileStatsComponent token={token} />
         </div>
     );
 };
