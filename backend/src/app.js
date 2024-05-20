@@ -15,6 +15,7 @@ import usersController from './controllers/usersController.js'
 import { authRouter } from './routes/authentication.js'
 import { uploadRouter } from './routes/upload.js'
 import { imageRouter } from './routes/image.js'
+import { statsRouter } from './routes/stats.js'
 
 initializePassport(
   passport,
@@ -51,6 +52,7 @@ app.use('/api/diary', passport.authenticate('jwt', { session: false }), diaryRou
 app.use('/api/instructions', passport.authenticate('jwt', { session: false }), instructionsRouter)
 app.use('/api/upload', passport.authenticate('jwt', { session: false }), uploadRouter)
 app.use('/api/images', passport.authenticate('jwt', { session: false }), imageRouter)
+app.use('/api/stats', passport.authenticate('jwt', { session: false }), statsRouter)
 app.use('/api/users', registerAuthenticate, usersRouter)
 
 // rutas no protegidas
