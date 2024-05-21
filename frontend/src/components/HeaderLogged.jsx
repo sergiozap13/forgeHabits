@@ -1,4 +1,6 @@
 import logoText from '../assets/logo-text.svg';
+import Tooltip from './tooltip/Tooltip.jsx';
+import 'tippy.js/dist/tippy.css';
 
 const HeaderLogged = () => {
     const handleLogout = () => {
@@ -38,9 +40,11 @@ const HeaderLogged = () => {
                             </span>
                         </a>
 
-                        <button onClick={handleLogout} className="px-2 py-1 border border-black rounded-xl ml-5 text-red-700 font-bold hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105">
-                            <span className="material-symbols-outlined mt-1">logout</span>
-                        </button>
+                        <Tooltip content="Cerrar sesión" placement='right'>
+                            <button onClick={handleLogout} className="px-2 py-1 border border-black rounded-xl ml-5 text-red-700 font-bold hover:bg-orange-300 hover:border-gray-800 transition-colors duration-200 hover:scale-105">
+                                <span className="material-symbols-outlined mt-1">logout</span>
+                            </button>
+                        </Tooltip>
                     </div>
                 </div>
             </div>

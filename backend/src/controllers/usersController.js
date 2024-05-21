@@ -185,7 +185,6 @@ async function updateUserByUsername (req, res) {
   }
 }
 
-// TODO: revisar las claves foraneas antes de eliminar
 async function deleteUserById (req, res) {
   logger.debug('UC - deleteUserById')
   const userId = req.params.id
@@ -198,6 +197,10 @@ async function deleteUserById (req, res) {
       return res.status(404).json({ message: 'User not found' })
     }
 
+    await prisma.diary.deleteMany({ where: { user_id: userId } })
+    await prisma.completes.deleteMany({ where: { user_id: userId } })
+    await prisma.userHabit.deleteMany({ where: { user_id: userId } })
+
     await prisma.user.delete({ where: { id: userId } })
     res.status(200).json({ message: 'User successfully deleted' })
   } catch (error) {
@@ -206,6 +209,7 @@ async function deleteUserById (req, res) {
   }
 }
 
+// TODO: Probar esta función
 async function deleteUserByUsername (req, res) {
   logger.debug('UC - deleteUserByUsername')
   const username = req.params.username
@@ -218,11 +222,68 @@ async function deleteUserByUsername (req, res) {
       return res.status(404).json({ message: 'User not found' })
     }
 
+    await prisma.diary.deleteMany({ where: { username } })
+    await prisma.completes.deleteMany({ where: { username } })
+    await prisma.userHabit.deleteMany({ where: { username } })
+
     await prisma.user.delete({ where: { username } })
     res.status(200).json({ message: 'User successfully deleted' })
   } catch (error) {
     logger.error('UC - Error deleting the user', error)
     res.status(500).json({ error: 'An error occurred while deleting the user' })
+  }
+}
+
+async function changePassword (req, res) {
+  logger.debug('UC - changePassword')
+  const { currentPassword, newPassword } = req.body
+  const userId = req.user.id
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+      logger.warn('UC - User not found')
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password)
+    if (!isMatch) {
+      logger.warn('UC - Incorrect current password')
+      return res.status(400).json({ message: 'Incorrect current password' })
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10)
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedNewPassword }
+    })
+    logger.info('UC - Password changed successfully')
+    res.json({ message: 'Password changed successfully' })
+  } catch (error) {
+    logger.error('UC - Error changing password:', error)
+    res.status(500).json({ message: 'Error changing password', error })
+  }
+}
+
+async function deleteUser (req, res) {
+  logger.debug('UC - deleteUser')
+  const userId = req.user.id
+
+  try {
+    // Eliminamos todas las tuplas relacionadas
+    await prisma.diary.deleteMany({ where: { user_id: userId } })
+    await prisma.completes.deleteMany({ where: { user_id: userId } })
+    await prisma.userHabit.deleteMany({ where: { user_id: userId } })
+
+    // Eliminamos el usuario definitivamente
+    await prisma.user.delete({ where: { id: userId } })
+
+    res.json({ message: 'Cuenta eliminada con éxito' })
+    logger.info('UC - Cuenta eliminada con éxito')
+  } catch (error) {
+    logger.error('UC - Error al eliminar la cuenta:', error)
+    res.status(500).json({ message: 'Error al eliminar la cuenta', error })
   }
 }
 
@@ -273,5 +334,7 @@ export default {
   deleteUserById,
   deleteUserByUsername,
   findUserByEmail,
-  findUserById
+  findUserById,
+  changePassword,
+  deleteUser
 }

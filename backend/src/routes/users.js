@@ -14,6 +14,8 @@ usersRouter.get('/username/:username', checkAdmin, usersController.getUserByUser
 // para crear no puede estar autenticado porque sino no podrían registrarse los usuarios
 usersRouter.post('/create', usersController.createUser)
 
+usersRouter.post('/changepass', usersController.changePassword)
+
 usersRouter.patch('/:id', usersController.updateUserById)
 
 usersRouter.patch('/username/:username', usersController.updateUserByUsername)
@@ -21,3 +23,5 @@ usersRouter.patch('/username/:username', usersController.updateUserByUsername)
 usersRouter.delete('/:id', usersController.deleteUserById)
 
 usersRouter.delete('/username/:username', usersController.deleteUserByUsername)
+
+usersRouter.delete('/', usersController.deleteUser)
