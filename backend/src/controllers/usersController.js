@@ -77,6 +77,17 @@ async function createUser (req, res) {
       return res.status(400).json({ message: 'Email already exists' })
     }
 
+    const existingPhone = await prisma.user.findFirst({
+      where: {
+        phone: parsedData.phone
+      }
+    })
+
+    if (existingPhone) {
+      logger.warn('UC - Phone already exists')
+      return res.status(400).json({ message: 'Phone already exists' })
+    }
+
     const existingUsername = await prisma.user.findUnique({
       where: {
         username: parsedData.username

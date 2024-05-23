@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
+import { set } from "date-fns";
 
 function LoginForm(){
     // estados para el login per se
@@ -7,13 +8,21 @@ function LoginForm(){
     const [password, setPassword] = useState('');
     // para la animación
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
 
     const loginForm = async (event) => {
         event.preventDefault()  
         setLoading(true); // activamos la animación
-        const data = {
-            email, password
-        }
+        setError(''); // limpiamos errores
+
+        if (!email || !password) {
+            setError('Por favor, rellena todos los campos.');
+            setLoading(false);
+            return;
+        }   
+
+        const data = { email, password };
     
         try{
             const response = await fetch('http://localhost:3000/api/auth/login' , {
@@ -32,14 +41,16 @@ function LoginForm(){
                 // Redirección
                 window.location.href = '/dashboard';
             } else if(response.status === 401 && responseData.message === 'Password incorrect'){
-                alert('La contraseña no es correcta')
+                setError('La contraseña no es correcta')
             } else if (response.status === 401 && responseData.message === 'No user with that email'){
-                alert('El usuario no existe')
+                setError('No existe un usuario con ese email')
             } else {
-                alert('Hola')
+                setError('Ocurrió un error, por favor intentalo de nuevo en unos minutos')
             }
         }catch(error){
             console.error('Hubo un error ', error)
+            setError('Hubo un problema con la conexión. Inténtalo de nuevo más tarde.');
+
         } finally{ 
             setLoading(false)
         }
@@ -50,37 +61,42 @@ function LoginForm(){
     }
 
     return (
-        <div className="bg-white shadow-xl rounded-xl px-8 py-6 mb-4 max-w-lg animate-jump-in animate-duration-400 ">
-            <h1 className="font-bold lg:text-xl mb-4 text-center text-black md:text-xs sm:text-sm">Login</h1>
-            <form onSubmit={loginForm} className="bg-gray-200 rounded-xl shadow-xl px-8 pt-6 pb-8 mb-3">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+        <div className="bg-gray-300 shadow-2xl rounded-2xl p-4 sm:p-6 mb-6 lg:w-96 animate-jump-in animate-duration-400">
+            <form onSubmit={loginForm} className="bg-gray-200 rounded-2xl shadow-2xl p-4 sm:p-6 mb-6 mt-5">
+                <div className="mb-4 sm:mb-6">
+                    <label className="block text-gray-700 text-base sm:text-lg font-bold mb-2 sm:mb-3" htmlFor="email">
                         Usuario
                     </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-300 bg-gray-900 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2" id="username" type="text" placeholder="Usuario" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-300 bg-gray-900 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2" id="username" type="text" placeholder="Usuario" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                <div className="mb-6 sm:mb-8">
+                    <label className="block text-gray-700 text-base sm:text-lg font-bold mb-2 sm:mb-3" htmlFor="password">
                         Contraseña
                     </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-300 bg-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2" id="password" type="password" placeholder="******************" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-300 bg-gray-900 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2" id="password" type="password" placeholder="******************" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <div className="flex items-center justify-center">   
+                        {error && (
+                            <p className="flex items-center text-red-600 text-base sm:text-lg italic">
+                                <span className="material-symbols-outlined text-md mr-2">
+                                    error
+                                </span> 
+                                {error}
+                            </p>
+                        )}
+                    </div>
                 </div>
-                <div className="flex flex-col items-center justify-between space-y-4">
-                    <button type="submit" className="bg-orange-500 hover:bg-orange-400 text-white lg:text-xl md:text-md sm:text-sm font-bold py-2 px-4 ml-5 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
+                <div className="flex flex-col items-center justify-between space-y-4 sm:space-y-6">
+                    <button type="submit" className="bg-orange-200 text-gray-800 hover:bg-orange-400 transition-colors duration-400 text-md font-bold py-2 xl:py-3 px-4 sm:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
                         Iniciar Sesión
-                    </button>
-
-                    <button className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 px-8 rounded-xl shadow focus:outline-none focus:shadow-outline w-full max-w-md">
-                        <img src="https://www.material-tailwind.com/logos/logo-google.png" alt="Google logo" className="w-5 h-5 md:text-xs sm:text-xs" />
-                        Inicia sesión con Google
                     </button>
                 </div>
             </form>
-            <div className="text-center">
-                <a href="/register" className="text-orange-500 hover:text-orange-400 mb-2 text-sm">¿Aún no tienes cuenta? Regístrate aquí</a>
-                <br/>
-            </div>
         </div>
+
+
+
+
+
     )
 }
 
