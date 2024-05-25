@@ -22,7 +22,7 @@ const habitId = Astro.params.customizeHabitId;
 ---
 <Layout title="Hábitos | ForgeHabits">
     <HeaderLogged client:load/>
-    <main class="max-w-7xl px-4 m-auto min-h-screen mb-3">
+    <main class="max-w-8xl px-4 m-auto min-h-screen mb-3">
         <CustomizeHabitComponent habitId={habitId} client:only/>
     </main>
     <Footer/>

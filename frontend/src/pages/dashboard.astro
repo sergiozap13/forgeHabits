@@ -3,13 +3,12 @@ import HeaderLogged from '../components/HeaderLogged.jsx';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import DashboardComponent from '../components/DashboardComponent.jsx';
+import TitleComponent from '../components/TitleComponent';
 
 ---
 <Layout title="Home | ForgeHabits">
     <HeaderLogged client:load/>
-    <div class="flex justify-center space-x-7 items-center mt-3">
-        <h1 class="text-4xl font-bold animate-fade-down mb-4 text-center">Bienvenido a <span class="text-orange-200">ForgeHabits</span>!</h1>
-    </div>
+    <TitleComponent name="Bienvenidx a ForgeHabits"/>
     <DashboardComponent client:only/>
     <Footer/>
 </Layout>

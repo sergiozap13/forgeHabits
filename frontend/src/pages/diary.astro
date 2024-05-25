@@ -3,16 +3,15 @@ import HeaderLogged from '../components/HeaderLogged.jsx';
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import DiaryDisplayComponent from '../components/diary/DiaryDisplayComponent';
+import TitleComponent from '../components/TitleComponent';
 
 ---
 <Layout title="Diario | ForgeHabits">
     <HeaderLogged client:load/>
-    <main class="max-w-7xl mx-auto px-4 mb-10 min-h-screen">
+    <main class="max-w-8xl mx-auto px-4 mb-10 min-h-screen">
         
-        <div class="flex justify-center space-x-7 items-center mt-3">
-            <h1 class="text-4xl font-bold uppercase animate-fade-down mb-4">Diario</h1>
-        </div>
-        <h2 class="font-semibold text-lg text-center mx-4 text-orange-100 animate-fade-right">
+        <TitleComponent name="Diario"/>
+        <h2 class="font-semibold md:text-lg sm:text-md text-center mx-4 text-orange-100 animate-fade-right">
             Piensa bien lo que escribes aquí, es tu <span class="text-orange-300">espacio personal</span> y no podrás ni <span class="text-orange-300">eliminarlo</span> ni <span class="text-orange-300">editarlo</span> más tarde.
         </h2>        
 
