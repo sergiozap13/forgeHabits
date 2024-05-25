@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
+import Tooltip from '../../components/tooltip/Tooltip.jsx';
+import 'tippy.js/dist/tippy.css';
+
 
 const CustomizeHabitComponent = ({ habitId }) => {
     const [habitInfo, setHabitInfo] = useState(null);
     const [habitUnit, setHabitUnit] = useState(null);
+    const [error, setError] = useState('');
 
     const token = sessionStorage.getItem('jwtToken');
 
@@ -16,9 +20,8 @@ const CustomizeHabitComponent = ({ habitId }) => {
   const handleSubmit = async (event) => {
       event.preventDefault(); 
     
-      // TODO: modificar la valicación 
       if (habitUnit && habitUnit.goals && habitData.dailyGoal === 0) {
-        alert("Por favor, selecciona un objetivo diario.");
+        setError('Por favor, selecciona un objetivo diario.');
         return;
     }
 
@@ -115,77 +118,82 @@ const CustomizeHabitComponent = ({ habitId }) => {
     };
 
     return (
-        <div className="flex flex-col items-center border-2 bg-gray-800 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
-            <div className="flex items-center space-x-4 mb-4">
-                <div className={`rounded-full bg-${habitInfo && habitInfo.default_color}-500 p-2 border-2`}>
-                    <svg className="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
+        <div className="flex flex-col items-center border max-w-2xl mx-auto bg-gray-800 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
+            <div className={`flex items-center space-x-4 mb-10 bg-${habitInfo && habitInfo.default_color}-500 rounded-2xl p-2`}>
+                <span className={`material-symbols-outlined rounded-full text-5xl font-bold`}>
+                    {habitInfo && habitInfo.material_icon}
+                </span>
                 <div className="text-3xl font-bold uppercase">{habitInfo && habitInfo.name}</div>
             </div>
-    
-            <div className="bg-gray-300 text-black max-w-4xl rounded-lg p-20">
-            <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-              {habitUnit && habitUnit.goals ? (
-                  <div className="flex md:flex-row items-center mb-4">
-                      <label htmlFor="daily-goal" className="flex-1 font-bold mb-2 md:mb-0 md:mr-1">
-                          Objetivo diario:
-                      </label>
-                      <select id="daily-goal" name="dailyGoal" className="flex-1 bg-gray-800 text-white rounded py-2 px-4" onChange={handleChange}>
-                        <option value="">Selecciona una opción</option>
-                          {options.map((option) => (
-                              <option key={option} value={option}>
-                                  {option} {habitUnit.unit}
-                              </option>
-                          ))}
-                      </select>
-                  </div>
-              ) : (
-                  <p className="text-center text-gray-300"></p>
-              )}
 
-              <div className="flex md:flex-row justify-between items-center mb-4">
-                  <label htmlFor="commitment-level" className="flex-1 font-bold mb-2 md:mb-0 md:mr-4">
-                      Nivel de compromiso:
-                  </label>
-                  <select id="commitment-level" name="commitmentLevel" className="w-full flex-1 bg-gray-800 text-white rounded py-2 px-4" onChange={handleChange}>
-                      {commitmentLevels.map((level) => (
-                          <option key={level} value={level}>
-                              {level}
-                          </option>
-                      ))}
-                  </select>
-              </div>
+            <div className="bg-gray-700 text-white max-w-4xl w-full rounded-xl p-6 md:p-20">
+                <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
+                    {habitUnit && habitUnit.goals ? (
+                        <Tooltip content="Selecciona un objetivo diario razonable a cumplir cada día.">
+                            <div className="flex flex-col md:flex-row items-center mb-4">
+                                <label htmlFor="daily-goal" className="flex-1 font-bold mb-2 md:mb-0 md:mr-1 text-md md:text-xl">
+                                    Objetivo diario:
+                                </label>
+                                <select id="daily-goal" name="dailyGoal" className="flex-1 bg-gray-900 text-white rounded py-2 px-4 border border-gray-600" onChange={handleChange}>
+                                    <option value="">Selecciona una opción</option>
+                                    {options.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option} {habitUnit.unit}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </Tooltip>
+                    ) : (
+                        <p className="text-center text-gray-400"></p>
+                    )}
 
-              {habitInfo && habitInfo.programmable && (
-                  <div className="flex md:flex-row justify-between items-center mb-4">
-                      <label htmlFor="preferred-time" className="flex-1 font-bold mb-2 md:mb-0 md:mr-4">
-                          Hora/s preferida del día:
-                      </label>
-                      <input id="preferred-time" name="preferredTime" type="time" defaultValue="13:00" className="flex-1 bg-gray-800 text-white rounded py-2 px-4" onChange={handleChange} />
-                  </div>
-              )}
+                    <Tooltip content="Selecciona tu nivel de compromiso. Forjar el hábito 1 vez son 21 días seguidos.">
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+                            <label htmlFor="commitment-level" className="flex-1 font-bold mb-2 md:mb-0 md:mr-4 text-md md:text-xl">
+                                Nivel de compromiso:
+                            </label>
+                            <select id="commitment-level" name="commitmentLevel" className="w-full flex-1 bg-gray-900 text-white rounded py-2 px-4 border border-gray-600" onChange={handleChange}>
+                                {commitmentLevels.map((level) => (
+                                    <option key={level} value={level}>
+                                        {level}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </Tooltip>
 
-            <div className="flex md:flex-row items-center mb-4">
-                <label htmlFor="custom-color" className="flex-1 font-bold mb-2 md:mb-0 md:mr-4">
-                    Color personalizado:
-                </label>
-                <input id="custom-color" name="customColor" type="text" className="flex-1 bg-gray-800 text-white rounded py-2 px-4" onChange={handleChange} value={habitData.customColor} />
+                    {habitInfo && habitInfo.programmable && (
+                        <Tooltip content="Selecciona tu hora preferida para realizar el hábito.">
+                            <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+                                <label htmlFor="preferred-time" className="flex-1 font-bold mb-2 md:mb-0 md:mr-4 text-md md:text-xl">
+                                    Hora/s preferida del día:
+                                </label>
+                                <input id="preferred-time" name="preferredTime" type="time" defaultValue="13:00" className="flex-1 bg-gray-900 text-white rounded py-2 px-4 border border-gray-600" onChange={handleChange} />
+                            </div>
+                        </Tooltip>
+                    )}
+
+                    {error && (
+                        <p className="flex items-center text-red-600 text-base sm:text-lg italic justify-center">
+                            <span className="material-symbols-outlined text-md mr-2">
+                                error
+                            </span>
+                            {error}
+                        </p>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row justify-center gap-2 mt-1">
+                        <button type="reset" className="bg-red-400 hover:bg-red-700 text-white rounded py-2 px-4 focus:outline-none font-semibold">
+                            Reestablecer
+                        </button>
+                        <button type="submit" className="bg-orange-400  hover:bg-orange-700 text-white rounded py-2 px-4 focus:outline-none font-semibold">
+                            Definir nuevo hábito
+                        </button>
+                    </div>
+                </form>
             </div>
-
-              <div className="flex justify-center gap-2">
-                  <button type="reset" className="bg-red-500 hover:bg-red-700 text-white rounded py-2 px-4 focus:outline-none">
-                      Reestablecer
-                  </button>
-                  <button type="submit" className="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none">
-                      Definir nuevo hábito
-                  </button>
-              </div>
-          </form>
-
-            </div>
-          </div>
+        </div>
     );
 }
 

@@ -11,9 +11,18 @@ const HeaderLogged = () => {
     return (
         <header className="bg-gradient-to-r from-orange-300 to-orange-200 bg-opacity-95 text-white shadow-lg relative">
             <div className="container mx-auto flex items-center justify-between h-24">
-                <a href="/dashboard">
+                <a href="/dashboard" className="flex-grow md:flex-grow-0">
                     <img src={logoText.src} alt="ForgeHabits" className="object-cover h-20 w-52 mt-3" />
                 </a>
+
+                <div className="absolute right-3 flex-grow flex justify-end md:flex-grow-0">
+                    <a href="/profile" className="block md:hidden">
+                        <span className="material-symbols-outlined px-2 py-1 text-black text-4xl hover:text-gray-700 hover:scale-110 transition-all duration-200">
+                            account_circle
+                        </span>
+                    </a>
+                </div>
+
 
                 <div className="flex items-center justify-center flex-1">
                     <nav className="hidden md:flex absolute md:relative right-1/2 md:right-auto transform md:transform-none translate-x-1/2 md:translate-x-0 mt-100 md:mt-0 bg-orange-600 md:bg-transparent shadow-md md:shadow-none w-48 md:w-auto rounded-lg md:rounded-none font-semibold text-base md:text-lg">

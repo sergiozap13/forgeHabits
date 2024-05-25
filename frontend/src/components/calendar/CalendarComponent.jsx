@@ -2,14 +2,41 @@ import { useState, useEffect } from 'react';
 import { format, addDays, isToday, isBefore, startOfToday } from 'date-fns';
 import { es } from 'date-fns/locale';
 import HabitCalendarComponent from './HabitCalendarComponent';
+import MoodSelectorComponent from '../mood/MoodSelectorComponent';
 
 const CalendarComponent = () => {
     const [currentDay, setCurrentDay] = useState(new Date());
     const [habits, setHabits] = useState([]);
     const [completedHabits, setCompletedHabits] = useState([]);
+    const [selectedMood, setSelectedMood] = useState('');
     const token = sessionStorage.getItem('jwtToken');
 
     const formattedDate = format(currentDay, 'yyyy-MM-dd');
+
+
+    const fetchMoodData = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/diary/${formattedDate}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            });
+            if (!response.ok) {
+                if (response.status === 404) {
+                    setSelectedMood('');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } else {
+                const diaryData = await response.json();
+                setSelectedMood(diaryData.mood || '');
+            }
+        } catch (error) {
+            console.error("Error fetching diary:", error);
+        }
+    };
 
     const fetchHabits = async () => {
         try {
@@ -68,18 +95,19 @@ const CalendarComponent = () => {
     useEffect(() => {
         fetchHabits();
         fetchCompletedHabits();  
+        fetchMoodData();
     }, [currentDay]);
 
     return (
         <section className='bg-gray-700 shadow-lg p-2 rounded-lg mt-3 max-w-2xl mx-auto'>
-        <div className="flex justify-between items-center p-4 bg-gradient-to-r from-orange-300 to-orange-200 shadow-lg rounded-lg">
+        <div className="flex justify-between items-center p-4 bg-orange-200 shadow-lg rounded-lg">
                 <button 
                     onClick={() => setCurrentDay(addDays(currentDay, -1))} 
                     className="material-symbols-outlined text-2xl text-white hover:text-gray-300 transition-colors duration-300"
                 >
                     arrow_back
                 </button>
-                <h2 className="text-2xl font-bold text-white drop-shadow-md">
+                <h2 className="text-lg md:text-2xl font-bold text-gray-800 drop-shadow-md">
                     {format(currentDay, "EEEE, d 'de' MMMM 'del' yyyy", { locale: es })}
                 </h2>
                 <button 
@@ -104,6 +132,7 @@ const CalendarComponent = () => {
                 />
             ))}
         </div>
+        <MoodSelectorComponent selectedMood={selectedMood} setSelectedMood={setSelectedMood} page={'dashboard'}/>
     </section>
     
     );

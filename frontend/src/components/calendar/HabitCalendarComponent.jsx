@@ -88,18 +88,18 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
 
    const habitClass = completed ?
         "bg-gray-300 text-gray-600 cursor-not-allowed opacity-75" :
-        `bg-${habit.default_color}-500 text-${habit.text_color}`;
+        `bg-${habit.default_color} text-${habit.text_color}`;
 
         return (
-            <div className={`flex items-center ${habitClass} p-2 my-1 rounded-lg transition duration-500 ease-in-out shadow-md transform`}>
+            <div className={`flex items-center ${habitClass} p-2 my-5 rounded-lg transition border-2 border-black duration-500 ease-in-out shadow-md transform`}>
                 <div className='icon mx-4'>
-                    <span className='material-symbols-outlined text-3xl text-gray-800'>{habitInfo?.material_icon}</span> 
+                    <span className='material-symbols-outlined text-3xl text-black'>{habitInfo?.material_icon}</span> 
                 </div>
                 <div className="flex-1">
                     <h3 className="text-lg font-semibold text-center text-gray-900">{habit.name}</h3>
                 </div>
                 <button
-                    className={`inline-flex items-center justify-center px-3 py-1 bg-orange-200 hover:bg-orange-400 text-black text-sm font-bold rounded-full shadow transition duration-300 ease-in-out ${completed || isPastDay ? 'cursor-not-allowed opacity-60' : ''}`}
+                    className={`inline-flex items-center justify-center px-3 py-1 bg-orange-200 hover:bg-orange-400 text-black text-sm font-bold rounded-full border border-black shadow transition duration-300 ease-in-out ${completed || isPastDay ? 'cursor-not-allowed opacity-60' : ''}`}
                     onClick={handleComplete}
                     disabled={completed || isPastDay}
                     style={{ minWidth: "100px" }}

@@ -67,6 +67,13 @@ module.exports = withMT({
           purple: {
             500: '#b39ddb',  // Púrpura pastel
             600: '#9575cd'   // Púrpura pastel un poco más oscuro
+          },
+          orange: {
+            500: '#ffb74d',  // Naranja pastel
+            600: '#ffa726'   // Naranja pastel un poco más oscuro
+          },
+          pink: {
+            500: '#FF3A3A' // Rojo para el hábito Meditar
           }
         },
         backgroundImage: {

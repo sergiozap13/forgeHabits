@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import Tooltip from '../../components/tooltip/Tooltip.jsx';
+import 'tippy.js/dist/tippy.css';
+import { useEffect, useState } from 'react';
 
 const HabitDetails = ({ habitId }) => {
     const [habit, setHabit] = useState(null);
@@ -118,45 +120,71 @@ const HabitDetails = ({ habitId }) => {
         switch (habit.status) {
             case "EnProceso":
                 status = "En proceso de ser forjado";
-                status_color = "yellow";
+                status_color = "orange";
                 break;
             case "SinIniciar":
                 status = "Sin iniciar";
                 status_color = "gray";
+                break;
+            case "Forjado":
+                status = "Forjado";
+                status_color = "green";
+                break;
+            case "Interiorizado":
+                status = "Interiorizado";
+                status_color = "red";
                 break;
             default:
                 break;
         }
     }
 
+    const [confirmDelete, setConfirmDelete] = useState(false);
+
+    const handleDeleteClick = () => {
+        if (confirmDelete) {
+        handleDelete();
+        } else {
+        setConfirmDelete(true);
+        }
+    };
+
 
 
     return (
-        <div className="text-white p-8 bg-gray-800 animate-fade-right">
-            <div className={`flex flex-col items-center border-2 border-${habitInfo?.default_color}-700 bg-${habitInfo?.default_color}-500 rounded-xl shadow-2xl p-6`}>
+        <div className="text-white p-3 bg-gray-800 animate-fade-right">
+            <div className={`flex flex-col items-center justify-center mx-auto bg-${habitInfo?.default_color} rounded-xl shadow-2xl p-6 max-w-3xl`}>
                 <div className="flex items-center space-x-4 mb-4">
-                    <span className='material-symbols-outlined text-4xl text-black'>{habitInfo?.material_icon}</span> 
+                    <span className='material-symbols-outlined text-4xl text-black'>{habitInfo?.material_icon}</span>
                     <h1 className={`text-3xl text-${habitInfo?.text_color} font-bold uppercase`}>
                         {habitInfo?.name}
                     </h1>
                 </div>
 
-                <div className="text-center p-6 pb-1 mb-6 bg-white bg-opacity-95 rounded-lg shadow-2xl transition-all duration-300 ease-in-out hover:bg-opacity-100 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="col-span-1 md:col-span-2 text-xl font-bold text-gray-900">
-                        Estado: <span className={`text-md font-semibold text-${status_color}-700`}>{status}</span>
+                <div className="text-center p-6 pb-1 mb-6 bg-gray-700 bg-opacity-90 rounded-lg shadow-2xl transition-all duration-300 ease-in-out hover:bg-opacity-100 grid grid-cols-1 md:grid-cols-2 gap-6 hover:scale-105">
+                    <div className="col-span-1 md:col-span-2 text-xl font-bold text-white">
+                        <Tooltip content="Progreso del hábito o Cómo avanzas con este hábito">
+                            Estado: <span className={`text-md font-semibold text-${status_color}-500`}>{status}</span>
+                        </Tooltip>
                     </div>
-                    <div className="col-span-1 text-xl text-gray-900">
-                        <span className='font-bold'>Racha actual</span>: <span className='text-blue-700 font-semibold'> {habit?.current_streak}</span> días (<span className="text-red-600">{21 - habit?.current_streak}</span> días para forjarlo)
+                    <div className="col-span-1 text-xl text-white">
+                        <Tooltip content="Días seguidos cumpliendo el hábito">
+                            <span className='font-bold'>Racha actual</span>: <span className='text-blue-400 font-semibold'> {habit?.current_streak}</span> días (<span className="text-red-400">{21 - habit?.current_streak}</span> días para forjarlo)
+                        </Tooltip>
                     </div>
-                    <div className="col-span-1 text-xl text-gray-900">
-                        <span className='font-bold'>Mejor racha</span>: <span className='text-green-700 font-semibold'>{habit?.best_streak}</span> días
+                    <div className="col-span-1 text-xl text-white">
+                        <Tooltip content="Mejor racha de días seguidos cumpliendo este hábito">
+                            <span className='font-bold'>Mejor racha</span>: <span className='text-green-400 font-semibold'>{habit?.best_streak}</span> días
+                        </Tooltip>
                     </div>
-                    <div className="col-span-1 md:col-span-2 text-xl  text-gray-900">
-                    <span className='font-bold'>Veces forjado</span>: {habit?.times_forged} (Objetivo: <span className='text-red-500'>{habit?.times_forged_goal}</span>)
+                    <div className="col-span-1 md:col-span-2 text-xl text-white">
+                        <Tooltip content="Forjar un hábito es realizarlo durante 21 días seguidos">
+                            <span className='font-bold'>Veces forjado</span>: {habit?.times_forged} (Objetivo: <span className='text-red-400'>{habit?.times_forged_goal}</span>)
+                        </Tooltip>
                     </div>
                 </div>
 
-                <div className="bg-red-200 p-4 rounded-lg w-full mb-6 overflow-hidden shadow">
+                <div className="bg-gray-600 p-4 rounded-lg w-full mb-6 overflow-hidden shadow">
                     <div className={`font-bold text-xl mb-3 text-center text-${habitInfo?.text_color}`}>Nuestros consejos:</div>
                     <div className="flex justify-center">
                         <div className={`border-2 border-${habitInfo?.text_color} text-${habitInfo?.text_color} p-2 rounded-lg transition-opacity duration-300 ease-in-out ${tipOpacity ? 'opacity-100' : 'opacity-0'}`}>
@@ -165,12 +193,16 @@ const HabitDetails = ({ habitId }) => {
                     </div>
                 </div>
 
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-200" onClick={handleDelete}>
-                    Eliminar
-                </button>
+                <Tooltip content="Si eliminas el hábito pierdes todo el progreso">
+                    <button 
+                        className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 border rounded-lg text-lg transition-colors duration-200" 
+                        onClick={handleDeleteClick}
+                        >
+                        {confirmDelete ? 'Confirmar eliminación' : 'Eliminar'}
+                    </button>
+                </Tooltip>
             </div>
         </div>
-
     );
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileStatsComponent from './ProfileStatsComponent.jsx';
 import ProfileSettingsButtons from './ProfileSettingsButtons.jsx';
 import Tooltip from '../tooltip/Tooltip.jsx';
@@ -175,14 +175,14 @@ const ProfileUserInfoComponent = () => {
                             <input 
                                 type="file" 
                                 onChange={handleFileChange} 
-                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-300 file:text-white hover:file:bg-orange-600"
                             />
                         </Tooltip>
                         
                         <Tooltip content="Selecciona una foto antes de pulsar" placement="bottom">
                             <button 
                                 onClick={handleUploadClick} 
-                                className='mt-4 bg-orange-500 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-600 transition duration-300'
+                                className='bg-orange-200 mt-4 text-gray-800 hover:bg-orange-400 transition-colors duration-400 text-md font-bold py-2 xl:py-3 px-4 sm:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2'
                             >
                                 Subir foto
                             </button>
@@ -227,7 +227,7 @@ const ProfileUserInfoComponent = () => {
                         
                         <div className="text-center py-3 my-3 w-auto">
                             <Tooltip content="Solamente puedes editar el nombre" placement="bottom">
-                                <button onClick={handleEditClick} className="border-2 border-orange-400 px-3 py-1 rounded-lg">
+                                <button onClick={handleEditClick} className="bg-orange-200 text-gray-800 hover:bg-orange-400 transition-colors duration-400 text-md font-bold py-2 xl:py-3 px-4 sm:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
                                     {isEditing ? 'Confirmar' : 'Editar Nombre'}
                                 </button>
                             </Tooltip>
