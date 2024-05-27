@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+// TODO: hacer el completado de los habitos parcial
+
 const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed, currentDay, isPastDay, compact }) => {
     const [habitDetails, setHabitDetails] = useState(null);
     const [habitInfo, setHabitInfo] = useState(null);
@@ -96,10 +98,10 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
                     <span className='material-symbols-outlined text-3xl text-black'>{habitInfo?.material_icon}</span> 
                 </div>
                 <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-center text-gray-900">{habit.name}</h3>
+                    <h3 className="md:text-xl text-sm font-bold text-center text-gray-900">{habit.name}</h3>
                 </div>
                 <button
-                    className={`inline-flex items-center justify-center px-3 py-1 bg-orange-200 hover:bg-orange-400 text-black text-sm font-bold rounded-full border border-black shadow transition duration-300 ease-in-out ${completed || isPastDay ? 'cursor-not-allowed opacity-60' : ''}`}
+                    className={`inline-flex items-center justify-center px-3 py-1 bg-orange-200 hover:bg-orange-400 text-black text-xs font-bold rounded-full border border-black shadow transition duration-300 ease-in-out ${completed || isPastDay ? 'cursor-not-allowed opacity-60' : ''}`}
                     onClick={handleComplete}
                     disabled={completed || isPastDay}
                     style={{ minWidth: "100px" }}

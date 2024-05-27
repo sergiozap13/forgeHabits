@@ -155,7 +155,7 @@ const ProfileUserInfoComponent = () => {
     return (
         <div className="container mx-auto my-10 p-5 bg-gray-700 shadow-2xl rounded-xl">
             <div className='flex items-center justify-between'>
-                <h1 className='text-4xl font-bold text-white m-3'>
+                <h1 className=' text-2xl md:text-4xl font-bold text-white m-3'>
                     Perfil de <span className='text-orange-300'>{userInfo?.name}</span>
                 </h1>
                 <div className='flex-shrink-0 ml-auto'>
@@ -167,9 +167,9 @@ const ProfileUserInfoComponent = () => {
                 <div className="w-full md:w-1/3 mb-10 md:mb-0 border-2 border-gray-300 rounded-lg mx-2 bg-gray-800 flex items-center justify-center">
                     <div className="flex flex-col items-center justify-center py-4 rounded-lg shadow-lg p-6">
                         <Tooltip content="Que guapx estas hoy..." placement="top">
-                            <img className="w-48 h-48 rounded-full border-4 border-orange-500 mb-4 object-cover shadow-md" src={imgUrl} alt="profile" />
+                            <img className="w-48 h-48 rounded-full border-4 border-orange-500 mb-4 object-cover shadow-md" src={imgUrl} alt="" />
                         </Tooltip>
-                        <h1 className="text-2xl font-semibold mb-2 text-center text-white">@{userInfo?.username}</h1>
+                        <h1 className="text-lg md:text-2xl font-semibold mb-2 text-center text-white">@{userInfo?.username}</h1>
                         
                         <Tooltip content="Sube una foto de perfil" placement="top">
                             <input 
@@ -193,10 +193,10 @@ const ProfileUserInfoComponent = () => {
                 
                 <div className="w-full md:w-2/3">
                     <div className="info border-2 border-gray-300 p-3 rounded-xl bg-gray-800 m-5">
-                        <h3 className="text-3xl font-bold mb-2 text-center text-white">Información Personal</h3>
+                        <h3 className="text-2xl md:text-3xl font-bold mb-2 text-center text-white">Información Personal</h3>
                         <div className="flex flex-col justify-center items-center space-y-4">
                             <div className="flex flex-col items-center">
-                                <label className="block text-xl text-gray-300 font-semibold">Nombre:</label>
+                                <label className="block text-lg md:text-xl text-gray-300 font-semibold">Nombre:</label>
                                 {isEditing ? (
                                     <input
                                         type="text"
@@ -212,13 +212,13 @@ const ProfileUserInfoComponent = () => {
                                 )}
                             </div>
                             <div className="flex flex-col items-center">
-                                <label className="block text-xl text-gray-300 font-semibold">Email:</label>
+                                <label className="block text-lg md:text-xl text-gray-300 font-semibold">Email:</label>
                                 <p className="mt-1 p-2 px-10 border-2 border-orange-400 rounded-md bg-gray-700 text-white">
                                     {maskEmail(userInfo?.email)}
                                 </p>
                             </div>
                             <div className="flex flex-col items-center">
-                                <label className="block text-xl text-gray-300 font-semibold">Teléfono:</label>
+                                <label className="block text-lg md:text-xl text-gray-300 font-semibold">Teléfono:</label>
                                 <p className="mt-1 p-2 px-10 border-2 border-orange-400 rounded-md bg-gray-700 text-white">
                                     {maskPhoneNumber(userInfo?.phone)}
                                 </p>

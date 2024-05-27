@@ -4,11 +4,11 @@ const HabitComponent = ({ title, streak, bgcolor, textcolor, page, habitId, icon
         `flex flex-col border-2 border-black rounded-xl shadow-xl bg-${bgcolor} p-3 transition-transform duration-500 ease-in-out hover:scale-105 hover:shadow-2xl transform`;
 
     const titleStyles = compact ? 
-        'text-center font-bold text-sm md:text-xl text-gray-900 m-1 md:p-3' : 
+        'text-center font-bold text-xs lg:text-lg md:text-md  text-gray-900 m-1 md:p-3' : 
         'text-center font-bold text-xl text-gray-900 p-3 shadow-text';
 
     const streakStyles = compact ? 
-        `font-semibold text-${textcolor} shadow-text text-sm md:text-md` : 
+        `font-semibold text-${textcolor} shadow-text text-xs md:text-md lg:text-lg` : 
         `font-semibold text-${textcolor} shadow-text text-lg`;
 
     return (

@@ -98,11 +98,11 @@ const DashboardComponent = () => {
       }
   }
 
-    const sortedHabits = habits.slice().sort((a, b) => {
-        const aCompleted = completedHabits.some(ch => ch.habit_id === a.id);
-        const bCompleted = completedHabits.some(ch => ch.habit_id === b.id);
-        return aCompleted - bCompleted;
-    });
+  const sortedHabits = habits.slice().sort((a, b) => {
+      const aCompleted = completedHabits.some(ch => ch.habit_id === a.id);
+      const bCompleted = completedHabits.some(ch => ch.habit_id === b.id);
+      return aCompleted - bCompleted;
+  });
 
     const isPastDay = isBefore(new Date(formattedDate), startOfToday());
 
@@ -115,13 +115,13 @@ const DashboardComponent = () => {
 
     return (
       <main className="max-w-8xl px-4 mx-auto min-h-screen">
-          <h2 class="font-semibold text-center mx-4 text-orange-100 animate-fade-right">Estamos en la página de inicio, <span className='text-orange-300'>{userInfo?.username}</span>. Aquí puedes ver los <span className='text-orange-300'>hábitos</span> que tienes configurados.</h2>        
+          <h2 class="font-semibold text-center mx-4 text-orange-100 animate-fade-right text-md md:text-xl">Estamos en la página de inicio, <span className='text-orange-300'>{userInfo?.username}</span>. Aquí puedes ver los <span className='text-orange-300'>hábitos</span> que tienes configurados.</h2>        
         <div className="my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded-xl shadow border-2 animate-fade-right">
-            <h2 className="text-xl font-bold text-white mb-4 text-center">Mis Hábitos</h2>
+          <div className="bg-gray-800 p-6 rounded-xl shadow border-2 animate-fade-right">
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">Mis Hábitos</h2>
             {habits.length > 0 ? (
               <div className="grid grid-cols-2 gap-4">
-                {habits.map((habit) => (
+                {habits.slice(0,4).map((habit) => (
                   <div key={habit.id + (completedHabits.some(ch => ch.habit_id === habit.id) ? 'completed' : 'not-completed')} className='p-1'>
                     <HabitComponent
                       title={habit.name}
@@ -143,11 +143,11 @@ const DashboardComponent = () => {
               </a>
             </div>
           </div>
-            
-          <div className="p-4 shadow border-2 rounded-xl animate-fade-left">
-            <h2 className="text-xl font-bold text-white mb-4 text-center">Calendario de Hábitos</h2>
+
+          <div className="p-6 shadow rounded-xl animate-fade-left">
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">Calendario de Hábitos</h2>
             <div>
-              {sortedHabits.map(habit => (
+              {sortedHabits.slice(0,4).map(habit => (
                 <HabitCalendarComponent
                   key={habit.id}
                   token={token}
@@ -165,7 +165,7 @@ const DashboardComponent = () => {
             )}
             <div className="text-center mt-7">
               <a href="/calendar" className="bg-orange-200 text-gray-800 hover:bg-orange-400 transition-colors duration-400 text-md font-bold py-2 xl:py-3 px-4 sm:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2">
-                {habits.length === 0 ? 'Calendario vacío :(' : 'Ver calendario'}
+                {habits.length === 0 ? 'Calendario vacío :(' : 'Ver calendario completo'}
               </a>
             </div>
           </div>
@@ -181,7 +181,7 @@ const DashboardComponent = () => {
             <Tooltip content="Este es tu rendimiento actual en la aplicación: Hábitos completados vs Todos los que podías haber completado">
               <h2 className="text-2xl font-bold mb-2">Rendimiento Actual</h2>
             </Tooltip>
-            <p className="font-semibold mt-10">{userPerformance?.completed} / {userPerformance?.total} completados ({userPerformance?.percentage}%)</p>
+            <p className="font-semibold my-10"> <span className='font-bold text-orange-200'>{userPerformance?.completed} / {userPerformance?.total}</span>  completados ({userPerformance?.percentage}%)</p>
             <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-orange-100 rounded-lg h-6 m-auto relative overflow-hidden">
               <div className="bg-orange-500 h-6 rounded-lg transition-all duration-500 ease-out flex items-center justify-center" style={{ width: `${userPerformance?.percentage}%` }}>
                 <span className="text-white text-xs sm:text-sm md:text-base font-bold">{userPerformance?.percentage}%</span>

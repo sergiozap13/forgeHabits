@@ -107,7 +107,7 @@ const CalendarComponent = () => {
                 >
                     arrow_back
                 </button>
-                <h2 className="text-lg md:text-2xl font-bold text-gray-800 drop-shadow-md">
+                <h2 className="text-md md:text-2xl font-bold text-gray-800 drop-shadow-md">
                     {format(currentDay, "EEEE, d 'de' MMMM 'del' yyyy", { locale: es })}
                 </h2>
                 <button 

@@ -2,13 +2,13 @@
 function Hero() {
 
     return (    
-        <section className="pt-24 bg-gray-500 animate-fade-right animate-once animate-duration-[800ms] animate-ease-in border-b-2">
-            <div className="px-12 mx-auto max-w-7xl">
+        <section className="pt-24 animate-fade-right animate-once animate-duration-[800ms] animate-ease-in">
+            <div className="px-12 mx-auto max-w-8xl">
                 <div className="w-full mx-auto text-left md:w-11/12 xl:w-9/12 md:text-center">
                     <h1 className="mb-8 text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight">
                         <span className="text-gray-200 ">¿Quieres</span> <span className="block w-full py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-orange-600 to-gray-200 lg:inline"> conseguir que tus hábitos sean duraderos?</span>
                     </h1>
-                    <p className="px-0 mb-8 text-lg text-gray-700    md:text-xl lg:px-24">
+                    <p className="px-0 mb-8 text-lg text-gray-200 md:text-xl lg:px-24">
                         Start gaining the traction you've always wanted with our next-level templates and designs. Crafted to help you tell your story.
                     </p>
                     <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">

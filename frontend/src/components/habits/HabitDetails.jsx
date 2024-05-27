@@ -132,7 +132,7 @@ const HabitDetails = ({ habitId }) => {
                 break;
             case "Interiorizado":
                 status = "Interiorizado";
-                status_color = "red";
+                status_color = "green";
                 break;
             default:
                 break;
@@ -149,7 +149,9 @@ const HabitDetails = ({ habitId }) => {
         }
     };
 
-
+    const daysToForge = habit?.current_streak >= 21
+        ? 21 - (habit?.current_streak % 21)
+        : 21 - habit?.current_streak;
 
     return (
         <div className="text-white p-3 bg-gray-800 animate-fade-right">
@@ -169,17 +171,17 @@ const HabitDetails = ({ habitId }) => {
                     </div>
                     <div className="col-span-1 text-xl text-white">
                         <Tooltip content="Días seguidos cumpliendo el hábito">
-                            <span className='font-bold'>Racha actual</span>: <span className='text-blue-400 font-semibold'> {habit?.current_streak}</span> días (<span className="text-red-400">{21 - habit?.current_streak}</span> días para forjarlo)
+                            <span className='font-bold'>Racha actual</span>: <span className='text-blue-400 font-bold'> {habit?.current_streak}</span> días (<span className="text-red-300 font-bold">{daysToForge}</span> días para forjarlo)
                         </Tooltip>
                     </div>
                     <div className="col-span-1 text-xl text-white">
                         <Tooltip content="Mejor racha de días seguidos cumpliendo este hábito">
-                            <span className='font-bold'>Mejor racha</span>: <span className='text-green-400 font-semibold'>{habit?.best_streak}</span> días
+                            <span className='font-bold'>Mejor racha</span>: <span className='text-green-400 font-bold'>{habit?.best_streak}</span> días
                         </Tooltip>
                     </div>
-                    <div className="col-span-1 md:col-span-2 text-xl text-white">
+                    <div className="col-span-1 md:col-span-2 text-xl text-white mb-5">
                         <Tooltip content="Forjar un hábito es realizarlo durante 21 días seguidos">
-                            <span className='font-bold'>Veces forjado</span>: {habit?.times_forged} (Objetivo: <span className='text-red-400'>{habit?.times_forged_goal}</span>)
+                            <span className='font-bold'>Veces forjado</span>: <span className='font-bold'>{habit?.times_forged} </span>(Objetivo: <span className='text-red-300 font-bold'>{habit?.times_forged_goal}</span>)
                         </Tooltip>
                     </div>
                 </div>

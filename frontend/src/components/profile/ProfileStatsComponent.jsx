@@ -65,15 +65,19 @@ const ProfileStatsComponent = ({token}) => {
 
     return(
         <div className="p-4 max-w-3xl mx-auto bg-gray-800 rounded-xl shadow-md space-y-4 border-2 border-gray-300">
-            <h1 className='text-3xl font-bold m-2 text-center text-white'>Estadísticas</h1>
+            <h1 className=' text-2xl md:text-3xl font-bold m-2 text-center text-white'>Estadísticas</h1>
             <section className="space-y-4">
                 <div className="flex flex-row items-center p-4 m-2 border-2 border-orange-400 rounded-xl bg-gray-700 text-white">
-                    <span className="material-symbols-outlined text-6xl text-orange-300 mr-5">{bestHabit?.icon}</span>
-                    <div className="flex flex-col items-center justify-center w-full text-center mr-20">
+                    <span className="material-symbols-outlined text-4xl md:text-6xl text-orange-300 mr-5">{bestHabit?.icon}</span>
+                    <div className="flex flex-col items-center justify-center w-full text-center md:mr-20">
                         <Tooltip content="Este es el hábito que mejor estás llevando ahora mismo">
                             <h2 className="text-xl font-bold mb-2 text-orange-400">Mejor hábito</h2>
                         </Tooltip>
-                        <p className="font-semibold">{bestHabit?.habit_name} - Racha actual: {bestHabit?.current_streak}</p>
+                        <div className='font-semibold'>
+                            <p className="font-bold text-lg">{bestHabit?.habit_name}</p>
+                            <span className='text-md'>Racha actual: <span className='text-orange-300 text-lg'>{bestHabit?.current_streak}</span></span>
+
+                        </div>
                     </div>
                 </div>
 

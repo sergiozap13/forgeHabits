@@ -3,6 +3,8 @@ import { format, addDays, isToday, isBefore, startOfToday, set } from 'date-fns'
 import { es } from 'date-fns/locale';
 import MoodSelectorComponent from '../mood/MoodSelectorComponent';
 
+// TODO: autoguardar el diario al cambiar de día o al modificar el texto
+
 const DiaryDisplayComponent = () => {
     const [currentDay, setCurrentDay] = useState(new Date());
     const [diaryData, setDiaryData] = useState({ text: '', mood: '' });
@@ -137,7 +139,7 @@ const DiaryDisplayComponent = () => {
                 >
                     arrow_back
                 </button>
-                <h2 className="text-lg md:text-2xl font-bold text-gray-800 drop-shadow-md">
+                <h2 className="text-md md:text-2xl font-bold text-gray-800 drop-shadow-md">
                     {format(currentDay, "EEEE, d 'de' MMMM 'del' yyyy", { locale: es })}
                 </h2>
                 <button 
@@ -156,7 +158,7 @@ const DiaryDisplayComponent = () => {
                         onChange={handleTextChange}
                         placeholder={isToday(currentDay) && !diaryData.text ? 'Escribe lo que quieras' : ''}
                         disabled={isPastDay}
-                        className={`w-full h-80 md:h-96 p-4 text-lg md:text-xl text-center font-semibold leading-relaxed bg-transparent resize-none focus:outline-none z-10 ${textColorClass}`}
+                        className={`w-full h-80 md:h-96 p-4  text-sm md:text-lg text-justify font-semibold leading-relaxed bg-transparent resize-none focus:outline-none z-10 ${textColorClass}`}
                     />
                 </div>
             </div>
@@ -168,13 +170,13 @@ const DiaryDisplayComponent = () => {
                     {message}
                 </p>
             )}
-            <div className='flex flex-col sm:flex-row justify-between items-center mr-10'>
+            <div className='flex flex-col sm:flex-row justify-between items-center md:mr-10'>
                 <MoodSelectorComponent selectedMood={selectedMood} setSelectedMood={setSelectedMood} />
                 {!isPastDay && (
                     <button 
                         onClick={handleSaveDiary}
                         type='submit' 
-                        className='bg-orange-200 text-gray-800 hover:bg-orange-400 transition-colors duration-200 text-center text-md md:text-md font-bold mb-5 mt-1 py-2 xl:py-3 px-1 md:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500'
+                        className='bg-orange-200 text-gray-800 hover:bg-orange-400 transition-colors duration-200 text-center text-md md:text-md font-bold mb-5 mt-1 py-2 xl:py-3 px-3 md:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500'
                     >  
                         Guardar
                     </button>

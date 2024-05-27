@@ -1,70 +1,63 @@
 function FeaturesComponent(){
     return (
-    <div className="py-16 bg-gray-500 overflow-hidden ">
+    <div className="py-5 bg-gray-700 overflow-hidden ">
         <div className="container m-auto px-6 space-y-8 text-gray-500 md:px-12">
             <div>
-                <span className="text-gray-200 text-lg font-semibold">Nuestras funcionalidades</span>
-                <h2 className="mt-4 text-2x text-orange-600 font-bold md:text-4xl">Una aplicación de hábitos con fundamento científico detrás <br className="lg:block" hidden></br></h2>
+                <h2 className="text-xl md:text-3xl text-white font-bold text-center ">Una aplicación de <span class="text-orange-200">hábitos</span> con fundamento científico detrás <br className="lg:block" hidden></br></h2>
             </div>
-            <div className="mt-16 grid border divide-x divide-y rounded-xl overflow-hidden sm:grid-cols-2 lg:divide-y-0 lg:grid-cols-3 xl:grid-cols-4">
-                <div className="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
-                    <div className="relative p-8 space-y-8">
-                        <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/burger.png" className="w-10" width="512" height="512" alt="burger illustration"></img>
+
+            <div className="mt-10 grid border divide-x divide-y rounded-xl overflow-hidden sm:grid-cols-2 lg:divide-y-0 lg:grid-cols-3 xl:grid-cols-4 bg-gray-600">
+                <div className="relative group bg-gray-100 transition hover:z-[1] hover:shadow-2xl lg:hidden xl:block">
+                    <div className="relative p-8 space-y-8 transition duration-300 group-hover:bg-white group-hover:border group-hover:scale-90">
+                    <span class="material-symbols-outlined text-5xl text-orange-300 group-hover:text-black">
+                        local_fire_department
+                    </span>
                         
                         <div className="space-y-2">
                             <h5 className="text-xl text-gray-800 font-medium transition group-hover:text-orange-300">Rachas de hábitos</h5>
-                            <p className="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
+                            <p className="text-sm text-gray-700">Mantén un seguimiento de tus hábitos diarios y observa cómo pequeñas acciones se convierten en grandes logros.</p>
                         </div>
-                        <a href="#" className="flex justify-between items-center group-hover:text-orange-300">
-                            <span className="text-sm">Read more</span>
-                            <span className="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0"></span>
-                        </a>
                     </div>
                 </div>
-                <div className="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
-                    <div className="relative p-8 space-y-8">
-                        <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/trowel.png" className="w-10" width="512" height="512" alt="burger illustration"></img>
+                <div className="relative group bg-gray-100 transition hover:z-[1] hover:shadow-2xl lg:hidden xl:block">
+                    <div className="relative p-8 space-y-8 transition duration-300 group-hover:bg-white group-hover:border group-hover:scale-90">
+                        <span class="material-symbols-outlined text-5xl text-orange-300 group-hover:text-black">
+                            calendar_month
+                        </span>
                         
                         <div className="space-y-2">
                             <h5 className="text-xl text-gray-800 font-medium transition group-hover:text-orange-300">Calendario programable</h5>
-                            <p className="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
+                            <p className="text-sm text-gray-700">Tus hábitos personalizados ya están configurados para cada día, solo tienes que completarlos.</p>
                         </div>
-                        <a href="#" className="flex justify-between items-center group-hover:text-orange-300">
-                            <span className="text-sm">Read more</span>
-                            <span className="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0"></span>
-                        </a>
                     </div>
                 </div>
-                <div className="relative group bg-white transition hover:z-[1] hover:shadow-2xl">
-                    <div className="relative p-8 space-y-8">
-                        <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/package-delivery.png" className="w-10" width="512" height="512" alt="burger illustration"></img>
+                <div className="relative group bg-gray-100 transition hover:z-[1] hover:shadow-2xl lg:hidden xl:block">
+                    <div className="relative p-8 space-y-8 transition duration-300 group-hover:bg-white group-hover:border group-hover:scale-90">
+                        <span class="material-symbols-outlined text-5xl text-orange-300 group-hover:text-black">
+                            auto_stories
+                        </span>
                         
                         <div className="space-y-2">
                             <h5 className="text-xl text-gray-800 font-medium transition group-hover:text-orange-300">Diario</h5>
-                            <p className="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
+                            <p className="text-sm text-gray-700">Registra tu progreso y reflexiona sobre tus días con nuestro diario personal.</p>
                         </div>
-                        <a href="#" className="flex justify-between items-center group-hover:text-orange-300">
-                            <span className="text-sm">Read more</span>
-                            <span className="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0"></span>
-                        </a>
                     </div>
                 </div>
                 <div className="relative group bg-gray-100 transition hover:z-[1] hover:shadow-2xl lg:hidden xl:block">
                     <div className="relative p-8 space-y-8 border-dashed rounded-lg transition duration-300 group-hover:bg-white group-hover:border group-hover:scale-90">
-                        <img src="https://tailus.io/sources/blocks/stacked/preview/images/avatars/metal.png" className="w-10" width="512" height="512" alt="burger illustration"></img>
+                        <span class="material-symbols-outlined text-5xl text-orange-300 font-bold group-hover:text-black">
+                            more_horiz
+                        </span>
                         
                         <div className="space-y-2">
-                            <h5 className="text-xl text-gray-800 font-medium transition group-hover:text-orange-300">More features</h5>
-                            <p className="text-sm text-gray-600">Neque Dolor, fugiat non cum doloribus aperiam voluptates nostrum.</p>
+                            <h5 className="text-xl text-gray-800 font-medium transition group-hover:text-orange-300">Y pronto más...</h5>
+                            <p className="text-sm text-gray-700">Seguimos implementando nuevas funcionalidades para mejorar tu experiencia con la aplicación.</p>
                         </div>
-                        <a href="#" className="flex justify-between items-center group-hover:text-orange-300">
-                            <span className="text-sm">Read more</span>
-                            <span className="-translate-x-4 opacity-0 text-2xl transition duration-300 group-hover:opacity-100 group-hover:translate-x-0"></span>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 )}
