@@ -387,8 +387,10 @@ async function updateHabitUserInfo (req, res) {
       updatedData.status = 'EnProceso'
     }
 
-    if (updatedData.current_streak === 21) {
+    if (updatedData.current_streak === 21 || updatedData.current_streak === 42 || updatedData.current_streak === 63) {
+      logger.info(`HC - Habit forged by ${req.user.id}`)
       updatedData.times_forged = habitUserToEdit.times_forged + 1
+      updatedData.status = 'Forjado'
     }
 
     if (updatedData.current_streak > habitUserToEdit.best_streak) {
@@ -465,6 +467,58 @@ async function deleteHabitUser (req, res) {
     res.status(500).json({ error: error.message })
   }
 }
+async function checkHabitStreaks (userId) {
+  logger.debug('HC - checkAndUpdateHabitStreaks')
+
+  const habits = await prisma.userHabit.findMany({
+    where: {
+      user_id: userId
+    }
+  })
+
+  const today = new Date()
+  const todayString = today.toISOString().split('T')[0]
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  const yesterdayString = yesterday.toISOString().split('T')[0]
+
+  for (const habit of habits) {
+    const completions = await prisma.completes.findMany({
+      where: {
+        habit_id: habit.habit_id,
+        user_id: userId
+      },
+      orderBy: {
+        date: 'desc'
+      }
+    })
+
+    const completionDates = completions
+      .map(complete => complete.date.toISOString().split('T')[0])
+
+    const completedYesterday = completionDates.includes(yesterdayString)
+    const completedToday = completionDates.includes(todayString)
+
+    const updatedData = {}
+    if (!completedYesterday && !completedToday) {
+      // si el hábito no se realizó ayer ni hoy (hoy podría empezar la racha), se reinicia la racha
+      updatedData.current_streak = 0
+
+      await prisma.userHabit.update({
+        where: {
+          id: habit.id
+        },
+        data: updatedData
+      })
+    } else if (completedYesterday && !completedToday) {
+      // si el hábito se completó ayer pero no hoy, la racha no cambia.
+      // esto asegura que la racha no se reinicie innecesariamente si el hábito se completó hoy por primera vez.
+      continue
+    }
+  }
+
+  logger.info(`HC - Habit streaks updated successfully for user ${userId}`)
+}
 
 export default {
   getAvailableHabits,
@@ -477,5 +531,6 @@ export default {
   createHabitUser,
   updateHabitUserSettings,
   updateHabitUserInfo,
-  deleteHabitUser
+  deleteHabitUser,
+  checkHabitStreaks
 }

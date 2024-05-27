@@ -220,7 +220,6 @@ async function deleteUserById (req, res) {
   }
 }
 
-// TODO: Probar esta función
 async function deleteUserByUsername (req, res) {
   logger.debug('UC - deleteUserByUsername')
   const username = req.params.username

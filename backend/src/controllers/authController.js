@@ -1,9 +1,10 @@
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import logger from '../logger.js'
+import habitsController from './habitsController.js'
 
 async function login (req, res, next) {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     logger.debug('AC - /login request')
     if (err) {
       logger.error('AC - Error in /login ' + err)
@@ -13,6 +14,14 @@ async function login (req, res, next) {
       logger.warn('AC - User not found in /login')
       return res.status(401).json({ success: false, message: info.message })
     }
+
+    try {
+      await habitsController.checkHabitStreaks(user.id)
+    } catch (e) {
+      logger.error('AC - Error checking habit streaks: ' + e)
+      return res.status(500).json({ success: false, message: 'Error checking habit streaks' })
+    }
+
     // TODO: aprovechar este payload para cargar más cosas del usuario
     const payload = { id: user.id }
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
