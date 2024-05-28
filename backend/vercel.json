@@ -8,7 +8,8 @@
           "includeFiles": [
             "prisma/**",
             "node_modules/.prisma/**"
-          ]
+          ],
+          "buildCommand": "npm run build"  
         }
       }
     ],
@@ -19,5 +20,4 @@
       }
     ]
   }
-  
   
