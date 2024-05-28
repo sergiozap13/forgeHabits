@@ -8,7 +8,8 @@
     "test": "mocha  'src/test/*.js' --reporter spec",
     "dev": "nodemon src/index.js",
     "prisma": "npx prisma migrate dev --name init",
-    "db-conn": "node src/db/prismaTest.js"
+    "db-conn": "node src/db/prismaTest.js",
+    "swagger": "node swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -30,12 +31,15 @@
     "passport-jwt": "4.0.1",
     "passport-local": "1.0.0",
     "prisma": "5.10.2",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.0",
     "winston": "3.13.0",
     "zod": "3.22.4"
   },
   "devDependencies": {
     "chai": "5.1.0",
     "mocha": "10.3.0",
-    "standard": "17.1.0"
+    "standard": "17.1.0",
+    "swagger-autogen": "2.23.7"
   }
 }

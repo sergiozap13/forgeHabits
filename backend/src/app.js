@@ -16,6 +16,8 @@ import { authRouter } from './routes/authentication.js'
 import { uploadRouter } from './routes/upload.js'
 import { imageRouter } from './routes/image.js'
 import { statsRouter } from './routes/stats.js'
+import swaggerUi from 'swagger-ui-express'
+import { readFileSync } from 'fs'
 
 initializePassport(
   passport,
@@ -44,6 +46,10 @@ app.use(passport.initialize())
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+const swaggerDocument = JSON.parse(readFileSync(new URL('../swagger-output.json', import.meta.url)))
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // rutas protegidas
 app.use('/api/habits', passport.authenticate('jwt', { session: false }), habitsRouter)
