@@ -3,6 +3,9 @@ import express, { json } from 'express'
 import passport from 'passport'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import dotenv from 'dotenv'
+import { PORT } from './config.js'
+import logger from './logger.js'
 
 import { initialize as initializePassport } from './middlewares/passport-config.js'
 import { corsMiddleware } from './middlewares/cors.js'
@@ -66,6 +69,12 @@ app.use('/api/auth', authRouter)
 // para aquellas páginas que no existan.
 app.use((req, res) => {
   res.status(404).send('<h1>404 error</h1>')
+})
+
+dotenv.config()
+
+app.listen(PORT, () => {
+  logger.debug(`server listening on http://localhost:${PORT}`)
 })
 
 export default app
