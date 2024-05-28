@@ -71,7 +71,8 @@ app.use((req, res) => {
   res.status(404).send('<h1>404 error</h1>')
 })
 
-dotenv.config()
+const environment = process.env.ENVIRONMENT || 'dev'
+dotenv.config({ path: `.env.${environment}` })
 
 app.listen(PORT, () => {
   logger.debug(`server listening on http://localhost:${PORT}`)
