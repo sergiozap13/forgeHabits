@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Habit {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  category      Category 
+  default_color String
+  text_color    String    @default("white")
+  programmable  Boolean
+  allday        Boolean  
+  material_icon String
+  tips          Tip[]
+  units         Unit[]
+  userHabits    UserHabit[]
+  completes     Completes[]
+}
+
+model Tip {
+  id        String   @id @default(uuid())
+  habit_id  String   
+  tips      String[]
+
+  habit     Habit    @relation(fields: [habit_id], references: [id])
+}
+
+model Instruction {
+  id          String                @id @default(uuid())
+  category    CategoryInstruction
+  instruction String[]
+}
+
+model Completes {
+  id       String    @id @default(uuid())
+  habit_id String
+  user_id  String
+  date     DateTime
+
+  habit    Habit     @relation(fields: [habit_id], references: [id])
+  user     User      @relation(fields: [user_id], references: [id])
+}
+
+model Diary {
+  id        String   @id @default(uuid())
+  user_id   String   
+  date      DateTime
+  text      String
+  mood      Mood
+  user      User     @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, date])
+}
+
+model Unit {
+  id        String   @id @default(uuid())
+  habit_id  String   
+  unit      UnitType
+  goals     Json
+
+  habit     Habit    @relation(fields: [habit_id], references: [id])
+
+}
+
+model User {
+  id           String      @id @default(uuid())
+  username     String      @unique
+  password     String      
+  name         String
+  last_name    String      
+  email        String      @unique
+  phone        String   
+  
+  diaryEntries Diary[]
+  completes    Completes[]
+  userHabits   UserHabit[]
+}
+
+model UserHabit {
+  id                String       @id @default(uuid())
+  habit_id          String       
+  user_id           String       
+  status            HabitStatus
+  current_streak    Int
+  best_streak       Int
+  times_forged      Int
+  times_forged_goal Int
+  settings          Json 
+
+  habit             Habit        @relation(fields: [habit_id], references: [id])
+  user              User         @relation(fields: [user_id], references: [id])
+}
+
+// Enums
+enum Category {
+  SaludFisica
+  SaludMental
+  Alimentacion
+}
+
+enum CategoryInstruction {
+  Inicio
+  MisHabitos
+  Diario
+  Calendario
+}
+
+enum EventType {
+  Habito
+  Evento
+}
+
+enum Mood {
+  Bueno
+  Normal
+  Mal
+}
+
+enum UnitType {
+  VecesAlDia
+  Litros
+  Pasos
+  Minutos
+  Horas
+}
+
+enum HabitStatus {
+  SinIniciar
+  EnProceso
+  Forjado
+  Interiorizado
+}
