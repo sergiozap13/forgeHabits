@@ -17,7 +17,7 @@
         "src": "/(.*)",
         "dest": "src/app.js"
       }
-    ],
-    "buildCommand": "npm run build"
+    ]
   }
+  
   
