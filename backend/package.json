@@ -10,6 +10,7 @@
     "prisma": "npx prisma migrate dev --name init",
     "db-conn": "node src/db/prismaTest.js",
     "build": "prisma generate && node src/app.js",
+    "postinstall": "prisma generate",
     "start": "node src/app.js",
     "swagger": "node swagger.js"
   },
