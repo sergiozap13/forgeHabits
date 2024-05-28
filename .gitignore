@@ -8,3 +8,5 @@ backend/src/api.http
 backend/combined.log
 backend/error.log
 backend/uploads
+backend/.env.prod
+backend/.env_old
