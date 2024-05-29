@@ -11,7 +11,7 @@
     "db-conn": "node src/db/prismaTest.js",
     "build": "prisma generate && prisma migrate deploy && node src/app.js",
     "postinstall": "prisma generate && prisma migrate deploy",
-    "start": "node src/app.js",
+    "start": "node src/app.js", 
     "swagger": "node swagger.js"
   },
   "keywords": [],
