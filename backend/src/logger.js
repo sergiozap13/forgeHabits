@@ -37,7 +37,7 @@ const prodTransports = [
 const logger = winston.createLogger({
   levels: logLevels,
   format: logFormat,
-  transports: process.env.ENVIRONMENT === 'development' ? devTransports : prodTransports
+  transports: process.env.ENVIRONMENT === 'dev' ? devTransports : prodTransports
 })
 
 export default logger
