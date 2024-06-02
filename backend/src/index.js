@@ -7,5 +7,5 @@ import logger from './logger.js'
 dotenv.config()
 
 app.listen(PORT, () => {
-  logger.debug(`server listening on http://localhost:${PORT}`)
+  logger.debug(`server  listening on http://localhost:${PORT}`)
 })
