@@ -1,3 +1,4 @@
+import landing from "../assets/landing.png";
 
 function Hero() {
 
@@ -32,7 +33,7 @@ function Hero() {
                                     <div className="w-3 h-3 border-2 border-white rounded-full"></div>
                                 </div>
                             </div>
-                            <img className="mb-5" src="https://cdn.devdojo.com/images/march2021/green-dashboard.jpg"></img>
+                            <img className="mb-5" src={landing.src}></img>
                         </div>
                     </div>
                 </div>
