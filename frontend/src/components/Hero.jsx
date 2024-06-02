@@ -20,7 +20,7 @@ function Hero() {
                             </span>                        
                         </a>
                     </div>
-                </div>
+                </div> 
                 <div className="w-full mx-auto md:mt-20 text-center md:w-10/12">
                     <div className="relative z-0 w-full mt-8">
                         <div className="relative overflow-hidden shadow-2xl">
