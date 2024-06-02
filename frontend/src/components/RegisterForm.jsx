@@ -53,7 +53,7 @@ function RegisterForm() {
         };
     
         try {
-            const response = await fetch('http://localhost:3000/api/users/create', {
+            const response = await fetch('https://forge-habits.vercel.app/api/users/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': "application/json",
