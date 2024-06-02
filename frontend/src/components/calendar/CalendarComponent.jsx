@@ -16,7 +16,7 @@ const CalendarComponent = () => {
 
     const fetchMoodData = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/diary/${formattedDate}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/diary/${formattedDate}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const CalendarComponent = () => {
 
     const fetchHabits = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/habits/user`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/user`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const CalendarComponent = () => {
 
     const fetchCompletedHabits = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/completions/${formattedDate}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/completions/${formattedDate}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

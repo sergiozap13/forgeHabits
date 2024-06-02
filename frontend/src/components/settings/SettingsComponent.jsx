@@ -16,7 +16,7 @@ const SettingsComponent = () => {
 
     const fetchUserInfo = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/users/info`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/users/info`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const SettingsComponent = () => {
     }
 
     const updatePassword = async () => {
-        const response = await fetch(`http://localhost:3000/api/users/changepass`, {
+        const response = await fetch(`https://forge-habits.vercel.app/api/users/changepass`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const SettingsComponent = () => {
     }
 
     const deleteUser = async () => {
-        const response = await fetch(`http://localhost:3000/api/users/`, {
+        const response = await fetch(`https://forge-habits.vercel.app/api/users/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

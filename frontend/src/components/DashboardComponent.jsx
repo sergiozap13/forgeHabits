@@ -20,7 +20,7 @@ const DashboardComponent = () => {
     // funciones para obtener los datos necesarios
     const fetchHabits = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/habits/user', {
+            const response = await fetch('https://forge-habits.vercel.app/api/habits/user', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const DashboardComponent = () => {
 
     const fetchCompletedHabits = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/completions/${formattedDate}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/completions/${formattedDate}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const DashboardComponent = () => {
 
     const fetchUserInfo = async () => {
       try {
-          const response = await fetch(`http://localhost:3000/api/users/info`, {
+          const response = await fetch(`https://forge-habits.vercel.app/api/users/info`, {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const DashboardComponent = () => {
 
     const getUserPerformance = async () => {
       try {
-          const response = await fetch('http://localhost:3000/api/stats/performance', {
+          const response = await fetch('https://forge-habits.vercel.app/api/stats/performance', {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json',

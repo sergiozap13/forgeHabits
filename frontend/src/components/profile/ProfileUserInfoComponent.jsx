@@ -58,7 +58,7 @@ const ProfileUserInfoComponent = () => {
     
     const fetchUserInfo = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/users/info`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/users/info`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const ProfileUserInfoComponent = () => {
     const updateUserInfo = async () => {
         console.log(editedUserInfo);
         try {
-            const response = await fetch(`http://localhost:3000/api/users/${userInfo?.id}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/users/${userInfo?.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const ProfileUserInfoComponent = () => {
         if (!userInfo?.id) return;
         
         try {
-            const response = await fetch(`http://localhost:3000/api/images/${userInfo.id}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/images/${userInfo.id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -126,7 +126,7 @@ const ProfileUserInfoComponent = () => {
         formData.append('profileImage', selectedFile);
 
         try {
-            const response = await fetch(`http://localhost:3000/api/upload`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/upload`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

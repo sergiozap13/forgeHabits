@@ -6,7 +6,7 @@ export async function isValidJWT(request) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/auth/status', {
+        const response = await fetch('https://forge-habits.vercel.app/api/auth/status', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

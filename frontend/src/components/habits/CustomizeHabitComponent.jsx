@@ -25,7 +25,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
         return;
     }
 
-      const apiUrl = `http://localhost:3000/api/habits/habit/${habitId}`; 
+      const apiUrl = `https://forge-habits.vercel.app/api/habits/habit/${habitId}`; 
 
       const settingsData = {
         daily_goal: habitData.dailyGoal,
@@ -74,7 +74,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
     useEffect(() => {
         async function fetchHabitInfo() {
             if (!habitId || !token) return;
-            const response = await fetch(`http://localhost:3000/api/habits/habit/${habitId}/info`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habitId}/info`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
 
         async function fetchHabitUnit() {
             if (!habitId || !token) return;
-            const response = await fetch(`http://localhost:3000/api/habits/habit/${habitId}/unit`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habitId}/unit`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

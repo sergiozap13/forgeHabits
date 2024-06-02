@@ -8,7 +8,7 @@ const MoodSelectorComponent = ({ selectedMood, setSelectedMood, page }) => {
 
     const fetchMood = async () => {
         if (page === 'dashboard') {
-            const apiUrl = `http://localhost:3000/api/diary/${formattedDate}`;
+            const apiUrl = `https://forge-habits.vercel.app/api/diary/${formattedDate}`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'GET',
@@ -38,7 +38,7 @@ const MoodSelectorComponent = ({ selectedMood, setSelectedMood, page }) => {
     }, [page]);
 
     const saveMood = async (mood) => {
-        const apiUrl = `http://localhost:3000/api/diary/${formattedDate}`;
+        const apiUrl = `https://forge-habits.vercel.app/api/diary/${formattedDate}`;
 
         try {
             const checkResponse = await fetch(apiUrl, {

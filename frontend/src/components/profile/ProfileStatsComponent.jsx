@@ -11,7 +11,7 @@ const ProfileStatsComponent = ({token}) => {
 
     const getBestHabit = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/stats/best', {
+            const response = await fetch('https://forge-habits.vercel.app/api/stats/best', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const ProfileStatsComponent = ({token}) => {
 
     const getForgedHabitsSum = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/stats/forged', {
+            const response = await fetch('https://forge-habits.vercel.app/api/stats/forged', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const ProfileStatsComponent = ({token}) => {
 
     const getUserPerformance = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/stats/performance', {
+            const response = await fetch('https://forge-habits.vercel.app/api/stats/performance', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

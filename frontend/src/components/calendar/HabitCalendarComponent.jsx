@@ -9,7 +9,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
     useEffect(() => {
         const fetchHabitDetails = async () => {
             try {
-                const unitResponse = await fetch(`http://localhost:3000/api/habits/habit/${habit.id}/unit`, {
+                const unitResponse = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habit.id}/unit`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
                 });
                 const unitData = await unitResponse.json();
 
-                const detailsResponse = await fetch(`http://localhost:3000/api/habits/habit/${habit.id}`, {
+                const detailsResponse = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habit.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
                     ...detailsData
                 });
 
-                const habitInfo = await fetch(`http://localhost:3000/api/habits/habit/${habit.id}/info`, {
+                const habitInfo = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habit.id}/info`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
     const handleComplete = async () => {
         const method = completed ? 'DELETE' : 'POST';
         try {
-            const response = await fetch(`http://localhost:3000/api/completions`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/completions`, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
                 throw new Error('Failed to update completion status');
             }
 
-            const streaksResponse = await fetch(`http://localhost:3000/api/habits/habit/${habit.id}`, {
+            const streaksResponse = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habit.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

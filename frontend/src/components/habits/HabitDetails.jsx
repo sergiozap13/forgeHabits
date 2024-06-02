@@ -12,7 +12,7 @@ const HabitDetails = ({ habitId }) => {
     const token = sessionStorage.getItem('jwtToken');
 
     const handleDelete = async () => {
-        const apiUrl = `http://localhost:3000/api/habits/habit/${habitId}`;
+        const apiUrl = `https://forge-habits.vercel.app/api/habits/habit/${habitId}`;
     
         try {
             const response = await fetch(apiUrl, {
@@ -37,7 +37,7 @@ const HabitDetails = ({ habitId }) => {
     useEffect(() => {
         async function fetchHabit() {
             if (!habitId || !token) return;
-            const response = await fetch(`http://localhost:3000/api/habits/habit/${habitId}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habitId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const HabitDetails = ({ habitId }) => {
 
         async function fetchHabitInfo() {
             if (!habitId || !token) return;
-            const response = await fetch(`http://localhost:3000/api/habits/habit/${habitId}/info`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habitId}/info`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const HabitDetails = ({ habitId }) => {
 
         async function fetchHabitTips() {
             if (!habitId || !token) return;
-            const response = await fetch(`http://localhost:3000/api/habits/habit/${habitId}/tips`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/habits/habit/${habitId}/tips`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

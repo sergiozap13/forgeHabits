@@ -21,7 +21,7 @@ const DiaryDisplayComponent = () => {
 
     const fetchDiaryData = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/diary/${formattedDate}`, {
+            const response = await fetch(`https://forge-habits.vercel.app/api/diary/${formattedDate}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const DiaryDisplayComponent = () => {
     };
     
     const handleSaveDiary = async () => {
-        const apiUrl = `http://localhost:3000/api/diary/${formattedDate}`;
+        const apiUrl = `https://forge-habits.vercel.app/api/diary/${formattedDate}`;
 
         try {
             const checkResponse = await fetch(apiUrl, {

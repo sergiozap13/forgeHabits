@@ -9,8 +9,8 @@ const HabitsDisplayComponent = ({page}) => {
         const fetchHabits = async () => {
             try {
                 const call = page === 'myhabits'
-                    ? 'http://localhost:3000/api/habits/user'
-                    : 'http://localhost:3000/api/habits';
+                    ? 'https://forge-habits.vercel.app/api/habits/user'
+                    : 'https://forge-habits.vercel.app/api/habits';
                 const response = await fetch(call, {
                     method: 'GET',
                     headers: {
