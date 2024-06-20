@@ -81,7 +81,6 @@ const HabitCalendarComponent = ({ habit, token, updateCompletionState, completed
             updateCompletionState(habit.id, !completed);
         } catch (error) {
             console.error('Error updating habit completion:', error);
-            alert('Error completing the habit: ' + error.message);
         }
     };
 

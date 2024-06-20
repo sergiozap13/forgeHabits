@@ -118,7 +118,7 @@ const CustomizeHabitComponent = ({ habitId }) => {
     };
 
     return (
-        <div className="flex flex-col items-center border max-w-2xl mx-auto bg-gray-800 text-white rounded-xl shadow-xl p-6 min-h-screen mt-3 mb-3">
+        <div className="flex flex-col items-center max-w-2xl mx-auto bg-gray-800 text-white rounded-xl shadow-2xl p-6 min-h-screen mt-3 mb-3">
             <div className={`flex items-center space-x-4 mb-10 bg-${habitInfo && habitInfo.default_color}-500 rounded-2xl p-2`}>
                 <span className={`material-symbols-outlined rounded-full text-5xl font-bold`}>
                     {habitInfo && habitInfo.material_icon}

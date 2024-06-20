@@ -164,34 +164,7 @@ const ProfileUserInfoComponent = () => {
             </div>
             
             <div className="flex flex-col md:flex-row items-center md:items-center">
-                <div className="w-full md:w-1/3 mb-10 md:mb-0 border-2 border-gray-300 rounded-lg mx-2 bg-gray-800 flex items-center justify-center">
-                    <div className="flex flex-col items-center justify-center py-4 rounded-lg shadow-lg p-6">
-                        <Tooltip content="Que guapx estas hoy..." placement="top">
-                            <img className="w-48 h-48 rounded-full border-4 border-orange-500 mb-4 object-cover shadow-md" src={imgUrl} alt="" />
-                        </Tooltip>
-                        <h1 className="text-lg md:text-2xl font-semibold mb-2 text-center text-white">@{userInfo?.username}</h1>
-                        
-                        <Tooltip content="Sube una foto de perfil" placement="top">
-                            <input 
-                                type="file" 
-                                onChange={handleFileChange} 
-                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-300 file:text-white hover:file:bg-orange-600"
-                            />
-                        </Tooltip>
-                        
-                        <Tooltip content="Selecciona una foto antes de pulsar" placement="bottom">
-                            <button 
-                                onClick={handleUploadClick} 
-                                className='bg-orange-200 mt-4 text-gray-800 hover:bg-orange-400 transition-colors duration-400 text-md font-bold py-2 xl:py-3 px-4 sm:px-6 rounded-xl focus:outline-none focus:shadow-outline focus:border-orange-500 focus:bg-gray-800 focus:text-white focus:border-2'
-                            >
-                                Subir foto
-                            </button>
-                        </Tooltip>
-                        
-                    </div>
-                </div>
-                
-                <div className="w-full md:w-2/3">
+                <div className="w-full">
                     <div className="info border-2 border-gray-300 p-3 rounded-xl bg-gray-800 m-5">
                         <h3 className="text-2xl md:text-3xl font-bold mb-2 text-center text-white">Información Personal</h3>
                         <div className="flex flex-col justify-center items-center space-y-4">
