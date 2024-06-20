@@ -91,7 +91,7 @@ const MoodSelectorComponent = ({ selectedMood, setSelectedMood, page }) => {
 
     return (
         <section className='bg-gray-800 shadow-lg p-4 mb-10 sm:p-6 rounded-xl max-w-md mx-auto'>
-            <h2 class="font-semibold text-center text-md md:text-lg mx-4 text-orange-100 animate-fade-left mb-5">Aquí puedes seleccionar tu <span className='text-orange-300'>estado de ánimo</span> actual.</h2>
+            <h2 class="font-semibold text-center text-md md:text-lg mx-4 text-orange-100 animate-fade-left mb-5">Aquí puedes seleccionar el <span className='text-orange-300'>estado de ánimo</span> que tienes en este momento.</h2>
             <div className='flex justify-around border-white p-2 sm:p-4 rounded-xl bg-gray-300 space-x-1 sm:space-x-2'>
                 <button
                     className={`p-3 sm:p-4 rounded-full ${selectedMood === 'Bueno' ? 'bg-green-500' : 'bg-gray-500'} hover:bg-green-400 transition duration-300`}
