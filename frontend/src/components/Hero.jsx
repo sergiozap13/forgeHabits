@@ -13,7 +13,7 @@ function Hero() {
                         Empieza a transformar tu vida hoy con nuestra aplicación de seguimiento de hábitos.
                     </p>
                     <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
-                        <a href="/register" className="inline-flex items-center justify-center w-full px-6 py-3 mb-2 text-lg font-bold text-black border-black border-2 bg-orange-500 rounded-2xl sm:w-auto sm:mb-0 hover:scale-105">
+                        <a href="/register" className="inline-flex items-center justify-center w-full px-6 py-3 mb-2 text-lg font-bold text-black border-black border-2 bg-orange-500 rounded-2xl sm:w-auto sm:mb-0 hover:scale-105 transition-all duration-300">
                             Empieza ya
                             <span class="material-symbols-outlined">
                                 arrow_forward
